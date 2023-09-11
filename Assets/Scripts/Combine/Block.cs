@@ -13,7 +13,7 @@ namespace Combine
         public Vector3 Position
         {
             get => position;
-            set => Vector3Int.RoundToInt(value);
+            set => position = Vector3Int.RoundToInt(value);
         }
         
         public void SetAsCreated()
