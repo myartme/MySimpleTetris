@@ -1,5 +1,5 @@
 ﻿using System;
-using Engine;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -85,10 +85,26 @@ namespace Combine
         
         private void UpdateChildrenPosition()
         {
-            foreach (var child in _combineObject)
+            _combineObject.ForEach(item => 
+                {
+                    var childPosWithRotation = Rotation * item.transform.localPosition;
+                    item.Position = Position + childPosWithRotation;
+                });
+            
+            /*foreach (var child in _combineObject)
             {
-                var childPosWithRotation = _gameObject.transform.rotation * child.transform.localPosition;
-                child.Position = Vector3Int.RoundToInt(childPosWithRotation + Position);
+                var childPosWithRotation = Rotation * child.transform.localPosition;
+                child.Position = Position + childPosWithRotation;
+            }*/
+        }
+        
+        private void UpdateChildrenPosition(List<(string, Vector3Int)> childrenPositions)
+        {
+            for (var i = 0; i < _combineObject.Count; i++)
+            {
+                var block = _combineObject[i];
+                if (block.Name == childrenPositions[i].Item1) 
+                    block.Position = childrenPositions[i].Item2;
             }
         }
         
