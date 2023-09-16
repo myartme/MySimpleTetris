@@ -16,6 +16,8 @@ namespace Engine
         private Block[][] _grid = new Block[HEIGHT][];
         
         public bool IssetTetromino => _activeTetromino != null;
+        public delegate void GridAction();
+        
         private Spawner _spawner;
         private Tetromino _activeTetromino;
         private bool _isTetrominoMakeComplete;

@@ -17,11 +17,6 @@ namespace Spawn
             Tetromino.OnChangeStatus += GetTetromino;
         }
 
-        public void SpawnNext()
-        {
-            _currentTetromino.SetAsCompleted();
-        }
-
         private void GetTetromino(Tetromino tetromino)
         {
             if (tetromino.Status == ObjectStatus.Preview)
