@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Engine;
+using UnityEngine;
 
 namespace Combine
 {
@@ -9,7 +10,7 @@ namespace Combine
         
         public string Name => gameObject.name;
         public ObjectStatus Status { get; private set; }
-
+        
         public Vector3 Position
         {
             get => position;
@@ -34,6 +35,17 @@ namespace Combine
         public void SetAsCompleted()
         {
             Status = ObjectStatus.Completed;
+        }
+
+        public void DropMeDown(int positions)
+        {
+            Position += Vector3.down * positions;
+            transform.position += Vector3.down * positions;
+        }
+        
+        public void DestroyMe()
+        {
+            Destroy(gameObject);
         }
     }
 }

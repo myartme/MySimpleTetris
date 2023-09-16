@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using Engine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -90,22 +90,6 @@ namespace Combine
                     var childPosWithRotation = Rotation * item.transform.localPosition;
                     item.Position = Position + childPosWithRotation;
                 });
-            
-            /*foreach (var child in _combineObject)
-            {
-                var childPosWithRotation = Rotation * child.transform.localPosition;
-                child.Position = Position + childPosWithRotation;
-            }*/
-        }
-        
-        private void UpdateChildrenPosition(List<(string, Vector3Int)> childrenPositions)
-        {
-            for (var i = 0; i < _combineObject.Count; i++)
-            {
-                var block = _combineObject[i];
-                if (block.Name == childrenPositions[i].Item1) 
-                    block.Position = childrenPositions[i].Item2;
-            }
         }
         
         private Bounds GetAllBoundsCollapse(GameObject gameObject)
@@ -172,6 +156,7 @@ namespace Combine
         {
             Status = ObjectStatus.Completed;
             OnChangeStatus?.Invoke(this);
+            OnTransform -= UpdateChildrenPosition;
         }
     }
 }
