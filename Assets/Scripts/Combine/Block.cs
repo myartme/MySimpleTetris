@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using System;
+using Engine;
 using UnityEngine;
 
 namespace Combine
@@ -7,7 +8,7 @@ namespace Combine
     {
         
         [SerializeField] private Vector3Int position;
-        
+        private SpriteRenderer _spriteRenderer;
         public string Name => gameObject.name;
         public ObjectStatus Status { get; private set; }
         
@@ -16,7 +17,18 @@ namespace Combine
             get => position;
             set => position = Vector3Int.RoundToInt(value);
         }
-        
+
+        public Color32 Color
+        {
+            get => _spriteRenderer.color;
+            set => _spriteRenderer.color = value;
+        }
+
+        private void Awake()
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
         public void SetAsCreated()
         {
             Status = ObjectStatus.Created;

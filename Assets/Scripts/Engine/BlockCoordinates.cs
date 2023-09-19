@@ -3,85 +3,74 @@ using UnityEngine;
 
 namespace Engine
 {
-    public class BlockCoordinates
+    public static class BlockCoordinates
     {
-        private readonly Dictionary<BlockType, Vector3[]> _coordinates = new();
-
-        public BlockCoordinates()
+        public static readonly Dictionary<BlockType, Vector3[]> Coordinates = new()
         {
-            InitializeCoordinates();
-        }
-
-        private void InitializeCoordinates()
-        {
-            _coordinates[BlockType.I] = new[]
             {
-                new Vector3(0.5f, 1.5f, 0),
-                new Vector3(0.5f, 0.5f, 0),
-                new Vector3(0.5f, -0.5f, 0),
-                new Vector3(0.5f, -1.5f, 0)
-            };
-
-            _coordinates[BlockType.J] = new[]
+                BlockType.I,
+                new[] {
+                    new Vector3(0.5f, 1.5f, 0),
+                    new Vector3(0.5f, 0.5f, 0),
+                    new Vector3(0.5f, -0.5f, 0),
+                    new Vector3(0.5f, -1.5f, 0)
+                }
+            },
             {
-                new Vector3(0, 1, 0),
-                new Vector3(0, 0, 0),
-                new Vector3(0, -1, 0),
-                new Vector3(-1, -1, 0)
-            };
-        
-            _coordinates[BlockType.L] = new[]
+                BlockType.J,
+                new[] {
+                    new Vector3(0, 1, 0),
+                    new Vector3(0, 0, 0),
+                    new Vector3(0, -1, 0),
+                    new Vector3(-1, -1, 0)
+                }
+            },
             {
-                new Vector3(0, 1, 0),
-                new Vector3(0, 0, 0),
-                new Vector3(0, -1, 0),
-                new Vector3(1, -1, 0)
-            };
-        
-            _coordinates[BlockType.O] = new[]
+                BlockType.L,
+                new[] {
+                    new Vector3(0, 1, 0),
+                    new Vector3(0, 0, 0),
+                    new Vector3(0, -1, 0),
+                    new Vector3(1, -1, 0)
+                }
+            },
             {
-                new Vector3(0.5f, 0.5f, 0),
-                new Vector3(0.5f, -0.5f, 0),
-                new Vector3(-0.5f, -0.5f, 0),
-                new Vector3(-0.5f, 0.5f, 0)
-            };
-        
-            _coordinates[BlockType.S] = new[]
+                BlockType.O,
+                new[] {
+                    new Vector3(0.5f, 0.5f, 0),
+                    new Vector3(0.5f, -0.5f, 0),
+                    new Vector3(-0.5f, -0.5f, 0),
+                    new Vector3(-0.5f, 0.5f, 0)
+                }
+            },
             {
-                new Vector3(1, 1, 0),
-                new Vector3(0, 1, 0),
-                new Vector3(0, 0, 0),
-                new Vector3(-1, 0, 0)
-            };
-        
-            _coordinates[BlockType.T] = new[]
+                BlockType.S,
+                new[] {
+                    new Vector3(1, 1, 0),
+                    new Vector3(0, 1, 0),
+                    new Vector3(0, 0, 0),
+                    new Vector3(-1, 0, 0)
+                }
+            },
             {
-                new Vector3(-1, 0, 0),
-                new Vector3(0, 0, 0),
-                new Vector3(1, 0, 0),
-                new Vector3(0, -1, 0)
-            };
-        
-            _coordinates[BlockType.Z] = new[]
+                BlockType.T,
+                new[] {
+                    new Vector3(-1, 0, 0),
+                    new Vector3(0, 0, 0),
+                    new Vector3(1, 0, 0),
+                    new Vector3(0, -1, 0)
+                }
+            },
             {
-                new Vector3(-1, 1, 0),
-                new Vector3(0, 1, 0),
-                new Vector3(0, 0, 0),
-                new Vector3(1, 0, 0)
-            };
-
-        }
-
-        public Vector3[] GetCoordinates(BlockType blockType)
-        {
-            if (_coordinates.ContainsKey(blockType))
-            {
-                return _coordinates[blockType];
+                BlockType.Z,
+                new[] {
+                    new Vector3(-1, 1, 0),
+                    new Vector3(0, 1, 0),
+                    new Vector3(0, 0, 0),
+                    new Vector3(1, 0, 0)
+                }
             }
-
-            Debug.LogWarning($"No coordinates found for the block {blockType}.");
-            return null;
-        }
+        };
     }
 
     public enum BlockType

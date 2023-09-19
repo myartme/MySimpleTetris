@@ -12,6 +12,7 @@ namespace Engine
         public const int WIDTH = 10;
         public const int HEIGHT = 20;
         public event Action<int> OnDeleteLines;
+        public static event Action<Block[][]> OnUpdateGrid;
 
         private Block[][] _grid = new Block[HEIGHT][];
         
@@ -20,6 +21,7 @@ namespace Engine
         
         private Spawner _spawner;
         private Tetromino _activeTetromino;
+        private Shadow _shadow;
         private bool _isTetrominoMakeComplete;
         private bool _isTetrominoStepDown;
         private EqualityComparer<Block> _comparer = EqualityComparer<Block>.Default;
@@ -97,8 +99,11 @@ namespace Engine
         {
             if (IsPossibleMovement(_activeTetromino, position, Tetromino.GetRightAngleZRotation(angleRotation)))
             {
-                _activeTetromino.Position = position;
-                _activeTetromino.AngleRotation = angleRotation;
+                if (_activeTetromino.Position != position)
+                    _activeTetromino.Position = position;
+                
+                if (_activeTetromino.AngleRotation != angleRotation)
+                    _activeTetromino.AngleRotation = angleRotation;
             }
 
             if (!_isTetrominoMakeComplete) return;
@@ -115,6 +120,7 @@ namespace Engine
             {
                 _grid[(int)item.Position.y - 1][(int)item.Position.x - 1] = item;
             });
+            OnUpdateGrid?.Invoke(_grid);
         }
 
         private void CheckLinesForDeleting()
@@ -176,7 +182,6 @@ namespace Engine
 
         private void Step(int angleRotation)
             => Step(_activeTetromino.Position, angleRotation);
-
         
         private bool IsEmptyGridPosition(int x, int y)
         {
@@ -191,6 +196,7 @@ namespace Engine
         private void GetActiveSpawnerTetromino(Tetromino tetromino)
         {
             _activeTetromino = tetromino;
+            OnUpdateGrid?.Invoke(_grid);
         }
     }
 }

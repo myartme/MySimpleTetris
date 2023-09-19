@@ -183,7 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 1389871907}
   timeToStep: 2
-  maxSpeedDelay: 2
+  maxSpeedDelay: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

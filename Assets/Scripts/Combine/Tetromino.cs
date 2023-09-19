@@ -7,34 +7,38 @@ namespace Combine
 {
     public class Tetromino : ICombinable
     {
-        private GameObject _gameObject;
-        private Combine<Block> _combineObject;
-        private Vector3 _position;
+        protected GameObject GameObject;
+        protected Combine<Block> CombineObject;
         private int _angleRotation;
-        
+        private Shadow _shadow;
+        private Color32 _color;
+
         public static event Action<Tetromino> OnChangeStatus;
         public event Action OnTransform;
 
-        public string Name => _gameObject.name;
-        public Combine<Block> Children => _combineObject;
+        public string Name => GameObject.name;
+        public Shadow Shadow => _shadow;
+
+        public Combine<Block> Children => CombineObject;
         public Vector3 AlignTopPosition { get; private set; }
 
         public ObjectStatus Status { get; private set; }
 
         public Vector3 Position
         {
-            get => _gameObject.transform.position;
+            get => GameObject.transform.position;
             set
             {
-                _gameObject.transform.position = value;
+                GameObject.transform.position = value;
+                UpdateChildrenPosition();
                 OnTransform?.Invoke();
             }
         }
-        
+
         public Quaternion Rotation
         {
-            get => _gameObject.transform.rotation;
-            private set => _gameObject.transform.rotation = value;
+            get => GameObject.transform.rotation;
+            protected set => GameObject.transform.rotation = value;
         }
 
         public int AngleRotation
@@ -44,7 +48,18 @@ namespace Combine
             {
                 _angleRotation = value;
                 Rotation = GetRightAngleZRotation(value);
+                UpdateChildrenPosition();
                 OnTransform?.Invoke();
+            }
+        }
+        
+        public Color32 Color
+        {
+            get => _color;
+            set
+            {
+                _color = value;
+                CombineObject.SetChildrenColor(_color);
             }
         }
 
@@ -52,9 +67,8 @@ namespace Combine
 
         public Tetromino(Sprite blocksSprite, BlockType blockType)
         {
-            OnTransform += UpdateChildrenPosition;
-            _gameObject = new GameObject($"Tetromino {blockType}");
-            _combineObject = new Combine<Block>(blocksSprite, blockType, _gameObject);
+            GameObject = new GameObject($"Tetromino {blockType}");
+            CombineObject = new Combine<Block>(blocksSprite, blockType, GameObject);
             AngleRotation = Random.Range(0, 4);
             SetAlignTopPosition();
         }
@@ -73,8 +87,8 @@ namespace Combine
 
         private void SetAlignTopPosition()
         {
-            Bounds = GetAllBoundsCollapse(_gameObject);
-            var position = _gameObject.transform.position;
+            Bounds = GetAllBoundsCollapse(GameObject);
+            var position = GameObject.transform.position;
             var pointX = (int)Bounds.size.x % 2 == 0 ? 0.5f : 0f;
             var pointY = Math.Abs(position.y - Bounds.max.y) < 0.5f ? Bounds.min.y + 0.5f : Bounds.max.y - 0.5f;
             AlignTopPosition = new Vector3(
@@ -85,7 +99,7 @@ namespace Combine
         
         private void UpdateChildrenPosition()
         {
-            _combineObject.ForEach(item => 
+            CombineObject.ForEach(item => 
                 {
                     var childPosWithRotation = Rotation * item.transform.localPosition;
                     item.Position = Position + childPosWithRotation;
@@ -123,7 +137,7 @@ namespace Combine
         private Bounds GetObjectBounds(GameObject gameObject)
         {
             var renderer = gameObject.GetComponent<Renderer>();
-            if(renderer == null)
+            if(!renderer)
                 return new Bounds(gameObject.transform.position,Vector3.zero);
             
             return renderer.bounds;
@@ -149,6 +163,7 @@ namespace Combine
         public void SetAsReady()
         {
             Status = ObjectStatus.Active;
+            _shadow = new Shadow(this, CombineObject.BlockSprite, CombineObject.BlockType);
             OnChangeStatus?.Invoke(this);
         }
 
@@ -156,7 +171,6 @@ namespace Combine
         {
             Status = ObjectStatus.Completed;
             OnChangeStatus?.Invoke(this);
-            OnTransform -= UpdateChildrenPosition;
         }
     }
 }

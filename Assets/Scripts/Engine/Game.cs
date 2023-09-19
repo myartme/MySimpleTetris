@@ -9,13 +9,12 @@ namespace Engine
     {
         [SerializeField] private Spawner spawner;
         public float timeToStep = 2f;
-        public float maxSpeedDelay = 2.0f;
+        public float maxSpeedDelay = 1f;
         
         private GameGrid _gameGrid;
         private bool _isAccelerating;
         private float _moveTimer;
         private float _maxSpeedTimer;
-        
         
         private void Start()
         {
@@ -75,22 +74,16 @@ namespace Engine
 
         private void StepByKey(KeyCode keyCode, GameGrid.GridAction gridAction)
         {
-            if (!Input.GetKey(keyCode)) return;
-            
             if (Input.GetKeyDown(keyCode))
             {
+                ResetMaxSpeedTimer();
                 _isAccelerating = true;
                 gridAction();
             }
-                
-            if (IsMaxSpeedReady())
+            
+            if (Input.GetKey(keyCode) && IsMaxSpeedReady())
             {
                 gridAction();
-            }
-
-            if (Input.GetKeyUp(keyCode))
-            {
-                ResetMaxSpeedTimer();
             }
         }
         

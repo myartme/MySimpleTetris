@@ -9,6 +9,7 @@ namespace Combine
         public ObjectStatus Status { get; }
 
         public Vector3 Position { get; set; }
+        public Color32 Color { get; set; }
 
         public void SetAsCreated();
 
