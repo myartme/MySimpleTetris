@@ -8,18 +8,15 @@ namespace Combine
     public class Tetromino : ICombinable
     {
         protected GameObject GameObject;
-        protected Combine<Block> CombineObject;
+        private Combine<Block> _combineObject;
         private int _angleRotation;
-        private Shadow _shadow;
         private Color32 _color;
-
-        public static event Action<Tetromino> OnChangeStatus;
+        public event Action<Tetromino> OnChangeStatus;
         public event Action OnTransform;
 
         public string Name => GameObject.name;
-        public Shadow Shadow => _shadow;
 
-        public Combine<Block> Children => CombineObject;
+        public Combine<Block> Children => _combineObject;
         public Vector3 AlignTopPosition { get; private set; }
 
         public ObjectStatus Status { get; private set; }
@@ -59,7 +56,7 @@ namespace Combine
             set
             {
                 _color = value;
-                CombineObject.SetChildrenColor(_color);
+                _combineObject.SetChildrenColor(_color);
             }
         }
 
@@ -68,7 +65,7 @@ namespace Combine
         public Tetromino(Sprite blocksSprite, BlockType blockType)
         {
             GameObject = new GameObject($"Tetromino {blockType}");
-            CombineObject = new Combine<Block>(blocksSprite, blockType, GameObject);
+            _combineObject = new Combine<Block>(blocksSprite, blockType, GameObject);
             AngleRotation = Random.Range(0, 4);
             SetAlignTopPosition();
         }
@@ -99,7 +96,7 @@ namespace Combine
         
         private void UpdateChildrenPosition()
         {
-            CombineObject.ForEach(item => 
+            _combineObject.ForEach(item => 
                 {
                     var childPosWithRotation = Rotation * item.transform.localPosition;
                     item.Position = Position + childPosWithRotation;
@@ -163,7 +160,7 @@ namespace Combine
         public void SetAsReady()
         {
             Status = ObjectStatus.Active;
-            _shadow = new Shadow(this, CombineObject.BlockSprite, CombineObject.BlockType);
+            new Shadow(this, _combineObject.BlockSprite, _combineObject.BlockType);
             OnChangeStatus?.Invoke(this);
         }
 

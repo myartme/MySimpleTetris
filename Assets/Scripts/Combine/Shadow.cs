@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine;
+using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -10,10 +11,11 @@ namespace Combine
         private Tetromino _originalTetromino;
         private Block[][] _grid;
         
-        public Shadow(Tetromino originalTetromino, Sprite blocksSprite, BlockType blockType) : base(blocksSprite, blockType)
+        public Shadow(Tetromino originalTetromino, Sprite blocksSprite, BlockType blockType) 
+            : base(blocksSprite, blockType)
         {
             _originalTetromino = originalTetromino;
-            OnChangeStatus += DisableShadow;
+            _originalTetromino.OnChangeStatus += ActiveOrDestroy;
             _originalTetromino.OnTransform += UpdatePositionAndRotation;
             GameGrid.OnUpdateGrid += UpdateGrid;
             GameObject.name = $"Shadow {GameObject.name}";
@@ -27,28 +29,27 @@ namespace Combine
             UpdatePositionAndRotation();
         }
         
-        private void DisableShadow(Tetromino tetromino)
+        private void ActiveOrDestroy(Tetromino tetromino)
         {
-            if (tetromino == _originalTetromino && _originalTetromino.Status == ObjectStatus.Active)
+            if (_originalTetromino.Status == ObjectStatus.Active)
             {
-                SetupPositionAndRotation();
-                GameObject.SetActive(true);
+                SetupAsActive();
             }
             if (_originalTetromino.Status == ObjectStatus.Completed)
             {
-                Object.Destroy(GameObject);
+                DestroyMe();
             }
         }
 
-        private void SetupPositionAndRotation()
+        private void SetupAsActive()
         {
             Position = _originalTetromino.Position;
             Rotation = _originalTetromino.Rotation;
+            GameObject.SetActive(true);
         }
         
         private void UpdatePositionAndRotation()
         {
-
             if (_originalTetromino.Status != ObjectStatus.Active || _grid == null) return;
             
             var offsetY = 0;
@@ -58,13 +59,10 @@ namespace Combine
                     throw new ArgumentException();
             }
             
-            var positionX = _originalTetromino.Position.x;
-            var positionY = _originalTetromino.Position.y - offsetY;
-            var positionZ = 5f;
             Rotation = _originalTetromino.Rotation;
-            Position = new Vector3(positionX, positionY, positionZ);
-            
-            //UpdateChildrenPosition();
+            Position = new Vector3(_originalTetromino.Position.x, 
+                _originalTetromino.Position.y - offsetY, 
+                5f);
         }
 
         private bool GoDownYToBarrier(ref int offsetY)
@@ -85,6 +83,14 @@ namespace Combine
 
             ++offsetY;
             return false;
+        }
+
+        private void DestroyMe()
+        {
+            _originalTetromino.OnChangeStatus -= ActiveOrDestroy;
+            _originalTetromino.OnTransform -= UpdatePositionAndRotation;
+            GameGrid.OnUpdateGrid -= UpdateGrid;
+            Object.Destroy(GameObject);
         }
     }
 }

@@ -7,39 +7,29 @@ namespace Spawn
 {
     public class Spawner : MonoBehaviour
     {
-        public event Action<Tetromino> OnCurrentTetromino;
+        [SerializeField] private Previewer previewer;
+        public static event Action<Tetromino> OnCurrentTetromino;
         
         private Tetromino _currentTetromino;
-        private Tetromino _nextTetromino;
 
         private void Start()
         {
-            Tetromino.OnChangeStatus += GetTetromino;
+            SetAsCurrentTetromino(previewer.GetTetromino());
         }
-
-        private void GetTetromino(Tetromino tetromino)
-        {
-            if (tetromino.Status == ObjectStatus.Preview)
-            {
-                if (_currentTetromino == null)
-                {
-                    SetAsCurrentTetromino(tetromino);
-                } else if (_nextTetromino == null)
-                {
-                    _nextTetromino = tetromino;
-                }
-            } else if (tetromino.Status == ObjectStatus.Completed)
-            {
-                SetAsCurrentTetromino(_nextTetromino);
-            }
-        }
-
+        
         private void SetAsCurrentTetromino(Tetromino tetromino)
         {
             _currentTetromino = tetromino;
-            _nextTetromino = null;
+            _currentTetromino.OnChangeStatus += TetrominoComplete;
             _currentTetromino.SetToSpawnPosition(transform.position);
-            OnCurrentTetromino?.Invoke(tetromino);
+            OnCurrentTetromino?.Invoke(_currentTetromino);
+        }
+        
+        private void TetrominoComplete(Tetromino tetromino)
+        {
+            if (tetromino.Status != ObjectStatus.Completed) return;
+            _currentTetromino.OnChangeStatus -= TetrominoComplete;
+            SetAsCurrentTetromino(previewer.GetTetromino());
         }
     }
 }

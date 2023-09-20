@@ -10,25 +10,20 @@ namespace Spawn
     {
         [SerializeField] private Sprite blockSprite;
         private Tetromino _tetromino;
-        
-        private void Start()
+
+        public Tetromino GetTetromino()
         {
-            Tetromino.OnChangeStatus += CheckTetrominoStatus;
+            if (_tetromino == null)
+                CreateAndSetPositionTetromino();
+            var tetromino = _tetromino;
             CreateAndSetPositionTetromino();
+            return tetromino;
         }
 
         private void CreateAndSetPositionTetromino()
         {
             _tetromino = new Tetromino(blockSprite, GetGeneratedBlockType());
             _tetromino.SetToPreviewPosition(transform.position);
-        }
-
-        private void CheckTetrominoStatus(Tetromino tetromino)
-        {
-            if (tetromino.Equals(_tetromino) && tetromino.Status == ObjectStatus.Active)
-            {
-                CreateAndSetPositionTetromino();
-            }
         }
 
         private static BlockType GetGeneratedBlockType()

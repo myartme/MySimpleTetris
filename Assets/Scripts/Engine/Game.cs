@@ -7,7 +7,6 @@ namespace Engine
 {
     public class Game : MonoBehaviour
     {
-        [SerializeField] private Spawner spawner;
         public float timeToStep = 2f;
         public float maxSpeedDelay = 1f;
         
@@ -18,8 +17,8 @@ namespace Engine
         
         private void Start()
         {
-            _gameGrid = new GameGrid(spawner);
-            Tetromino.OnChangeStatus += CheckTetrominoStatus;
+            _gameGrid = new GameGrid();
+            Spawner.OnCurrentTetromino += CheckTetrominoStatus;
         }
 
         private void Update()
@@ -66,10 +65,8 @@ namespace Engine
 
         private void CheckTetrominoStatus(Tetromino tetromino)
         {
-            if (tetromino.Status == ObjectStatus.Completed)
-            {
-                ResetMaxSpeedTimer();
-            }
+            if (tetromino.Status != ObjectStatus.Active) return;
+            ResetMaxSpeedTimer();
         }
 
         private void StepByKey(KeyCode keyCode, GameGrid.GridAction gridAction)
