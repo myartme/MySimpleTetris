@@ -1,4 +1,4 @@
-﻿namespace Engine
+﻿namespace Service
 {
     public enum ObjectStatus
     {
