@@ -1,96 +1,97 @@
 ﻿using System;
-using Combine;
-using Service;
-using Spawn;
 using UnityEngine;
+using View.Screen;
 
 namespace Engine
 {
     public class Game : MonoBehaviour
     {
-        public float timeToStep = 2f;
-        public float maxSpeedDelay = 1f;
+        public GameStart gameStartScreen;
+        public GameOver gameOverScreen;
+        public float timeToNextStepDecreasePerLevel = 0.11f;
+        public static bool IsGameOver;
+
+        private Mover _mover;
+        private int _totalPoints;
+        private int _level = 1;
+        private int _linesDeleted;
+        private int _tetrominoCompletedCount = -1;
         
-        private GameGrid _gameGrid;
-        private bool _isAccelerating;
-        private float _moveTimer;
-        private float _maxSpeedTimer;
+        public static event Action<int> OnLevelChange;
+        public static event Action<int> OnTotalPoints;
+        public static event Action<int> OnLinesDeleted;
+        public static event Action<int> OnTetrominoCompleted;
         
         private void Start()
         {
-            _gameGrid = new GameGrid();
-            Spawner.OnCurrentTetromino += CheckTetrominoStatus;
+            gameStartScreen.ShowScreen(true);
+            _mover = GetComponent<Mover>();
+            GameGrid.OnGetTetromino += IncreaseTetrominoCompletedCount;
+            GameGrid.OnDeleteLines += UpdateStatistics;
         }
 
         private void Update()
         {
-            if (!_gameGrid.IssetTetromino) return;
-            
-            _moveTimer += Time.deltaTime;
-            if(_moveTimer > timeToStep)
+            if (IsGameOver)
             {
-                _moveTimer = 0;
-                _gameGrid.StepDown();
+                gameOverScreen.ShowScreen(true);
             }
-            
-            RotationByKey(KeyCode.Z, _gameGrid.AnticlockwiseAngleRotation);
-            RotationByKey(KeyCode.UpArrow, _gameGrid.AnticlockwiseAngleRotation);
-            
-            RotationByKey(KeyCode.X, _gameGrid.ClockwiseAngleRotation);
-
-            StepByKey(KeyCode.LeftArrow, _gameGrid.StepLeft);
-            StepByKey(KeyCode.RightArrow, _gameGrid.StepRight);
-            StepByKey(KeyCode.DownArrow, _gameGrid.StepDown);
         }
 
-        public void OnDeleteLines(Action<int> action)
+        public static void PauseGame()
         {
-            _gameGrid.OnDeleteLines += action;
+            Time.timeScale = 0;
         }
 
-        private bool IsMaxSpeedReady()
+        public static void ResumeGame()
         {
-            if (_isAccelerating)
+            Time.timeScale = 1;
+        }
+
+        private void UpdateStatistics(int linesDeleted)
+        {
+            var points = linesDeleted switch
             {
-                _maxSpeedTimer += Time.deltaTime;
-            }
-            
-            return _maxSpeedTimer > maxSpeedDelay;
-        }
+                1 => 100,
+                2 => 300,
+                3 => 600,
+                4 => 1300,
+                _ => 0
+            };
 
-        private void ResetMaxSpeedTimer()
-        {
-            _maxSpeedTimer = 0;
-            _isAccelerating = false;
-        }
-
-        private void CheckTetrominoStatus(Tetromino tetromino)
-        {
-            if (tetromino.Status != ObjectStatus.Active) return;
-            ResetMaxSpeedTimer();
-        }
-
-        private void StepByKey(KeyCode keyCode, GameGrid.GridAction gridAction)
-        {
-            if (Input.GetKeyDown(keyCode))
-            {
-                ResetMaxSpeedTimer();
-                _isAccelerating = true;
-                gridAction();
-            }
-            
-            if (Input.GetKey(keyCode) && IsMaxSpeedReady())
-            {
-                gridAction();
-            }
+            IncreaseDeleteLines(linesDeleted);
+            IncreaseTotalPoints(points);
+            IncreaseLevel();
         }
         
-        private void RotationByKey(KeyCode keyCode, GameGrid.GridAction gridAction)
+        private void IncreaseTotalPoints(int totalPoints)
         {
-            if (Input.GetKeyDown(keyCode))
-            {
-                gridAction();
-            }
+            _totalPoints += totalPoints;
+            OnTotalPoints?.Invoke(_totalPoints);
+        }
+
+        private void IncreaseDeleteLines(int linesDeleted)
+        {
+            _linesDeleted += linesDeleted;
+            OnLinesDeleted?.Invoke(_linesDeleted);
+        }
+
+        private void IncreaseTetrominoCompletedCount()
+        {
+            OnTetrominoCompleted?.Invoke(++_tetrominoCompletedCount);
+        }
+
+        private void IncreaseLevel()
+        {
+            if (_linesDeleted / 10 <= _level) return;
+            _mover.timeToNextStep -= timeToNextStepDecreasePerLevel;
+            OnLevelChange?.Invoke(++_level);
+        }
+        
+        private void ResetLevel()
+        {
+            _level = 1;
+            OnLevelChange?.Invoke(_level);
         }
     }
 }
