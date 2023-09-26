@@ -22,8 +22,11 @@ namespace Spawn
 
         private void CreateAndSetPositionTetromino()
         {
-            _tetromino = new Tetromino(blockSprite, GetGeneratedBlockType());
-            _tetromino.SetToPreviewPosition(transform.position);
+            _tetromino = new Tetromino(blockSprite, GetGeneratedBlockType())
+            {
+                Position = transform.position
+            };
+            _tetromino.SetAsPreview();
         }
 
         private static BlockType GetGeneratedBlockType()

@@ -1,7 +1,7 @@
 ﻿using System;
+using Engine;
 using Service;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Combine
 {
@@ -9,7 +9,6 @@ namespace Combine
     {
         protected GameObject GameObject;
         private Combine<Block> _combineObject;
-        private int _angleRotation;
         private Color32 _color;
         public event Action<Tetromino> OnChangeStatus;
         public event Action OnTransform;
@@ -17,7 +16,6 @@ namespace Combine
         public string Name => GameObject.name;
 
         public Combine<Block> Children => _combineObject;
-        public Vector3 AlignTopPosition { get; private set; }
 
         public ObjectStatus Status { get; private set; }
 
@@ -31,25 +29,24 @@ namespace Combine
                 OnTransform?.Invoke();
             }
         }
-
-        public Quaternion Rotation
+        
+        public int Rotation
         {
-            get => GameObject.transform.rotation;
-            protected set => GameObject.transform.rotation = value;
-        }
-
-        public int AngleRotation
-        {
-            get => _angleRotation;
+            get => _combineObject.AngleRotation;
             set
             {
-                _angleRotation = value;
-                Rotation = GetRightAngleZRotation(value);
+                _combineObject.AngleRotation = value;
                 UpdateChildrenPosition();
                 OnTransform?.Invoke();
             }
         }
+
+        public int NextRotation 
+            => Rotation == 0 ? 3 : Rotation - 1;
+        public int PrevRotation 
+            => Rotation == 3 ? 0 : Rotation + 1;
         
+
         public Color32 Color
         {
             get => _color;
@@ -60,89 +57,19 @@ namespace Combine
             }
         }
 
-        public Bounds Bounds { get; private set; }
-
         public Tetromino(Sprite blocksSprite, BlockType blockType)
         {
             GameObject = new GameObject($"Tetromino {blockType}");
             _combineObject = new Combine<Block>(blocksSprite, blockType, GameObject);
-            AngleRotation = Random.Range(0, 4);
-            SetAlignTopPosition();
-        }
-        
-        public void SetToPreviewPosition(Vector3 spawnPosition)
-        {
-            Position = spawnPosition + AlignTopPosition;
-            SetAsPreview();
-        }
-
-        public void SetToSpawnPosition(Vector3 spawnPosition)
-        {
-            Position = spawnPosition + AlignTopPosition;
-            SetAsReady();
-        }
-
-        private void SetAlignTopPosition()
-        {
-            Bounds = GetAllBoundsCollapse(GameObject);
-            var position = GameObject.transform.position;
-            var pointX = (int)Bounds.size.x % 2 == 0 ? 0.5f : 0f;
-            var pointY = Math.Abs(position.y - Bounds.max.y) < 0.5f ? Bounds.min.y + 0.5f : Bounds.max.y - 0.5f;
-            AlignTopPosition = new Vector3(
-                position.x + pointX - Bounds.center.x,
-                position.y - pointY,
-                0);
+            GameObject.transform.SetParent(Game.BoardTransform);
         }
         
         private void UpdateChildrenPosition()
         {
-            _combineObject.ForEach(item => 
-                {
-                    var childPosWithRotation = Rotation * item.transform.localPosition;
-                    item.Position = Position + childPosWithRotation;
-                });
-        }
-        
-        private Bounds GetAllBoundsCollapse(GameObject gameObject)
-        {
-            var bounds = GetObjectBounds(gameObject);
-            var childrenTransform = gameObject.transform;
-
-            for (var i = 0; i < childrenTransform.childCount; i++)
+            _combineObject.ForEach(item =>
             {
-                var child = childrenTransform.GetChild(i);
-                if (child.childCount == 0)
-                {
-                    if (i == 0)
-                    {
-                        bounds = GetObjectBounds(child.gameObject);
-                    }
-                    else
-                    {
-                        bounds.Encapsulate(GetObjectBounds(child.gameObject));
-                    }
-                }
-                else
-                {
-                    bounds.Encapsulate(GetAllBoundsCollapse(child.gameObject));
-                }
-            }
-
-            return bounds;
-        }
-
-        private Bounds GetObjectBounds(GameObject gameObject)
-        {
-            var renderer = gameObject.GetComponent<Renderer>();
-            if(!renderer)
-                return new Bounds(gameObject.transform.position,Vector3.zero);
-            
-            return renderer.bounds;
-        }
-        
-        public static Quaternion GetRightAngleZRotation(int angleZ)
-        {
-            return Quaternion.Euler(0, 0, angleZ * 90f);
+                item.Position = Position + item.transform.localPosition;
+            });
         }
         
         public void SetAsCreated()

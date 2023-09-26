@@ -9,7 +9,18 @@ namespace Combine
     {
         public Sprite BlockSprite;
         public BlockType BlockType;
-        
+
+        public int AngleRotation
+        {
+            get => _angleRotation;
+            set
+            {
+                _angleRotation = value;
+                if(Count > 0)
+                    SetChildrenPosition(_angleRotation);
+            }
+        }
+
         private GameObject _parent;
         private int _angleRotation;
 
@@ -18,6 +29,7 @@ namespace Combine
             BlockSprite = blockSprite;
             BlockType = blockType;
             _parent = parent;
+            AngleRotation = Random.Range(0, 4);
             Initialize();
         }
 
@@ -26,24 +38,39 @@ namespace Combine
             ForEach(item => item.Color = color);
         }
 
+        public Vector3[] GetChildrenLocalPositionsByRotation(int angleRotation)
+        {
+            return BlockCoordinates.Coordinates[BlockType][angleRotation];
+        }
+
         private void Initialize()
         {
             var coordinates = BlockCoordinates.Coordinates[BlockType];
-            for (var i = 0; i < coordinates.Length; i++)
+            for (var i = 0; i < coordinates[AngleRotation].Length; i++)
             {
-                Add(CreateObject($"Block{i + 1}", coordinates[i]));
+                var block = CreateObject($"Block{i + 1}");
+                block.gameObject.transform.position = coordinates[AngleRotation][i];
+                Add(block);
             }
 
             SetChildrenColor(BlockColors.Colors[BlockType]);
         }
 
-        private T CreateObject(string name, Vector3 position)
+        private T CreateObject(string name)
         {
             var obj = new GameObject(name).AddComponent<SpriteRenderer>().AddComponent<T>();
             obj.GetComponent<SpriteRenderer>().sprite = BlockSprite;
-            obj.gameObject.transform.position = position;
             obj.gameObject.transform.SetParent(_parent.transform);
             return obj;
+        }
+
+        private void SetChildrenPosition(int angleRotation)
+        {
+            var coordinates = BlockCoordinates.Coordinates[BlockType][angleRotation];
+            for (var i = 0; i < coordinates.Length; i++)
+            {
+                this[i].gameObject.transform.localPosition = coordinates[i];
+            }
         }
     }
 }
