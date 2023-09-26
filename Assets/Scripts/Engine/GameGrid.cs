@@ -3,7 +3,6 @@ using System.Linq;
 using Combine;
 using Spawn;
 using UnityEngine;
-using View.Screen;
 
 namespace Engine
 {
@@ -36,16 +35,15 @@ namespace Engine
             Spawner.OnCurrentTetromino += GetActiveSpawnerTetromino;
         }
 
-        private bool IsPossibleMovement(Tetromino tetromino, Vector3 position, Quaternion rotation)
+        private bool IsPossibleMovement(Tetromino tetromino, Vector3 position, int rotation)
         {
-            foreach (var child in tetromino.Children)
+            var localPositions = tetromino.Children.GetChildrenLocalPositionsByRotation(rotation);
+            foreach (var blockLocalPos in localPositions)
             {
-                var childPosWithRotation = rotation * child.transform.localPosition;
-                var childPosition = Vector3Int.RoundToInt(childPosWithRotation + position);
+                var childPosition = Vector3Int.RoundToInt(position + blockLocalPos);
                 var x = childPosition.x;
                 var y = childPosition.y;
                 
-                //if (_isTetrominoStepDown && (y <= 0 || (y < HEIGHT && !IsEmptyGridPosition(x, y))))
                 if (_isTetrominoStepDown && (y <= 0 || !IsEmptyGridPosition(x, y)))
                 {
                     _isTetrominoMakeComplete = true;
@@ -79,29 +77,32 @@ namespace Engine
         
         public void ClockwiseAngleRotation()
         {
-            Step(_activeTetromino.AngleRotation == 0 ? 3 : _activeTetromino.AngleRotation - 1);
+            Step(_activeTetromino.NextRotation);
         }
         
         public void AnticlockwiseAngleRotation()
         {
-            Step(_activeTetromino.AngleRotation == 3 ? 0 : _activeTetromino.AngleRotation + 1);
+            Step(_activeTetromino.PrevRotation);
         }
         
-        private void Step(Vector3 position, int angleRotation)
+        private void Step(Vector3 position, int rotation)
         {
-            if (IsPossibleMovement(_activeTetromino, position, Tetromino.GetRightAngleZRotation(angleRotation)))
+            if (IsPossibleMovement(_activeTetromino, position, rotation))
             {
                 if (_activeTetromino.Position != position)
                     _activeTetromino.Position = position;
                 
-                if (_activeTetromino.AngleRotation != angleRotation)
-                    _activeTetromino.AngleRotation = angleRotation;
+                if (_activeTetromino.Rotation != rotation)
+                    _activeTetromino.Rotation = rotation;
             }
             
             if (!_isTetrominoMakeComplete) return;
             
             UpdateTetrominoBlockPositionsOnGrid();
             CheckGameOver();
+            
+            if (Game.IsGameOver) return;
+            
             DeleteLines();
             OnUpdateGrid?.Invoke(_grid);
             _activeTetromino.SetAsCompleted();
@@ -157,10 +158,10 @@ namespace Engine
         }
         
         private void Step(Vector3 position) 
-            => Step(position, _activeTetromino.AngleRotation);
+            => Step(position, _activeTetromino.Rotation);
 
-        private void Step(int angleRotation)
-            => Step(_activeTetromino.Position, angleRotation);
+        private void Step(int rotation)
+            => Step(_activeTetromino.Position, rotation);
         
         private bool IsEmptyGridPosition(int x, int y)
         {

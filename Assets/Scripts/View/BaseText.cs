@@ -14,12 +14,12 @@ namespace View
 			TextMeshPro = GetComponent<TextMeshProUGUI>();
 		}
 		
-		protected void UpdateCountText(int count)
+		public void UpdateCountText(int count)
 		{
 			TextMeshPro.text = DefaultText + count;
 		}
 		
-		protected void UpdateCountText(float count)
+		public void UpdateCountText(float count)
 		{
 			TextMeshPro.text = DefaultText + count;
 		}

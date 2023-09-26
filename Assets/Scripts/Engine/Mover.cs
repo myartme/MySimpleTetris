@@ -31,10 +31,10 @@ namespace Engine
                 _gameGrid.StepDown();
             }
             
-            RotationByKey(KeyCode.Z, _gameGrid.AnticlockwiseAngleRotation);
-            RotationByKey(KeyCode.UpArrow, _gameGrid.AnticlockwiseAngleRotation);
+            RotationByKey(KeyCode.Z, _gameGrid.ClockwiseAngleRotation);
+            RotationByKey(KeyCode.UpArrow, _gameGrid.ClockwiseAngleRotation);
             
-            RotationByKey(KeyCode.X, _gameGrid.ClockwiseAngleRotation);
+            RotationByKey(KeyCode.X, _gameGrid.AnticlockwiseAngleRotation);
 
             StepByKey(KeyCode.LeftArrow, _gameGrid.StepLeft);
             StepByKey(KeyCode.RightArrow, _gameGrid.StepRight);

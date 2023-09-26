@@ -14,10 +14,5 @@
             SetActiveScreen(isShowScreen);
             GamePauseIfWindowIsActive();
         }
-        
-        public void RestartButton()
-        {
-            ShowScreen(false);
-        }
     }
 }

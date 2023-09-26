@@ -21,7 +21,8 @@ namespace Spawn
         {
             _currentTetromino = tetromino;
             _currentTetromino.OnChangeStatus += TetrominoComplete;
-            _currentTetromino.SetToSpawnPosition(transform.position);
+            _currentTetromino.Position = transform.position;
+            _currentTetromino.SetAsReady();
             OnCurrentTetromino?.Invoke(_currentTetromino);
         }
         

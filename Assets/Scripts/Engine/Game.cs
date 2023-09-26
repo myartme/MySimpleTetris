@@ -1,51 +1,38 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using View.Screen;
+using View.TextField;
 
 namespace Engine
 {
     public class Game : MonoBehaviour
     {
-        public GameStart gameStartScreen;
-        public GameOver gameOverScreen;
-        public float timeToNextStepDecreasePerLevel = 0.11f;
+        public float timeStepDecreasePerLevel = 0.5f;
         public static bool IsGameOver;
+        public static Transform BoardTransform { get; private set; }
 
         private Mover _mover;
         private int _totalPoints;
         private int _level = 1;
         private int _linesDeleted;
-        private int _tetrominoCompletedCount = -1;
-        
-        public static event Action<int> OnLevelChange;
-        public static event Action<int> OnTotalPoints;
-        public static event Action<int> OnLinesDeleted;
-        public static event Action<int> OnTetrominoCompleted;
+        private int _tetrominoCompletedCount;
         
         private void Start()
         {
-            gameStartScreen.ShowScreen(true);
             _mover = GetComponent<Mover>();
             GameGrid.OnGetTetromino += IncreaseTetrominoCompletedCount;
             GameGrid.OnDeleteLines += UpdateStatistics;
+            BoardTransform = gameObject.transform;
+            GameStart.ClassInstance.ShowScreen(true);
+            InitializeUI();
         }
 
         private void Update()
         {
             if (IsGameOver)
             {
-                gameOverScreen.ShowScreen(true);
+                GameOver.ClassInstance.ShowScreen(true);
+                Score.ClassInstance.UpdateCountText(_totalPoints);
             }
-        }
-
-        public static void PauseGame()
-        {
-            Time.timeScale = 0;
-        }
-
-        public static void ResumeGame()
-        {
-            Time.timeScale = 1;
         }
 
         private void UpdateStatistics(int linesDeleted)
@@ -67,31 +54,69 @@ namespace Engine
         private void IncreaseTotalPoints(int totalPoints)
         {
             _totalPoints += totalPoints;
-            OnTotalPoints?.Invoke(_totalPoints);
+            Score.ClassInstance.UpdateCountText(_totalPoints);
         }
 
         private void IncreaseDeleteLines(int linesDeleted)
         {
             _linesDeleted += linesDeleted;
-            OnLinesDeleted?.Invoke(_linesDeleted);
+            LinesDeleted.ClassInstance.UpdateCountText(_linesDeleted);
         }
 
         private void IncreaseTetrominoCompletedCount()
         {
-            OnTetrominoCompleted?.Invoke(++_tetrominoCompletedCount);
+            TetrominoCount.ClassInstance.UpdateCountText(++_tetrominoCompletedCount);
         }
 
         private void IncreaseLevel()
         {
             if (_linesDeleted / 10 <= _level) return;
-            _mover.timeToNextStep -= timeToNextStepDecreasePerLevel;
-            OnLevelChange?.Invoke(++_level);
+            _mover.timeToNextStep -= timeStepDecreasePerLevel;
+            Level.ClassInstance.UpdateCountText(++_level);
         }
         
-        private void ResetLevel()
+        private void ResetCounts()
         {
+            _totalPoints = 0;
             _level = 1;
-            OnLevelChange?.Invoke(_level);
+            _linesDeleted = 0;
+            _tetrominoCompletedCount = 0;
+        }
+
+        private void InitializeUI()
+        {
+            Score.ClassInstance.UpdateCountText(_totalPoints);
+            LinesDeleted.ClassInstance.UpdateCountText(_linesDeleted);
+            TetrominoCount.ClassInstance.UpdateCountText(_tetrominoCompletedCount);
+            Level.ClassInstance.UpdateCountText(_level);
+            IsGameOver = false;
+        }
+        
+        
+        
+        public void StartGame()
+        {
+            GameStart.ClassInstance.ShowScreen(false);
+        }
+
+        /*public void RestartGame()
+        {
+            GameOver.ClassInstance.ShowScreen(false);
+            foreach (Transform tetrominos in BoardTransform)
+            {
+                Destroy(tetrominos.gameObject);
+            }
+            ResetCounts();
+        }*/
+        
+        public static void PauseGame()
+        {
+            Time.timeScale = 0;
+        }
+
+        public static void ResumeGame()
+        {
+            Time.timeScale = 1;
         }
     }
 }
