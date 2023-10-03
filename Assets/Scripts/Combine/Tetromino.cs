@@ -87,6 +87,7 @@ namespace Combine
         public void SetAsReady()
         {
             Status = ObjectStatus.Active;
+            //TODO: после перезагрузки игры тень создается, но когда приходит инвоук от GameGrid, у тени нет ссылки на тетромино.
             new Shadow(this, _combineObject.BlockSprite, _combineObject.BlockType);
             OnChangeStatus?.Invoke(this);
         }

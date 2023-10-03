@@ -16,8 +16,11 @@ namespace Combine
             set
             {
                 _angleRotation = value;
-                if(Count > 0)
+
+                if (Count > 0)
+                {
                     SetChildrenPosition(_angleRotation);
+                }
             }
         }
 

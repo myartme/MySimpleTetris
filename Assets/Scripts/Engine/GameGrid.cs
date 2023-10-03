@@ -100,8 +100,12 @@ namespace Engine
             
             UpdateTetrominoBlockPositionsOnGrid();
             CheckGameOver();
-            
-            if (Game.IsGameOver) return;
+
+            if (Game.IsGameOver)
+            {
+                Spawner.OnCurrentTetromino -= GetActiveSpawnerTetromino;
+                return;
+            }
             
             DeleteLines();
             OnUpdateGrid?.Invoke(_grid);

@@ -85,5 +85,10 @@ namespace Engine
                 gridAction();
             }
         }
+
+        private void OnDestroy()
+        {
+            Spawner.OnCurrentTetromino -= CheckTetrominoStatus;
+        }
     }
 }
