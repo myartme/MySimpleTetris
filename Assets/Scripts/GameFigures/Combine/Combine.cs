@@ -3,9 +3,9 @@ using Service;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Combine
+namespace GameFigures.Combine
 {
-    public class Combine<T> : List<T> where T : MonoBehaviour, ICombinable
+    public class Combine<T> : List<T> where T : MonoBehaviour, IStatable, IColorable
     {
         public Sprite BlockSprite;
         public BlockType BlockType;

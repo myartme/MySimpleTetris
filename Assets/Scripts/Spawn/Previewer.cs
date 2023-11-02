@@ -1,5 +1,5 @@
 ﻿using System;
-using Combine;
+using GameFigures;
 using Service;
 using UnityEngine;
 using Random = UnityEngine.Random;

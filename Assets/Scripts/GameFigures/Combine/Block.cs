@@ -1,9 +1,9 @@
 ﻿using Service;
 using UnityEngine;
 
-namespace Combine
+namespace GameFigures.Combine
 {
-    public class Block : MonoBehaviour, ICombinable
+    public class Block : MonoBehaviour, IStatable, IColorable
     {
         
         [SerializeField] private Vector3Int position;
@@ -16,6 +16,8 @@ namespace Combine
             get => position;
             set => position = Vector3Int.RoundToInt(value);
         }
+
+        public int Rotation { get; set; }
 
         public Color32 Color
         {
