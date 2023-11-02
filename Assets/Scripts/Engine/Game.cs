@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using View.Screen;
 using View.TextField;
 
@@ -22,7 +23,10 @@ namespace Engine
             GameGrid.OnGetTetromino += IncreaseTetrominoCompletedCount;
             GameGrid.OnDeleteLines += UpdateStatistics;
             BoardTransform = gameObject.transform;
-            GameStart.ClassInstance.ShowScreen(true);
+            if (!IsGameOver)
+            {
+                GameStart.ClassInstance.ShowScreen(true);
+            }
             InitializeUI();
         }
 
@@ -70,17 +74,9 @@ namespace Engine
 
         private void IncreaseLevel()
         {
-            if (_linesDeleted / 10 <= _level) return;
+            if (_linesDeleted / 10 < _level) return;
             _mover.timeToNextStep -= timeStepDecreasePerLevel;
             Level.ClassInstance.UpdateCountText(++_level);
-        }
-        
-        private void ResetCounts()
-        {
-            _totalPoints = 0;
-            _level = 1;
-            _linesDeleted = 0;
-            _tetrominoCompletedCount = 0;
         }
 
         private void InitializeUI()
@@ -92,22 +88,16 @@ namespace Engine
             IsGameOver = false;
         }
         
-        
-        
         public void StartGame()
         {
             GameStart.ClassInstance.ShowScreen(false);
         }
 
-        /*public void RestartGame()
+        public void RestartGame()
         {
             GameOver.ClassInstance.ShowScreen(false);
-            foreach (Transform tetrominos in BoardTransform)
-            {
-                Destroy(tetrominos.gameObject);
-            }
-            ResetCounts();
-        }*/
+            SceneManager.LoadScene(0);
+        }
         
         public static void PauseGame()
         {
@@ -117,6 +107,12 @@ namespace Engine
         public static void ResumeGame()
         {
             Time.timeScale = 1;
+        }
+
+        private void OnDestroy()
+        {
+            GameGrid.OnGetTetromino -= IncreaseTetrominoCompletedCount;
+            GameGrid.OnDeleteLines -= UpdateStatistics;
         }
     }
 }

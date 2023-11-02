@@ -1,43 +1,43 @@
 ﻿using System;
-using Engine;
+using GameFigures.Combine;
 using Service;
 using UnityEngine;
 
-namespace Combine
+namespace GameFigures
 {
-    public class Tetromino : ICombinable
+    public class Tetromino : GeometricShape, IStatable
     {
-        protected GameObject GameObject;
-        private Combine<Block> _combineObject;
-        private Color32 _color;
         public event Action<Tetromino> OnChangeStatus;
-        public event Action OnTransform;
-
-        public string Name => GameObject.name;
-
-        public Combine<Block> Children => _combineObject;
+        
+        private Shadow _shadow;
 
         public ObjectStatus Status { get; private set; }
 
-        public Vector3 Position
+        public override Vector3 Position
         {
-            get => GameObject.transform.position;
+            get => gameObject.transform.position;
             set
             {
-                GameObject.transform.position = value;
+                gameObject.transform.position = value;
                 UpdateChildrenPosition();
-                OnTransform?.Invoke();
+                if (_shadow.IsActive)
+                {
+                    UpdateShadowPosition();
+                }
             }
         }
-        
-        public int Rotation
+
+        public override int Rotation
         {
-            get => _combineObject.AngleRotation;
+            get => combineObject.AngleRotation;
             set
             {
-                _combineObject.AngleRotation = value;
+                combineObject.AngleRotation = value;
                 UpdateChildrenPosition();
-                OnTransform?.Invoke();
+                if (_shadow.IsActive)
+                {
+                    UpdateShadowPosition();
+                }
             }
         }
 
@@ -45,31 +45,24 @@ namespace Combine
             => Rotation == 0 ? 3 : Rotation - 1;
         public int PrevRotation 
             => Rotation == 3 ? 0 : Rotation + 1;
-        
 
-        public Color32 Color
+        public Tetromino(Sprite blocksSprite, BlockType blockType) : base(blocksSprite, blockType)
         {
-            get => _color;
-            set
-            {
-                _color = value;
-                _combineObject.SetChildrenColor(_color);
-            }
-        }
-
-        public Tetromino(Sprite blocksSprite, BlockType blockType)
-        {
-            GameObject = new GameObject($"Tetromino {blockType}");
-            _combineObject = new Combine<Block>(blocksSprite, blockType, GameObject);
-            GameObject.transform.SetParent(Game.BoardTransform);
+            Name = $"Tetromino {blockType}";
+            _shadow = new Shadow(blocksSprite, blockType);
         }
         
         private void UpdateChildrenPosition()
         {
-            _combineObject.ForEach(item =>
+            combineObject.ForEach(item =>
             {
                 item.Position = Position + item.transform.localPosition;
             });
+        }
+        
+        private void UpdateShadowPosition()
+        {
+            _shadow?.UpdatePositionAndRotation(Position, Rotation, Children);
         }
         
         public void SetAsCreated()
@@ -87,13 +80,14 @@ namespace Combine
         public void SetAsReady()
         {
             Status = ObjectStatus.Active;
-            new Shadow(this, _combineObject.BlockSprite, _combineObject.BlockType);
+            _shadow.SetupAsActive(Position, Rotation, Children);
             OnChangeStatus?.Invoke(this);
         }
 
         public void SetAsCompleted()
         {
             Status = ObjectStatus.Completed;
+            _shadow.DestroyMe();
             OnChangeStatus?.Invoke(this);
         }
     }

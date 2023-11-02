@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
-using Combine;
+using GameFigures;
+using GameFigures.Combine;
 using Spawn;
 using UnityEngine;
 
@@ -11,12 +12,10 @@ namespace Engine
         public const int WIDTH = 10;
         public const int HEIGHT = 23;
         public const int VISIBLE_HEIGHT = 20;
-        
-        public static event Action<Block[][]> OnUpdateGrid;
         public static event Action<int> OnDeleteLines;
         public static event Action OnGetTetromino;
 
-        private Block[][] _grid = new Block[HEIGHT][];
+        private static Block[][] _grid = new Block[HEIGHT][];
         
         public bool IssetTetromino => _activeTetromino != null;
         public delegate void GridAction();
@@ -100,11 +99,14 @@ namespace Engine
             
             UpdateTetrominoBlockPositionsOnGrid();
             CheckGameOver();
-            
-            if (Game.IsGameOver) return;
+
+            if (Game.IsGameOver)
+            {
+                Spawner.OnCurrentTetromino -= GetActiveSpawnerTetromino;
+                return;
+            }
             
             DeleteLines();
-            OnUpdateGrid?.Invoke(_grid);
             _activeTetromino.SetAsCompleted();
             _isTetrominoMakeComplete = false;
         }
@@ -135,17 +137,24 @@ namespace Engine
                 }
                 else if (linesDeleted > 0)
                 {
-                    for (var j = 0; j < _grid[i].Length; j++)
-                    {
-                        if (_grid[i][j])
-                            _grid[i][j].DropMeDown(linesDeleted);
-                        
-                        _grid[i - linesDeleted][j] = _grid[i][j];
-                    }
+                    DeleteLine(i, linesDeleted);
                 }
             }
             
             OnDeleteLines?.Invoke(linesDeleted);
+        }
+
+        private void DeleteLine(int line, int offset)
+        {
+            var gridLine = _grid[line];
+            
+            for (var i = 0; i < gridLine.Length; i++)
+            {
+                if (gridLine[i])
+                    gridLine[i].DropMeDown(offset);
+                        
+                _grid[line - offset][i] = gridLine[i];
+            }
         }
 
         private void CheckGameOver()
@@ -163,7 +172,7 @@ namespace Engine
         private void Step(int rotation)
             => Step(_activeTetromino.Position, rotation);
         
-        private bool IsEmptyGridPosition(int x, int y)
+        public static bool IsEmptyGridPosition(int x, int y)
         {
             return _grid[y - 1][x - 1] == null;
         }
@@ -177,7 +186,6 @@ namespace Engine
         {
             _activeTetromino = tetromino;
             OnGetTetromino?.Invoke();
-            OnUpdateGrid?.Invoke(_grid);
         }
     }
 }

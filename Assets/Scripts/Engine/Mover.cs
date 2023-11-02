@@ -1,4 +1,4 @@
-﻿using Combine;
+﻿using GameFigures;
 using Service;
 using Spawn;
 using UnityEngine;
@@ -84,6 +84,11 @@ namespace Engine
             {
                 gridAction();
             }
+        }
+
+        private void OnDestroy()
+        {
+            Spawner.OnCurrentTetromino -= CheckTetrominoStatus;
         }
     }
 }
