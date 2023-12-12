@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace GameFigures.Combine
 {
-    public class Block : MonoBehaviour, IStatable, IColorable
+    public class Block : MonoBehaviour, IManageable, IColorable
     {
-        
         [SerializeField] private Vector3Int position;
+        private Animator _animator;
         private SpriteRenderer _spriteRenderer;
         public string Name => gameObject.name;
         public ObjectStatus Status { get; private set; }
@@ -28,6 +28,8 @@ namespace GameFigures.Combine
         private void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _animator = gameObject.AddComponent<Animator>();
+            _animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animator/BlockAnimatorController");
         }
 
         public void SetAsCreated()
@@ -45,6 +47,11 @@ namespace GameFigures.Combine
             Status = ObjectStatus.Active;
         }
 
+        public void SetAsMakeComplete()
+        {
+            Status = ObjectStatus.MakeComplete;
+        }
+
         public void SetAsCompleted()
         {
             Status = ObjectStatus.Completed;
@@ -54,6 +61,11 @@ namespace GameFigures.Combine
         {
             Position += Vector3.down * positions;
             transform.position += Vector3.down * positions;
+        }
+
+        public void VanishMe()
+        {
+            _animator.SetTrigger("Vanish");
         }
         
         public void DestroyMe()

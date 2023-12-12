@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Service;
 using Unity.VisualScripting;
 using UnityEngine;
+using View.Scene;
 
 namespace GameFigures.Combine
 {
-    public class Combine<T> : List<T> where T : MonoBehaviour, IStatable, IColorable
+    public class Combine<T> : List<T> where T : MonoBehaviour, IManageable, IColorable
     {
         public Sprite BlockSprite;
         public BlockType BlockType;
@@ -61,7 +61,9 @@ namespace GameFigures.Combine
 
         private T CreateObject(string name)
         {
-            var obj = new GameObject(name).AddComponent<SpriteRenderer>().AddComponent<T>();
+            var obj = new GameObject(name)
+                .AddComponent<SpriteRenderer>()
+                .AddComponent<T>();
             obj.GetComponent<SpriteRenderer>().sprite = BlockSprite;
             obj.gameObject.transform.SetParent(_parent.transform);
             return obj;
