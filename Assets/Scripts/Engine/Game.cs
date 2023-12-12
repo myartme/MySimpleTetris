@@ -1,118 +1,55 @@
-﻿using UnityEngine;
+﻿using Spawn;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using View.Screen;
-using View.TextField;
 
 namespace Engine
 {
+    [RequireComponent(typeof(GUIManager))]
     public class Game : MonoBehaviour
     {
-        public float timeStepDecreasePerLevel = 0.5f;
-        public static bool IsGameOver;
+        [SerializeField] public Spawner spawner;
+        [SerializeField] private GameObject tetrominoParent;
         public static Transform BoardTransform { get; private set; }
-
-        private Mover _mover;
-        private int _totalPoints;
-        private int _level = 1;
-        private int _linesDeleted;
-        private int _tetrominoCompletedCount;
         
-        private void Start()
+        private GUIManager _guiManager;
+
+        private void Awake()
         {
-            _mover = GetComponent<Mover>();
-            GameGrid.OnGetTetromino += IncreaseTetrominoCompletedCount;
-            GameGrid.OnDeleteLines += UpdateStatistics;
-            BoardTransform = gameObject.transform;
-            if (!IsGameOver)
-            {
-                GameStart.ClassInstance.ShowScreen(true);
-            }
-            InitializeUI();
+            _guiManager = GetComponent<GUIManager>();
+            BoardTransform = tetrominoParent.transform;
         }
 
         private void Update()
         {
-            if (IsGameOver)
+            if (Options.IsGameOver)
             {
-                GameOver.ClassInstance.ShowScreen(true);
-                Score.ClassInstance.UpdateCountText(_totalPoints);
+                _guiManager.ShowGameOverScreen();
             }
         }
-
-        private void UpdateStatistics(int linesDeleted)
+        
+        public void ShowOption()
         {
-            var points = linesDeleted switch
-            {
-                1 => 100,
-                2 => 300,
-                3 => 600,
-                4 => 1300,
-                _ => 0
-            };
-
-            IncreaseDeleteLines(linesDeleted);
-            IncreaseTotalPoints(points);
-            IncreaseLevel();
+            _guiManager.ShowOptionScreen();
         }
         
-        private void IncreaseTotalPoints(int totalPoints)
+        public void PauseGame()
         {
-            _totalPoints += totalPoints;
-            Score.ClassInstance.UpdateCountText(_totalPoints);
+            _guiManager.ShowPauseScreen();
+            Time.timeScale = 0;
         }
 
-        private void IncreaseDeleteLines(int linesDeleted)
+        public void ResumeGame()
         {
-            _linesDeleted += linesDeleted;
-            LinesDeleted.ClassInstance.UpdateCountText(_linesDeleted);
-        }
-
-        private void IncreaseTetrominoCompletedCount()
-        {
-            TetrominoCount.ClassInstance.UpdateCountText(++_tetrominoCompletedCount);
-        }
-
-        private void IncreaseLevel()
-        {
-            if (_linesDeleted / 10 < _level) return;
-            _mover.timeToNextStep -= timeStepDecreasePerLevel;
-            Level.ClassInstance.UpdateCountText(++_level);
-        }
-
-        private void InitializeUI()
-        {
-            Score.ClassInstance.UpdateCountText(_totalPoints);
-            LinesDeleted.ClassInstance.UpdateCountText(_linesDeleted);
-            TetrominoCount.ClassInstance.UpdateCountText(_tetrominoCompletedCount);
-            Level.ClassInstance.UpdateCountText(_level);
-            IsGameOver = false;
-        }
-        
-        public void StartGame()
-        {
-            GameStart.ClassInstance.ShowScreen(false);
+            _guiManager.HidePauseScreen();
+            Time.timeScale = 1;
         }
 
         public void RestartGame()
         {
-            GameOver.ClassInstance.ShowScreen(false);
-            SceneManager.LoadScene(0);
-        }
-        
-        public static void PauseGame()
-        {
-            Time.timeScale = 0;
-        }
-
-        public static void ResumeGame()
-        {
-            Time.timeScale = 1;
-        }
-
-        private void OnDestroy()
-        {
-            GameGrid.OnGetTetromino -= IncreaseTetrominoCompletedCount;
-            GameGrid.OnDeleteLines -= UpdateStatistics;
+            Destroy(tetrominoParent);
+            _guiManager.HideGameOverScreen();
+            Options.IsGameOver = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

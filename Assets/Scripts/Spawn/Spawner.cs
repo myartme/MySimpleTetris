@@ -1,5 +1,6 @@
 ﻿using System;
-using GameFigures;
+using Engine;
+using GameFigures.Shape;
 using Service;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace Spawn
     public class Spawner : MonoBehaviour
     {
         [SerializeField] private Previewer previewer;
-        public static event Action<Tetromino> OnCurrentTetromino;
+        public event Action<Tetromino> OnCurrentTetromino;
         
         private Tetromino _currentTetromino;
 
@@ -16,21 +17,32 @@ namespace Spawn
         {
             SetAsCurrentTetromino(previewer.GetTetromino());
         }
-        
+
         private void SetAsCurrentTetromino(Tetromino tetromino)
         {
             _currentTetromino = tetromino;
-            _currentTetromino.OnChangeStatus += TetrominoComplete;
+            _currentTetromino.OnChangeStatus += OnCurrentTetromino;
             _currentTetromino.Position = transform.position;
             _currentTetromino.SetAsReady();
-            OnCurrentTetromino?.Invoke(_currentTetromino);
         }
-        
+
         private void TetrominoComplete(Tetromino tetromino)
         {
             if (tetromino.Status != ObjectStatus.Completed) return;
-            _currentTetromino.OnChangeStatus -= TetrominoComplete;
-            SetAsCurrentTetromino(previewer.GetTetromino());
+            
+            _currentTetromino.OnChangeStatus -= OnCurrentTetromino;
+            if(!Options.IsGameOver)
+                SetAsCurrentTetromino(previewer.GetTetromino());
+        }
+        
+        private void OnEnable()
+        {
+            OnCurrentTetromino += TetrominoComplete;
+        }
+        
+        private void OnDisable()
+        {
+            OnCurrentTetromino -= TetrominoComplete;
         }
     }
 }
