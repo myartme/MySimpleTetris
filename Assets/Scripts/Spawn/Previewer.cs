@@ -13,6 +13,12 @@ namespace Spawn
         [SerializeField] private RectTransform positionOnUI;
         
         private Tetromino _tetromino;
+        private TetrominoGenerator _generator;
+
+        private void Awake()
+        {
+            _generator = new TetrominoGenerator();
+        }
 
         public Tetromino GetTetromino()
         {
@@ -25,14 +31,9 @@ namespace Spawn
 
         private void CreateAndSetPositionTetromino()
         {
-            _tetromino = new Tetromino(blockSprite, GetGeneratedBlockType());
+            _tetromino = new Tetromino(blockSprite, _generator.Next());
             _tetromino.Position = positionOnUI.position - _tetromino.Bounds.center;
             _tetromino.SetAsPreview();
-        }
-
-        private static BlockType GetGeneratedBlockType()
-        {
-            return (BlockType) Random.Range(0, Enum.GetValues(typeof(BlockType)).Length);
         }
     }
 }
