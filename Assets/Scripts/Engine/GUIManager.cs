@@ -51,7 +51,12 @@ namespace Engine
 
         public void ShowOptionScreen()
         {
-            GamePauseScreen.ClassInstance.ShowScreen(true);
+            GameOptionsScreen.ClassInstance.ShowScreen(true);
+        }
+        
+        public void HideOptionScreen()
+        {
+            GameOptionsScreen.ClassInstance.ShowScreen(false);
         }
 
         public void UpdateScore(int count)
