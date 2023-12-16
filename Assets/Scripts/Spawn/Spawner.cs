@@ -10,7 +10,6 @@ namespace Spawn
     {
         [SerializeField] private Previewer previewer;
         public event Action<Tetromino> OnCurrentTetromino;
-        
         private Tetromino _currentTetromino;
 
         private void Start()
@@ -31,8 +30,10 @@ namespace Spawn
             if (tetromino.Status != ObjectStatus.Completed) return;
             
             _currentTetromino.OnChangeStatus -= OnCurrentTetromino;
-            if(!Options.IsGameOver)
+            if (!Options.IsGameOver)
+            {
                 SetAsCurrentTetromino(previewer.GetTetromino());
+            }
         }
         
         private void OnEnable()

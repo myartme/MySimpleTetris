@@ -1,4 +1,5 @@
-﻿using Spawn;
+﻿using Sounds;
+using Spawn;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +9,8 @@ namespace Engine
     public class Game : MonoBehaviour
     {
         [SerializeField] public Spawner spawner;
-        [SerializeField] private GameObject tetrominoParent;
+        [SerializeField] private Transform tetrominoParent;
+        [SerializeField] public SoundsEffects soundsEffects;
         public static Transform BoardTransform { get; private set; }
         
         private GUIManager _guiManager;
@@ -16,7 +18,7 @@ namespace Engine
         private void Awake()
         {
             _guiManager = GetComponent<GUIManager>();
-            BoardTransform = tetrominoParent.transform;
+            BoardTransform = tetrominoParent;
         }
 
         private void Update()
@@ -30,6 +32,11 @@ namespace Engine
         public void ShowOption()
         {
             _guiManager.ShowOptionScreen();
+        }
+        
+        public void HideOption()
+        {
+            _guiManager.HideOptionScreen();
         }
         
         public void PauseGame()

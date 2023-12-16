@@ -25,7 +25,6 @@ namespace Engine
         private Tetromino _activeTetromino;
         private Game _game;
         private Shadow _shadow;
-        private bool _isTetrominoMakeComplete;
         private bool _isTetrominoStepDown;
 
         private void Awake()
@@ -48,7 +47,7 @@ namespace Engine
                 
                 if (_isTetrominoStepDown && (y <= 0 || !IsEmptyGridPosition(x, y)))
                 {
-                    _isTetrominoMakeComplete = true;
+                    _activeTetromino.SetAsMakeComplete();
                 }
                 
                 if (IsOutOfGrid(x, y) || (!IsOutOfGrid(x, y) && !IsEmptyGridPosition(x, y)))
@@ -98,10 +97,10 @@ namespace Engine
                     _activeTetromino.Rotation = rotation;
             }
             
-            if (!_isTetrominoMakeComplete) return;
+            if (_activeTetromino.Status != ObjectStatus.MakeComplete) return;
             
+            _game.soundsEffects.PlayComplete();
             UpdateTetrominoBlockPositionsOnGrid();
-            _activeTetromino.SetAsMakeComplete();
             CheckGameOver();
             StartCoroutine(DeleteLines());
         }
@@ -133,6 +132,7 @@ namespace Engine
             if (linesDeleted > 0)
             {
                 linesDeleted = 0;
+                _game.soundsEffects.PlayDeleteLine();
                 yield return StartCoroutine(WaitForCoroutines(deleteLineCoroutines));
                 deleteLineCoroutines.Clear();
                 
@@ -145,7 +145,6 @@ namespace Engine
                         foreach (var block in _grid[i])
                         {
                             block.DestroyMe();
-                            yield return null;
                         }
 
                         linesDeleted++;
@@ -154,13 +153,14 @@ namespace Engine
                     {
                         DeleteLineFromGrid(i, linesDeleted);
                     }
+                    
+                    yield return null;
                 }
             }
             
             yield return new WaitUntil(() => deleteLineCoroutines.Count == 0);
             OnDeleteLinesCount?.Invoke(linesDeleted);
             _activeTetromino.SetAsCompleted();
-            _isTetrominoMakeComplete = false;
         }
         
         private IEnumerator WaitForCoroutines(List<Coroutine> coroutines)
