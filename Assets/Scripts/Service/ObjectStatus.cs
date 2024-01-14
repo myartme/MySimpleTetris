@@ -6,6 +6,7 @@
         Preview,
         Active,
         Completed,
-        MakeComplete
+        MakeComplete,
+        Destroyed
     }
 }

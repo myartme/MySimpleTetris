@@ -22,13 +22,7 @@ namespace Engine
         {
             _guiManager.UpdateLevel(_level);
         }
-
-        private void OnEnable()
-        {
-            GameGrid.OnGetTetromino += IncreaseTetrominoCompletedCount;
-            GameGrid.OnDeleteLinesCount += UpdateStatistics;
-        }
-
+        
         private void UpdateStatistics(int linesDeleted)
         {
             var points = linesDeleted switch
@@ -65,18 +59,30 @@ namespace Engine
         private void IncreaseLevel()
         {
             if ((float)_linesDeleted / 10 <= _level) return;
-            
+
+            UpdateTimeToNextStep();
+            _guiManager.UpdateLevel(++_level);
+        }
+
+        private void UpdateTimeToNextStep()
+        {
             timeToNextStep -= timeStepDecreasePerLevel;
+            
             if (timeToNextStep <= 0)
             {
                 timeToNextStep = 0.1f;
             }
-            _guiManager.UpdateLevel(++_level);
+        }
+        
+        private void OnEnable()
+        {
+            TetrominoOrder.OnGetTetromino += IncreaseTetrominoCompletedCount;
+            GameGrid.OnDeleteLinesCount += UpdateStatistics;
         }
         
         private void OnDisable()
         {
-            GameGrid.OnGetTetromino -= IncreaseTetrominoCompletedCount;
+            TetrominoOrder.OnGetTetromino -= IncreaseTetrominoCompletedCount;
             GameGrid.OnDeleteLinesCount -= UpdateStatistics;
         }
     }

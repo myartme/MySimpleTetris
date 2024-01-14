@@ -12,20 +12,20 @@ namespace GameInput
         [SerializeField] private float verticalSpeed = 1f;
         [SerializeField] private float horizontalSpeed = 1f;
 
-        public InputController GameInput { get; private set; }
+        private InputController GameInput { get; set; }
         private InputProvider _inputProvider;
         
         private float VerticalSpeedTimer => 1 / verticalSpeed;
         private float HorizontalSpeedTimer => 1 / horizontalSpeed;
 
-        private Game _game;
+        private TetrominoOrder _tetrominoOrder;
         private GameGrid _gameGrid;
         private Logic _logic;
         
         private GameGrid.GridAction _currentAction;
-        private Timer _moveTimer, _accelerateTimer;
-        private KeyCode _instantlyMovementKeyCode;
+        private Timer _autoMoveTimer, _accelerateTimer;
         private bool _isAccelerating;
+        private bool _isBlockedToMove;
         private float _timeToNextStep;
 
         private Action<InputAction.CallbackContext> _movementStartedHandler, 
@@ -37,40 +37,45 @@ namespace GameInput
         {
             GameInput = new InputController();
             _inputProvider = new GameplayInputProvider(GameInput);
-            GameInput.Enable();
-            _game = GetComponent<Game>();
+            _tetrominoOrder = GetComponent<TetrominoOrder>();
             _gameGrid = GetComponent<GameGrid>();
             _logic = GetComponent<Logic>();
-            _timeToNextStep = _logic.timeToNextStep;
-            _moveTimer = new Timer(_timeToNextStep);
-            _accelerateTimer = new Timer(_timeToNextStep);
-
             _movementStartedHandler = ctx 
                 => OnMovementStarted(_inputProvider.GetMovementAction(ctx));
             _rotationStartedHandler = ctx 
                 => OnRotationStarted(_inputProvider.GetRotationAction(ctx));
-            _movementPerformedHandler = ctx => OnMovementPerformed();
-            _movementCanceledHandler = ctx => OnMovementCanceled();
+            _movementPerformedHandler = ctx 
+                => OnMovementPerformed();
+            _movementCanceledHandler = ctx 
+                => OnMovementCanceled(_inputProvider.GetMovementAction(ctx));
+        }
+
+        private void Start()
+        {
+            GameInput.Enable();
+            _timeToNextStep = _logic.timeToNextStep;
+            _autoMoveTimer = new Timer(_timeToNextStep);
+            _accelerateTimer = new Timer(_timeToNextStep);
         }
 
         private void Update()
         {
-            if (!_gameGrid.IssetTetromino || Time.timeScale == 0 || Options.IsGameOver || !GameInput.Gameplay.enabled) return;
-            
+            if (_isBlockedToMove || Time.timeScale == 0 || Options.IsGameOver) return;
+
             UpdateTimeToNextStep();
-            _moveTimer.Update();
-            _accelerateTimer.Update();
             
+            _accelerateTimer.Update();
             if (_currentAction != null && _isAccelerating && _accelerateTimer.IsEnding())
             {
                 _currentAction();
                 _accelerateTimer.Reset();
             }
             
-            if (_moveTimer.IsEnding())
+            _autoMoveTimer.Update();
+            if (_autoMoveTimer.IsEnding())
             {
                 _gameGrid.StepDown();
-                _moveTimer.Reset();
+                _autoMoveTimer.Reset();
             }
         }
         
@@ -78,33 +83,29 @@ namespace GameInput
         {
             if (tetromino.Status == ObjectStatus.Active)
             {
-                _currentAction = null;
-                _isAccelerating = false;
-                GameInput.Enable();
+                _isBlockedToMove = false;
             }
             
             if (tetromino.Status == ObjectStatus.MakeComplete)
             {
-                GameInput.Disable();
+                _isBlockedToMove = true;
+            }
+            
+            if (tetromino.Status == ObjectStatus.Completed)
+            {
+                _currentAction = null;
+                _isAccelerating = false;
             }
         }
 
         private void OnMovementStarted(InputProvider.MovementType type)
         {
-            switch (type)
-            {
-                case InputProvider.MovementType.Left:
-                    StartAction(_gameGrid.StepLeft, HorizontalSpeedTimer);
-                    break;
-                case InputProvider.MovementType.Right:
-                    StartAction(_gameGrid.StepRight, HorizontalSpeedTimer);
-                    break;
-                case InputProvider.MovementType.Down:
-                    StartAction(_gameGrid.StepDown, VerticalSpeedTimer);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            var action = GetMovementActionByType(type);
+            var speed = type == InputProvider.MovementType.Down 
+                ? VerticalSpeedTimer 
+                : HorizontalSpeedTimer;
+            
+            StartAction(action, speed);
         }
         
         private void OnRotationStarted(InputProvider.RotationType type)
@@ -136,23 +137,38 @@ namespace GameInput
             _isAccelerating = true;
         }
         
-        private void OnMovementCanceled()
+        private void OnMovementCanceled(InputProvider.MovementType type)
         {
-            _isAccelerating = false;
+            if (_currentAction == GetMovementActionByType(type))
+            {
+                _currentAction = null;
+                _isAccelerating = false;
+            }
         }
-
+        
         private void UpdateTimeToNextStep()
         {
             if (_timeToNextStep > _logic.timeToNextStep)
             {
                 _timeToNextStep = _logic.timeToNextStep;
-                _moveTimer = new Timer(_timeToNextStep);
+                _autoMoveTimer = new Timer(_timeToNextStep);
             }
+        }
+        
+        private GameGrid.GridAction GetMovementActionByType(InputProvider.MovementType type)
+        {
+            return type switch
+            {
+                InputProvider.MovementType.Left => _gameGrid.StepLeft,
+                InputProvider.MovementType.Right => _gameGrid.StepRight,
+                InputProvider.MovementType.Down => _gameGrid.StepDown,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
         
         private void OnEnable()
         {
-            _game.spawner.OnCurrentTetromino += CheckTetrominoStatus;
+            _tetrominoOrder.OnChangeStatus += CheckTetrominoStatus;
             foreach (var movement in _inputProvider.MovementInputAction)
             {
                 movement.started += _movementStartedHandler;
@@ -168,7 +184,7 @@ namespace GameInput
 
         private void OnDisable()
         {
-            _game.spawner.OnCurrentTetromino -= CheckTetrominoStatus;
+            _tetrominoOrder.OnChangeStatus -= CheckTetrominoStatus;
             foreach (var movement in _inputProvider.MovementInputAction)
             {
                 movement.started -= _movementStartedHandler;

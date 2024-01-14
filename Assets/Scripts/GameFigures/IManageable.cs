@@ -6,13 +6,13 @@ namespace GameFigures
     {
         public ObjectStatus Status { get; }
         
-        public void SetAsCreated();
+        public bool SetAsCreated();
 
-        public void SetAsPreview();
+        public bool SetAsPreview();
 
-        public void SetAsReady();
+        public bool SetAsReady();
 
-        public void SetAsMakeComplete();
-        public void SetAsCompleted();
+        public bool SetAsMakeComplete();
+        public bool SetAsCompleted();
     }
 }

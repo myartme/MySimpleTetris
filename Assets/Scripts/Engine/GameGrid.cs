@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GameFigures.Combine;
@@ -11,29 +10,64 @@ namespace Engine
 {
     public class GameGrid : MonoBehaviour
     {
+        private Tetromino Tetromino => _tetrominoOrder.CurrentTetromino;
+        
         public const int WIDTH = 10;
         public const int HEIGHT = 23;
         public const int VISIBLE_HEIGHT = 20;
         public static event Action<int> OnDeleteLinesCount;
-        public static event Action OnGetTetromino;
 
         private static Block[][] _grid = new Block[HEIGHT][];
-        
-        public bool IssetTetromino => _activeTetromino != null;
         public delegate void GridAction();
         
-        private Tetromino _activeTetromino;
         private Game _game;
+        private TetrominoOrder _tetrominoOrder;
         private Shadow _shadow;
         private bool _isTetrominoStepDown;
+        private List<int> _linesDeleted = new();
 
         private void Awake()
         {
             _game = GetComponent<Game>();
+            _tetrominoOrder = GetComponent<TetrominoOrder>();
             for (var i = 0; i < _grid.Length; i++)
             {
                 _grid[i] = new Block[WIDTH];
             }
+        }
+
+        private void Update()
+        {
+            if (_linesDeleted.Count <= 0 || GetDestroyedLines() != _linesDeleted.Count) return;
+
+            var linesDeleted = 0;
+            for (var i = 0; i < _grid.Length; i++)
+            {
+                var allCompleted = _grid[i].All(item => item != null);
+                if (allCompleted)
+                {
+                    foreach (var block in _grid[i])
+                    {
+                        block.DestroyMe();
+                    }
+
+                    linesDeleted++;
+                }
+                else
+                {
+                    for (var j = 0; j < _grid[i].Length; j++)
+                    {
+                        if (_grid[i][j])
+                            _grid[i][j].DropMeDown(linesDeleted);
+                        
+                        _grid[i - linesDeleted][j] = _grid[i][j];
+                    }
+                }
+            }
+
+            OnDeleteLinesCount?.Invoke(_linesDeleted.Count);
+            _linesDeleted.Clear();
+            Tetromino.SetAsCompleted();
         }
 
         private bool IsPossibleMovement(Tetromino tetromino, Vector3 position, int rotation)
@@ -47,7 +81,7 @@ namespace Engine
                 
                 if (_isTetrominoStepDown && (y <= 0 || !IsEmptyGridPosition(x, y)))
                 {
-                    _activeTetromino.SetAsMakeComplete();
+                    Tetromino.SetAsMakeComplete();
                 }
                 
                 if (IsOutOfGrid(x, y) || (!IsOutOfGrid(x, y) && !IsEmptyGridPosition(x, y)))
@@ -61,133 +95,78 @@ namespace Engine
         
         public void StepLeft()
         {
-            Step(new Vector3(_activeTetromino.Position.x - 1, _activeTetromino.Position.y));
+            Step(new Vector3(Tetromino.Position.x - 1, Tetromino.Position.y));
         }
         
         public void StepRight()
         {
-            Step(new Vector3(_activeTetromino.Position.x + 1, _activeTetromino.Position.y));
+            Step(new Vector3(Tetromino.Position.x + 1, Tetromino.Position.y));
         }
         
         public void StepDown()
         {
             _isTetrominoStepDown = true;
-            Step(new Vector3(_activeTetromino.Position.x, _activeTetromino.Position.y - 1));
+            Step(new Vector3(Tetromino.Position.x, Tetromino.Position.y - 1));
             _isTetrominoStepDown = false;
         }
         
         public void ClockwiseAngleRotation()
         {
-            Step(_activeTetromino.PrevRotation);
+            Step(Tetromino.PrevRotation);
         }
         
         public void AnticlockwiseAngleRotation()
         {
-            Step(_activeTetromino.NextRotation);
+            Step(Tetromino.NextRotation);
         }
         
         private void Step(Vector3 position, int rotation)
         {
-            if (IsPossibleMovement(_activeTetromino, position, rotation))
+            if (IsPossibleMovement(Tetromino, position, rotation))
             {
-                if (_activeTetromino.Position != position)
-                    _activeTetromino.Position = position;
+                if (Tetromino.Position != position)
+                    Tetromino.Position = position;
                 
-                if (_activeTetromino.Rotation != rotation)
-                    _activeTetromino.Rotation = rotation;
+                if (Tetromino.Rotation != rotation)
+                    Tetromino.Rotation = rotation;
             }
             
-            if (_activeTetromino.Status != ObjectStatus.MakeComplete) return;
+            if (Tetromino.Status != ObjectStatus.MakeComplete) return;
             
-            _game.soundsEffects.PlayComplete();
+            _game.SoundsEffects.PlayComplete();
             UpdateTetrominoBlockPositionsOnGrid();
             CheckGameOver();
-            StartCoroutine(DeleteLines());
+            DeleteLines();
         }
 
         private void UpdateTetrominoBlockPositionsOnGrid()
         {
-            _activeTetromino.Children.ForEach(item =>
+            Tetromino.Children.ForEach(item =>
             {
                 _grid[(int)item.Position.y - 1][(int)item.Position.x - 1] = item;
             });
         }
 
-        private IEnumerator DeleteLines()
+        private void DeleteLines()
         {
-            var linesDeleted = 0;
-            var deleteLineCoroutines = new List<Coroutine>();
-            
-            foreach (var cell in _grid)
+            for (var i = 0; i < _grid.Length; i++)
             {
-                var rowBlockCount = cell.Count(item => item != null);
-
-                if (rowBlockCount != cell.Length) continue;
+                var allCompleted = _grid[i].All(item => item != null);
                 
-                linesDeleted++;
-                var coroutine = StartCoroutine(AnimationDeleteLine(cell));
-                deleteLineCoroutines.Add(coroutine);
-            }
-            
-            if (linesDeleted > 0)
-            {
-                linesDeleted = 0;
-                _game.soundsEffects.PlayDeleteLine();
-                yield return StartCoroutine(WaitForCoroutines(deleteLineCoroutines));
-                deleteLineCoroutines.Clear();
-                
-                for (var i = 0; i < _grid.Length; i++)
+                if (allCompleted)
                 {
-                    var rowBlockCount = _grid[i].Count(item => item != null);
-                    
-                    if (rowBlockCount == _grid[i].Length)
+                    for (int j = 4, k = 5; j >= 0 && k < _grid[i].Length; j--, k++)
                     {
-                        foreach (var block in _grid[i])
-                        {
-                            block.DestroyMe();
-                        }
-
-                        linesDeleted++;
+                        _grid[i][j].VanishMe(4-j);
+                        _grid[i][k].VanishMe(4-j);
                     }
-                    else
-                    {
-                        DeleteLineFromGrid(i, linesDeleted);
-                    }
-                    
-                    yield return null;
+                    _linesDeleted.Add(i);
                 }
             }
-            
-            yield return new WaitUntil(() => deleteLineCoroutines.Count == 0);
-            OnDeleteLinesCount?.Invoke(linesDeleted);
-            _activeTetromino.SetAsCompleted();
-        }
-        
-        private IEnumerator WaitForCoroutines(List<Coroutine> coroutines)
-        {
-            return coroutines.GetEnumerator();
-        }
 
-        private IEnumerator AnimationDeleteLine(Block[] blocks)
-        {
-            for (int j = 4, k = 5; j >= 0 && k < blocks.Length; j--, k++)
+            if (_linesDeleted.Count == 0)
             {
-                blocks[j].VanishMe();
-                blocks[k].VanishMe();
-                yield return new WaitForSeconds(0.05f);
-            }
-        }
-
-        private void DeleteLineFromGrid(int line, int offset)
-        {
-            var gridLine = _grid[line];
-            
-            for (var i = 0; i < gridLine.Length; i++)
-            {
-                if (gridLine[i])
-                    gridLine[i].DropMeDown(offset);
-                        
-                _grid[line - offset][i] = gridLine[i];
+                Tetromino.SetAsCompleted();
             }
         }
 
@@ -201,12 +180,34 @@ namespace Engine
                 }
             }
         }
+
+        private int GetDestroyedLines()
+        {
+            var counter = 0;
+            foreach (var line in _linesDeleted)
+            {
+                for (int i = 0, count = 0; i < _grid[line].Length; i++)
+                {
+                    if (_grid[line][i].Status == ObjectStatus.Destroyed)
+                    {
+                        count++;
+                    }
+                        
+                    if (count == _grid[line].Length)
+                    {
+                        counter++;
+                    }
+                }
+            }
+
+            return counter;
+        }
         
         private void Step(Vector3 position) 
-            => Step(position, _activeTetromino.Rotation);
+            => Step(position, Tetromino.Rotation);
 
         private void Step(int rotation)
-            => Step(_activeTetromino.Position, rotation);
+            => Step(Tetromino.Position, rotation);
         
         public static bool IsEmptyGridPosition(int x, int y)
         {
@@ -216,25 +217,6 @@ namespace Engine
         private bool IsOutOfGrid(int x, int y)
         {
             return x is <= 0 or > WIDTH || y is <= 0 or > HEIGHT;
-        }
-        
-        private void GetActiveSpawnerTetromino(Tetromino tetromino)
-        {
-            if (tetromino.Status == ObjectStatus.Active)
-            {
-                _activeTetromino = tetromino;
-                OnGetTetromino?.Invoke();
-            }
-        }
-        
-        private void OnEnable()
-        {
-            _game.spawner.OnCurrentTetromino += GetActiveSpawnerTetromino;
-        }
-        
-        private void OnDisable()
-        {
-            _game.spawner.OnCurrentTetromino -= GetActiveSpawnerTetromino;
         }
     }
 }

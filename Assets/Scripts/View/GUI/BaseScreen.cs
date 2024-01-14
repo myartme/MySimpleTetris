@@ -19,11 +19,12 @@ namespace View.GUI
 		{
 			canvasGroup.alpha = isShowScreen ? 1 : 0;
 			canvasGroup.blocksRaycasts = isShowScreen;
+			SetActiveByAlpha();
 		}
 
-		protected void SetActiveScreen(bool isActiveScreen)
+		protected void SetActiveByAlpha()
 		{
-			ClassInstance.gameObject.SetActive(isActiveScreen);
+			ClassInstance.gameObject.SetActive(canvasGroup.alpha > 0);
 		}
 	}
 }

@@ -302,7 +302,7 @@ MonoBehaviour:
   _normal: {fileID: 21300000, guid: 71e7a2fd2f3a76c4fbd8fbb1de596819, type: 3}
   _pressed: {fileID: 21300000, guid: 71e7a2fd2f3a76c4fbd8fbb1de596819, type: 3}
   _compressClip: {fileID: 8300000, guid: 94b3a28845c1b504ba6e63ce964f2939, type: 3}
-  _uncompressClip: {fileID: 8300000, guid: 0aaaec4bfbc069446bd1c23b09ee70d5, type: 3}
+  _uncompressClip: {fileID: 8300000, guid: 0cb7ae657803402478ea88fe67449f83, type: 3}
 --- !u!114 &6474972379550262884
 MonoBehaviour:
   m_ObjectHideFlags: 0

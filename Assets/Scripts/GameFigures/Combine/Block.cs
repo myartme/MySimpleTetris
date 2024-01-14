@@ -1,4 +1,5 @@
-﻿using Service;
+﻿using System.Collections;
+using Service;
 using UnityEngine;
 
 namespace GameFigures.Combine
@@ -8,8 +9,9 @@ namespace GameFigures.Combine
         [SerializeField] private Vector3Int position;
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
+        private const float _AnimationDelay = 0.05f;
         public string Name => gameObject.name;
-        public ObjectStatus Status { get; private set; }
+        public ObjectStatus Status { get; set; }
         
         public Vector3 Position
         {
@@ -32,29 +34,42 @@ namespace GameFigures.Combine
             _animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animator/BlockAnimatorController");
         }
 
-        public void SetAsCreated()
+        public bool SetAsCreated()
         {
             Status = ObjectStatus.Created;
+            return true;
         }
 
-        public void SetAsPreview()
+        public bool SetAsPreview()
         {
+            if(Status != ObjectStatus.Created) return false;
+            
             Status = ObjectStatus.Preview;
+            return true;
         }
 
-        public void SetAsReady()
+        public bool SetAsReady()
         {
+            if(Status != ObjectStatus.Preview) return false;
+            
             Status = ObjectStatus.Active;
+            return true;
         }
 
-        public void SetAsMakeComplete()
+        public bool SetAsMakeComplete()
         {
+            if(Status != ObjectStatus.Active) return false;
+            
             Status = ObjectStatus.MakeComplete;
+            return true;
         }
 
-        public void SetAsCompleted()
+        public bool SetAsCompleted()
         {
+            if(Status != ObjectStatus.MakeComplete) return false;
+            
             Status = ObjectStatus.Completed;
+            return true;
         }
 
         public void DropMeDown(int positions)
@@ -63,14 +78,21 @@ namespace GameFigures.Combine
             transform.position += Vector3.down * positions;
         }
 
-        public void VanishMe()
+        public void VanishMe(int index)
         {
-            _animator.SetTrigger("Vanish");
+            StartCoroutine(WaitUntilAnimation(index));
         }
         
         public void DestroyMe()
         {
             Destroy(gameObject);
+        }
+        
+        private IEnumerator WaitUntilAnimation(int index)
+        {
+            yield return new WaitForSeconds(_AnimationDelay * index);
+            _animator.SetTrigger("Vanish");
+            Status = ObjectStatus.Destroyed;
         }
     }
 }
