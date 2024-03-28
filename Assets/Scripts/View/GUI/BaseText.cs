@@ -15,6 +15,11 @@ namespace View.GUI
 			Engine.GUIManager.TextFields.Add(this);
 		}
 		
+		public virtual void UpdateCountText(string count)
+		{
+			TextMeshPro.text = DefaultText + count;
+		}
+		
 		public virtual void UpdateCountText(int count)
 		{
 			TextMeshPro.text = DefaultText + count;

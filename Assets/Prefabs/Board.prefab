@@ -203,7 +203,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 71e7a2fd2f3a76c4fbd8fbb1de596819, type: 3}
-  m_Color: {r: 0.6039216, g: 0.52156866, b: 0.34509805, a: 1}
+  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -225,6 +225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19680b090ae4af895392f0527e079d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorElementType: 1
+  _colorTheme: {fileID: 0}
 --- !u!1 &2003188362610311157
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,6 +237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2003188362610311156}
   - component: {fileID: 2003188362610311159}
+  - component: {fileID: 5021226008175010068}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -299,7 +302,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2014916b9c956644b8226a9bfc9a4ac2, type: 3}
-  m_Color: {r: 0.043137256, g: 0.06666667, b: 0.14117648, a: 1}
+  m_Color: {r: 0.039215688, g: 0.078431375, b: 0.15686275, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -309,6 +312,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5021226008175010068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003188362610311157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b19680b090ae4af895392f0527e079d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorElementType: 0
+  _colorTheme: {fileID: 0}
 --- !u!1 &2003188362920524283
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,6 +336,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2003188362920524285}
   - component: {fileID: 3923566121638555955}
+  - component: {fileID: 8736159129081515388}
   - component: {fileID: 2003188362920524286}
   - component: {fileID: 2003188362920524258}
   - component: {fileID: 3146361039987072194}
@@ -365,6 +383,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TetrominoParent: {fileID: 0}
   SoundsEffects: {fileID: 0}
+--- !u!114 &8736159129081515388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003188362920524283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1854c00fa1f040468db2fded71a96c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockVisualList: []
 --- !u!114 &2003188362920524286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,6 +461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 0}
+  _switchSprite: {fileID: 0}
 --- !u!114 &5919538397083118906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,9 +474,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec85c9f9e4234fe5bc7fe6ddf08954b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockSprite: {fileID: 21300000, guid: cacb5c34f2c18fb49ba6da4e1453aca5, type: 3}
   previewTransform: {fileID: 0}
   spawnTransform: {fileID: 2003188362111412560}
+  colorTheme: {fileID: 0}
 --- !u!82 &6374351717544647004
 AudioSource:
   m_ObjectHideFlags: 0

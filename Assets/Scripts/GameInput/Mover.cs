@@ -1,6 +1,8 @@
 ﻿using System;
 using Engine;
+using Engine.Grid;
 using GameFigures.Shape;
+using Save.Data.Format;
 using Service;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,14 +11,17 @@ namespace GameInput
 {
     public class Mover : MonoBehaviour
     {
-        [SerializeField] private float verticalSpeed = 1f;
-        [SerializeField] private float horizontalSpeed = 1f;
+        [SerializeField][Range((float)0.01, 1)] private float verticalSpeed = 1f;
+        [SerializeField][Range((float)0.01, 1)] private float horizontalSpeed = 1f;
 
+        public float VerticalSpeed => Save.GetValue(_verticalMS);
+        public float HorizontalSpeed => Save.GetValue(_horizontalMS);
+        
         private InputController GameInput { get; set; }
         private InputProvider _inputProvider;
         
-        private float VerticalSpeedTimer => 1 / verticalSpeed;
-        private float HorizontalSpeedTimer => 1 / horizontalSpeed;
+        private float VerticalSpeedTimer => (float)0.01 / VerticalSpeed;
+        private float HorizontalSpeedTimer => (float)0.01 / HorizontalSpeed;
 
         private TetrominoOrder _tetrominoOrder;
         private GameGrid _gameGrid;
@@ -32,6 +37,15 @@ namespace GameInput
             _movementPerformedHandler,
             _movementCanceledHandler,
             _rotationStartedHandler;
+        
+        public OptionsSave Save
+        {
+            get => Game.SaveData.options;
+            private set => Game.SaveData.options = value;
+        }
+
+        private readonly string _horizontalMS = "HorizontalMoveSpeed",
+            _verticalMS = "VerticalMoveSpeed";
 
         private void Awake()
         {
@@ -53,6 +67,8 @@ namespace GameInput
         private void Start()
         {
             GameInput.Enable();
+            InitializeSaveData();
+            LoadSaveData();
             _timeToNextStep = _logic.timeToNextStep;
             _autoMoveTimer = new Timer(_timeToNextStep);
             _accelerateTimer = new Timer(_timeToNextStep);
@@ -60,8 +76,8 @@ namespace GameInput
 
         private void Update()
         {
-            if (_isBlockedToMove || Time.timeScale == 0 || Options.IsGameOver) return;
-
+            if (_isBlockedToMove || Time.timeScale == 0 || Game.IsGameOver) return;
+            
             UpdateTimeToNextStep();
             
             _accelerateTimer.Update();
@@ -164,6 +180,40 @@ namespace GameInput
                 InputProvider.MovementType.Down => _gameGrid.StepDown,
                 _ => throw new ArgumentOutOfRangeException()
             };
+        }
+        
+        public void StoreSaveData()
+        {
+            Game.Store.Save(Game.SaveData);
+        }
+        
+        public void ResetSaveData()
+        {
+            Save = Game.Store.Load()?.options;
+            LoadSaveData();
+        }
+        
+        private void InitializeSaveData()
+        {
+            Save.AddToList(_horizontalMS, horizontalSpeed);
+            Save.AddToList(_verticalMS, verticalSpeed);
+            StoreSaveData();
+        }
+
+        private void LoadSaveData()
+        {
+            horizontalSpeed = Save.GetValue(_horizontalMS);
+            verticalSpeed = Save.GetValue(_verticalMS);
+        }
+        
+        public void ToggleHorizontalMoveSpeed(float value)
+        {
+            Save.SetValueByName(_horizontalMS, value, 1);
+        }
+        
+        public void ToggleVerticalMoveSpeed(float value)
+        {
+            Save.SetValueByName(_verticalMS, value, 1);
         }
         
         private void OnEnable()

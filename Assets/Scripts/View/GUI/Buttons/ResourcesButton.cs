@@ -6,26 +6,28 @@ namespace View.GUI.Buttons
 {
     public class ResourcesButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     {
-        [SerializeField] public Image _image;
-        [SerializeField] public AudioSource _audioSource;
-        [SerializeField] public Sprite _normal, _pressed;
-        [SerializeField] public AudioClip _compressClip, _uncompressClip;
+        [SerializeField] protected Image image;
+        [SerializeField] protected AudioSource audioSource;
+        [SerializeField] protected Sprite normal;
+        [SerializeField] protected Sprite pressed;
+        [SerializeField] protected AudioClip compressClip;
+        [SerializeField] protected AudioClip uncompressClip;
 
         private void Awake()
         {
-            _image.sprite = _normal;
+            image.sprite = normal;
         }
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
-            _image.sprite = _normal;
-            _audioSource.PlayOneShot(_uncompressClip);
+            image.sprite = normal;
+            audioSource.PlayOneShot(uncompressClip);
         }
         
         public virtual void OnPointerDown(PointerEventData eventData)
         {
-            _image.sprite = _pressed;
-            _audioSource.PlayOneShot(_compressClip);
+            image.sprite = pressed;
+            audioSource.PlayOneShot(compressClip);
         }
     }
 }

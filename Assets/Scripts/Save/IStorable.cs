@@ -1,12 +1,13 @@
 ﻿using JetBrains.Annotations;
+using Save.Data;
 
 namespace Save
 {
-    public interface IStorable<T>
+    public interface IStorable
     {
         public bool IsExists { get; }
         public void Create();
-        public void Save(T data);
-        [CanBeNull] public T Load();
+        public void Save(SaveData data);
+        [CanBeNull] public SaveData Load();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace View.GUI.Scheme
+namespace View.GUI.Scheme.ColorStyleWrappers
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class ColorSpriteRendererWrapper : ColorStyleGraphic<ColorSpriteRendererWrapper>, IColorable

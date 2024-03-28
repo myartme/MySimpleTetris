@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Linq;
 using GameFigures.Shape;
 using Service;
 using UnityEngine;
 
-namespace Engine
+namespace Engine.Grid
 {
     public class TetrominoOrder : MonoBehaviour
     {
-        [SerializeField] private Sprite blockSprite;
         [SerializeField] private Transform previewTransform;
         [SerializeField] private Transform spawnTransform;
+        [SerializeField] private ColorTheme colorTheme;
 
         public static event Action OnGetTetromino;
         
@@ -39,10 +40,13 @@ namespace Engine
                 _current = null;
             }
             
-            if (_current == null)
+            if (_current is null)
             {
                 SetCurrent(_previewer);
-                SetPreview(CreateTetromino());
+                if (_current is not null)
+                {
+                    SetPreview(CreateTetromino());
+                }
             }
         }
         
@@ -56,16 +60,26 @@ namespace Engine
         
         private void SetCurrent(Tetromino tetromino)
         {
+            tetromino.Position = spawnTransform.position;
+            var spawnIsBlocked = tetromino.Children
+                .Select(tetrominoChild => Vector3Int.RoundToInt(tetrominoChild.Position))
+                .Any(pos => !GameGrid.IsEmptyGridPosition(pos.x, pos.y));
+
+            if (spawnIsBlocked)
+            {
+                Game.IsGameOver = true;
+                return;
+            }
+            
             tetromino.OnChangeStatus += OnChangeStatus;
             _current = tetromino;
-            _current.Position = spawnTransform.position;
             _current.SetAsReady();
             OnGetTetromino?.Invoke();
         }
         
         private Tetromino CreateTetromino()
         {
-            return new Tetromino(blockSprite, _generator.Next());
+            return new Tetromino(colorTheme.CurrentBlock, _generator.Next());
         }
     }
 }

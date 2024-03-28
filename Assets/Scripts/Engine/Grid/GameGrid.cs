@@ -6,7 +6,7 @@ using GameFigures.Shape;
 using Service;
 using UnityEngine;
 
-namespace Engine
+namespace Engine.Grid
 {
     public class GameGrid : MonoBehaviour
     {
@@ -14,7 +14,6 @@ namespace Engine
         
         public const int WIDTH = 10;
         public const int HEIGHT = 23;
-        public const int VISIBLE_HEIGHT = 20;
         public static event Action<int> OnDeleteLinesCount;
 
         private static Block[][] _grid = new Block[HEIGHT][];
@@ -135,7 +134,6 @@ namespace Engine
             
             _game.SoundsEffects.PlayComplete();
             UpdateTetrominoBlockPositionsOnGrid();
-            CheckGameOver();
             DeleteLines();
         }
 
@@ -168,16 +166,9 @@ namespace Engine
             {
                 Tetromino.SetAsCompleted();
             }
-        }
-
-        private void CheckGameOver()
-        {
-            foreach (var blocks in _grid[VISIBLE_HEIGHT])
+            else
             {
-                if (blocks)
-                {
-                    Options.IsGameOver = true;
-                }
+                _game.SoundsEffects.PlayDeleteLine();
             }
         }
 
@@ -211,7 +202,7 @@ namespace Engine
         
         public static bool IsEmptyGridPosition(int x, int y)
         {
-            return _grid[y - 1][x - 1] == null;
+            return _grid[y - 1][x - 1] is null;
         }
         
         private bool IsOutOfGrid(int x, int y)

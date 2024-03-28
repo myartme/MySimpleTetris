@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace View.GUI.Scheme
+namespace View.GUI.Scheme.ColorStyleWrappers
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class ColorTextWrapper : ColorStyleGraphic<ColorTextWrapper>, IColorable

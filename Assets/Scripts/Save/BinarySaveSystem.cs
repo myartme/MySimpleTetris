@@ -1,21 +1,20 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Save.Data;
-using Service;
 using Application = UnityEngine.Device.Application;
 
 namespace Save
 {
-    public class BinarySaveSystem<T> : IStorable<T> where T : AbstractSaveData
+    public class BinarySaveSystem : IStorable
     {
         public bool IsExists => File.Exists(_filePath);
         
         private BinaryFormatter _binaryFormatter = new ();
         private readonly string _filePath;
         
-        public BinarySaveSystem(SaveNames fileSaveName)
+        public BinarySaveSystem()
         {
-            _filePath = GetFilePath(fileSaveName.GetDescription());
+            _filePath = GetFilePath("save");
         }
         
         public void Create()
@@ -25,7 +24,7 @@ namespace Save
             using (File.Create(_filePath)) { }
         }
 
-        public void Save(T data)
+        public void Save(SaveData data)
         {
             using (var file = File.Create(_filePath))
             {
@@ -33,12 +32,12 @@ namespace Save
             }
         }
         
-        public T Load()
+        public SaveData Load()
         {
             if (!File.Exists(_filePath)) return default;
             
             using var file = File.Open(_filePath, FileMode.Open);
-            return (T)_binaryFormatter.Deserialize(file);
+            return (SaveData)_binaryFormatter.Deserialize(file);
         }
 
         private string GetFilePath(string name)

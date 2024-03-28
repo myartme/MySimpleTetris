@@ -2,9 +2,8 @@
 
 namespace Engine
 {
-    public class Options : MonoBehaviour
+    public class ScreenDetector : MonoBehaviour
     {
-        public static bool IsGameOver = false;
         public static Device CurrentDevice { get; private set; }
 
         private void OnEnable()

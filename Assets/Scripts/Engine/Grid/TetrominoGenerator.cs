@@ -4,7 +4,7 @@ using System.Linq;
 using GameFigures;
 using Random = UnityEngine.Random;
 
-namespace Engine
+namespace Engine.Grid
 {
     public class TetrominoGenerator
     {

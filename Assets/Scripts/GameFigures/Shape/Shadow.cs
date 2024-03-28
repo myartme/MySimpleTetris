@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine;
+using Engine.Grid;
 using GameFigures.Combine;
 using UnityEngine;
 using View.Scene;
@@ -24,7 +25,7 @@ namespace GameFigures.Shape
         public Shadow(Sprite blocksSprite, BlockType blockType) : base(blocksSprite, blockType)
         {
             Name = $"Shadow {gameObject.name}";
-            Color = BlockColors.Shadow;
+            Color = ColorScheme.Shadow;
             IsActive = false;
         }
         

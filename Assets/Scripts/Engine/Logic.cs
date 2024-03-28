@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Engine.Grid;
+using UnityEngine;
 
 namespace Engine
 {
@@ -6,6 +7,10 @@ namespace Engine
     {
         [SerializeField] public float timeToNextStep = 2f;
         [SerializeField] public float timeStepDecreasePerLevel = 0.5f;
+        public int TotalPoints => _totalPoints;
+        public int Level => _level;
+        public int LinesDeleted => _linesDeleted;
+        public int TetrominoCompleted => _tetrominoCompletedCount;
         
         private GUIManager _guiManager;
         private int _totalPoints;

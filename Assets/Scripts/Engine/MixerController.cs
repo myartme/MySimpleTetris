@@ -1,132 +1,110 @@
 ﻿using System;
-using Save;
-using Save.Data;
 using Save.Data.Format;
-using Service;
 using UnityEngine;
 using UnityEngine.Audio;
+using View.GUI.Buttons;
 
 namespace Engine
 {
     public class MixerController : MonoBehaviour
     {
         [SerializeField] private AudioMixerGroup audioMixer;
-        public bool IsMasterEnabled => _isMasterVolumeEnabled;
-        public float MusicValue => _saveFormatter.SaveData.GetValue(music);
-        public float EffectsValue => _saveFormatter.SaveData.GetValue(effect);
-        public float UIValue => _saveFormatter.SaveData.GetValue(ui);
+        [SerializeField] private MasterSoundSwitchSprite _switchSprite;
+        public event Action<bool> OnIsMasterEnabled;
+        public float MusicValue => Save.GetValue(_music);
+        public float EffectsValue => Save.GetValue(_effect);
+        public float UIValue => Save.GetValue(_ui);
 
-        private IStorable<SaveFormatter<SoundSave, Option>> _storable;
-        private SaveFormatter<SoundSave, Option> _saveFormatter;
-        private bool _isMasterVolumeEnabled = true;
-
-        public const string master = "MasterVolume",
-            music = "MusicVolume",
-            effect = "EffectsVolume",
-            ui = "InterfaceVolume";
-
-        private void Awake()
+        public bool IsMasterEnabled
         {
-            _storable = new JsonSaveSystem<SaveFormatter<SoundSave, Option>>(SaveNames.Sound);
-            _saveFormatter = new SaveFormatter<SoundSave, Option>();
-            
-            if (!_storable.IsExists)
+            get => _isMasterEnabled;
+            set
             {
-                InitData();
-            }
-            
-            LoadFormatter();
-            
-            if (_saveFormatter.SaveData.GetValue(master) <= -80)
-            {
-                _isMasterVolumeEnabled = false;
+                _isMasterEnabled = value;
+                ToggleMasterMixer(_isMasterEnabled ? 0 : -80);
+                OnIsMasterEnabled?.Invoke(_isMasterEnabled);
             }
         }
+        
+        public OptionsSave Save
+        {
+            get => Game.SaveData.options;
+            private set => Game.SaveData.options = value;
+        }
+        
+        private bool _isMasterEnabled;
+        private readonly string _master = "MasterVolume",
+            _music = "MusicVolume",
+            _effect = "EffectsVolume",
+            _ui = "InterfaceVolume";
 
         private void Start()
         {
-            SetData();
+            InitializeSaveData();
+            LoadSaveData();
         }
 
-        public void SaveParams()
+        public void StoreSaveData()
         {
-            _storable.Save(_saveFormatter);
+            Game.Store.Save(Game.SaveData);
         }
-
-        public void ResetParams()
+        
+        public void ResetSaveData()
         {
-            LoadFormatter();
-            SetData();
+            Save = Game.Store.Load()?.options;
+            LoadSaveData();
         }
-
+        
         public void ToggleMasterMixer()
         {
-            _isMasterVolumeEnabled = !_isMasterVolumeEnabled;
-            ToggleMasterMixer(_isMasterVolumeEnabled);
-        }
-
-        public void ToggleMasterMixer(bool isVolumeEnabled)
-        {
-            var volume = isVolumeEnabled ? 0 : -80;
-            ToggleMasterMixer(volume);
+            IsMasterEnabled = !IsMasterEnabled;
+            StoreSaveData();
         }
         
         public void ToggleMasterMixer(float volume)
         {
-            audioMixer.audioMixer.SetFloat(master, volume);
-            _saveFormatter.SaveData.SetValue(master, volume);
-            SaveParams();
+            audioMixer.audioMixer.SetFloat(_master, volume);
+            Save.SetValueByName(_master, volume);
         }
 
         public void ChangeMusicsVolume(float volume)
         {
-            ChangeVolume(music, volume);
-            _saveFormatter.SaveData.SetValue(music, volume);
+            ChangeVolume(_music, volume);
+            Save.SetValueByName(_music, volume);
         }
 
         public void ChangeEffectsVolume(float volume)
         {
-            ChangeVolume(effect, volume);
-            _saveFormatter.SaveData.SetValue(effect, volume);
+            ChangeVolume(_effect, volume);
+            Save.SetValueByName(_effect, volume);
         }
 
         public void ChangeButtonsVolume(float volume)
         {
-            ChangeVolume(ui, volume);
-            _saveFormatter.SaveData.SetValue(ui, volume);
+            ChangeVolume(_ui, volume);
+            Save.SetValueByName(_ui, volume);
         }
 
         private void ChangeVolume(string mixerName, float value)
         {
             audioMixer.audioMixer.SetFloat(mixerName, Mathf.Log10(value) * 20);
         }
-        
-        private void LoadFormatter()
+
+        private void InitializeSaveData()
         {
-            var store = _storable.Load();
-            var data = store?.SaveData;
-            
-            if (data == null) return;
-            
-            _saveFormatter = store;
+            Save.AddToList(_master, 0f);
+            Save.AddToList(_music, 0.5f);
+            Save.AddToList(_effect, 0.5f);
+            Save.AddToList(_ui, 0.5f);
+            StoreSaveData();
         }
 
-        private void InitData()
+        private void LoadSaveData()
         {
-            _storable.Create();
-            ToggleMasterMixer(true);
-            ChangeMusicsVolume(0.5f);
-            ChangeEffectsVolume(0.5f);
-            ChangeButtonsVolume(0.5f);
-            _storable.Save(_saveFormatter);
-        }
-
-        private void SetData()
-        {
-            ToggleMasterMixer(_saveFormatter.SaveData.GetValue(master));
-            ChangeMusicsVolume(_saveFormatter.SaveData.GetValue(music));
-            ChangeEffectsVolume(_saveFormatter.SaveData.GetValue(effect));
-            ChangeButtonsVolume(_saveFormatter.SaveData.GetValue(ui));
+            IsMasterEnabled = Save.GetValue(_master) > -80;
+            ChangeMusicsVolume(Save.GetValue(_music));
+            ChangeEffectsVolume(Save.GetValue(_effect));
+            ChangeButtonsVolume(Save.GetValue(_ui));
         }
     }
 }

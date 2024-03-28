@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6039216, g: 0.52156866, b: 0.34509805, a: 1}
+  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -137,12 +137,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e6cc6daa8062e41aa7688a2b5ad1b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 4726416965367754383}
-  _audioSource: {fileID: 3970744030496735017}
-  _normal: {fileID: 0}
-  _pressed: {fileID: 0}
-  _compressClip: {fileID: 8300000, guid: 94b3a28845c1b504ba6e63ce964f2939, type: 3}
-  _uncompressClip: {fileID: 8300000, guid: 0cb7ae657803402478ea88fe67449f83, type: 3}
+  image: {fileID: 4726416965367754383}
+  audioSource: {fileID: 3970744030496735017}
+  normal: {fileID: 0}
+  pressed: {fileID: 0}
+  compressClip: {fileID: 0}
+  uncompressClip: {fileID: 0}
 --- !u!114 &5314427668661423774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95ad3e89c85e4b87ba855878ed1d1679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorElementType: 1
 --- !u!82 &3970744030496735017
 AudioSource:
   m_ObjectHideFlags: 0
