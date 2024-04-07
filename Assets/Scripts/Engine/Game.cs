@@ -1,41 +1,21 @@
-﻿using Save;
-using Save.Data;
-using Sounds;
+﻿using Sounds;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Engine
 {
-    [RequireComponent(typeof(GUIManager))]
     public class Game : MonoBehaviour
     {
         [SerializeField] public GameObject TetrominoParent;
         [SerializeField] public SoundsEffects SoundsEffects;
+        [SerializeField] private GUIManager _guiManager;
         
         public static Transform BoardTransform { get; private set; }
         public static bool IsGameOver;
-        public static IStorable Store;
-        public static SaveData SaveData;
-        
-        private GUIManager _guiManager;
-        private ColorTheme _colorTheme;
 
         private void Awake()
         {
-            Store = new JsonSaveSystem();
-            SaveData = new SaveData();
-            _guiManager = GetComponent<GUIManager>();
             BoardTransform = TetrominoParent.transform;
-            if (!Store.IsExists)
-            {
-                Store.Create();
-            }
-            else
-            {
-                SaveData = Store.Load();
-            }
-
-            InitSaves();
         }
 
         private void Update()
@@ -44,16 +24,6 @@ namespace Engine
             {
                 _guiManager.ShowGameOverScreen();
             }
-        }
-        
-        public void ShowOption()
-        {
-            _guiManager.ShowOptionScreen();
-        }
-        
-        public void HideOption()
-        {
-            _guiManager.HideOptionScreen();
         }
         
         public void PauseGame()
@@ -74,13 +44,6 @@ namespace Engine
             _guiManager.HideGameOverScreen();
             IsGameOver = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-        private void InitSaves()
-        {
-            _colorTheme = GetComponent<ColorTheme>();
-            _colorTheme.InitializeSaveData();
-            _colorTheme.LoadSaveData();
         }
     }
 }

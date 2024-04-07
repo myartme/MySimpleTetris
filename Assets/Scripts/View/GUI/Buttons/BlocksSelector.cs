@@ -11,7 +11,7 @@ namespace View.GUI.Buttons
         [SerializeField] private Image _blockImage;
         [SerializeField] private ColorTheme _colorTheme;
         
-        private void Start()
+        private void OnEnable()
         {
             UpdateBlockSprite();
         }

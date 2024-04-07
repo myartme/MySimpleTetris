@@ -10,6 +10,7 @@ namespace Engine.Grid
 {
     public class GameGrid : MonoBehaviour
     {
+        [SerializeField] private Game _game;
         private Tetromino Tetromino => _tetrominoOrder.CurrentTetromino;
         
         public const int WIDTH = 10;
@@ -19,7 +20,6 @@ namespace Engine.Grid
         private static Block[][] _grid = new Block[HEIGHT][];
         public delegate void GridAction();
         
-        private Game _game;
         private TetrominoOrder _tetrominoOrder;
         private Shadow _shadow;
         private bool _isTetrominoStepDown;
@@ -27,7 +27,6 @@ namespace Engine.Grid
 
         private void Awake()
         {
-            _game = GetComponent<Game>();
             _tetrominoOrder = GetComponent<TetrominoOrder>();
             for (var i = 0; i < _grid.Length; i++)
             {

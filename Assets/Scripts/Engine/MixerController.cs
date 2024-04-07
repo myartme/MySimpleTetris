@@ -28,8 +28,8 @@ namespace Engine
         
         public OptionsSave Save
         {
-            get => Game.SaveData.options;
-            private set => Game.SaveData.options = value;
+            get => Saver.SaveData.options;
+            private set => Saver.SaveData.options = value;
         }
         
         private bool _isMasterEnabled;
@@ -46,12 +46,12 @@ namespace Engine
 
         public void StoreSaveData()
         {
-            Game.Store.Save(Game.SaveData);
+            Saver.Store.Save(Saver.SaveData);
         }
         
         public void ResetSaveData()
         {
-            Save = Game.Store.Load()?.options;
+            Save = Saver.Store.Load()?.options;
             LoadSaveData();
         }
         

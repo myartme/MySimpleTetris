@@ -7,21 +7,17 @@ namespace Engine
     {
         [SerializeField] public float timeToNextStep = 2f;
         [SerializeField] public float timeStepDecreasePerLevel = 0.5f;
+        [SerializeField] private GUIManager _guiManager;
+        
         public int TotalPoints => _totalPoints;
         public int Level => _level;
         public int LinesDeleted => _linesDeleted;
         public int TetrominoCompleted => _tetrominoCompletedCount;
         
-        private GUIManager _guiManager;
         private int _totalPoints;
         private int _level = 1;
         private int _linesDeleted;
         private int _tetrominoCompletedCount = -1;
-        
-        private void Awake()
-        {
-            _guiManager = GetComponent<GUIManager>();
-        }
 
         private void Start()
         {

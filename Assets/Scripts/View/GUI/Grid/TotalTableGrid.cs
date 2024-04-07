@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Engine;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace View.GUI.Grid
         private TotalPointsTable _totalPointsTable;
         private List<string> _positionsList;
         private List<string> _resultsList;
+        private bool _isInit;
         private void Awake()
         {
             _totalPointsTable = new TotalPointsTable();
@@ -20,6 +22,13 @@ namespace View.GUI.Grid
         private void Start()
         {
             _totalPointsTable.InitializeSaveData();
+            _isInit = true;
+        }
+
+        private void OnEnable()
+        {
+            if(!_isInit) return;
+            
             var position = _totalPointsTable.Save.GetSupposedPositionByValue(_logic.TotalPoints);
             _totalPointsTable.Save.SetValueWithShift(_logic.TotalPoints);
             _totalPointsTable.StoreSaveData();

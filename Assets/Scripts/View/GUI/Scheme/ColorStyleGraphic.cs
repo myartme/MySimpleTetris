@@ -6,8 +6,8 @@ namespace View.GUI.Scheme
 {
     public abstract class ColorStyleGraphic<T> : MonoBehaviour where T : Component, IColorable
     {
+        public ColorTheme ColorTheme;
         [SerializeField] private ColorElementType colorElementType;
-        [SerializeField] private ColorTheme _colorTheme;
         private T _graphic;
 
         public ColorElementType ColorElementType
@@ -46,7 +46,7 @@ namespace View.GUI.Scheme
 
             if (_graphic != null)
             {
-                var theme = _colorTheme != null ? _colorTheme.CurrentTheme : ColorScheme.GetTheme(-1);
+                var theme = ColorTheme != null ? ColorTheme.CurrentTheme : ColorScheme.GetTheme(-1);
                 _graphic.Color = theme.GetColor(ColorElementType);
             }
         }

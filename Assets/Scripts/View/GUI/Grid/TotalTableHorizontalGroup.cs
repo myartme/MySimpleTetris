@@ -10,6 +10,7 @@ namespace View.GUI.Grid
     public class TotalTableHorizontalGroup : MonoBehaviour
     {
         [SerializeField] private TableElementField _tableElementField;
+        [SerializeField] private ColorTheme _colorTheme;
 
         private List<TableElementField> _elemList;
 
@@ -22,10 +23,11 @@ namespace View.GUI.Grid
         {
             var element = Instantiate(_tableElementField, gameObject.transform);
             element.UpdateCountText(value);
-            if (selectElement)
-            {
-                element.GetComponent<ColorTextWrapper>().ColorElementType = ColorElementType.Active;
-            }
+            var colorTextWrapper = element.GetComponent<ColorTextWrapper>();
+            colorTextWrapper.ColorTheme = _colorTheme;
+            colorTextWrapper.ColorElementType = selectElement 
+                ? ColorElementType.Active 
+                : ColorElementType.Main;
             
             _elemList.Add(element);
         }

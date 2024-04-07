@@ -11,9 +11,7 @@ namespace Engine.Grid
         [SerializeField] private Transform previewTransform;
         [SerializeField] private Transform spawnTransform;
         [SerializeField] private ColorTheme colorTheme;
-
         public static event Action OnGetTetromino;
-        
         public event Action<Tetromino> OnChangeStatus;
         public Tetromino CurrentTetromino => _current;
 

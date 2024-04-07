@@ -6,15 +6,15 @@ namespace Engine
     {
         public TotalPointsSave Save
         {
-            get => Game.SaveData.totalPoints;
-            private set => Game.SaveData.totalPoints = value;
+            get => Saver.SaveData.totalPoints;
+            private set => Saver.SaveData.totalPoints = value;
         }
         
         private const int REQUIRED_NUMBER_OF_PARAMS = 10;
         
         public void StoreSaveData()
         {
-            Game.Store.Save(Game.SaveData);
+            Saver.Store.Save(Saver.SaveData);
         }
         
         public void InitializeSaveData()

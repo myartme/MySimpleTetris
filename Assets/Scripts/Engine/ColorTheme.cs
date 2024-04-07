@@ -9,7 +9,8 @@ namespace Engine
     public class ColorTheme : MonoBehaviour
     {
         [SerializeField]private List<Sprite> blockVisualList;
-        public static event Action OnCurrentTheme, OnCurrentBlock;
+        [SerializeField] private GameObject creatableTetrominos;
+        public static event Action OnCurrentTheme;
         
         public ColorScheme.Theme CurrentTheme 
             => ColorScheme.GetTheme((ColorThemeType)CurrentThemeId);
@@ -20,15 +21,6 @@ namespace Engine
             private set
             {
                 _currentThemeId = value;
-                if (_currentThemeId < (int)ColorThemeType.Editor)
-                {
-                    _currentThemeId = (int)ColorThemeType.Editor;
-                }
-
-                if (_currentThemeId > _maxThemeId)
-                {
-                    _currentThemeId = _maxThemeId;
-                }
                 
                 Save.SetValueByName(_theme, _currentThemeId);
                 OnCurrentTheme?.Invoke();
@@ -42,31 +34,20 @@ namespace Engine
             private set
             {
                 _currentBlockId = value;
-                if (_currentBlockId < 0)
-                {
-                    _currentBlockId = 0;
-                }
-
-                if (_currentBlockId > blockVisualList.Count - 1)
-                {
-                    _currentBlockId = blockVisualList.Count - 1;
-                }
-                
                 Save.SetValueByName(_block, _currentBlockId);
-                OnCurrentBlock?.Invoke();
             }
         }
         
         public OptionsSave Save
         {
-            get => Game.SaveData.options;
-            private set => Game.SaveData.options = value;
+            get => Saver.SaveData.options;
+            private set => Saver.SaveData.options = value;
         }
 
         private readonly string _theme = "Theme",
             _block = "BlockType";
 
-        private int _maxThemeId = 1, _currentBlockId, _currentThemeId = -1;
+        private int _currentBlockId, _currentThemeId = -1;
 
         private void Start()
         {
@@ -76,12 +57,13 @@ namespace Engine
 
         public void StoreSaveData()
         {
-            Game.Store.Save(Game.SaveData);
+            Saver.Store.Save(Saver.SaveData);
+            ChangeBlocks();
         }
         
         public void ResetSaveData()
         {
-            Save = Game.Store.Load()?.options;
+            Save = Saver.Store.Load()?.options;
             LoadSaveData();
         }
         
@@ -125,6 +107,20 @@ namespace Engine
         public void ChangeColorTheme(bool theme)
         {
             CurrentThemeId = theme ? 1 : 0;
+        }
+
+        private void ChangeBlocks()
+        {
+            if(!creatableTetrominos) return;
+            
+            foreach (Transform tetromino in creatableTetrominos.transform)
+            {
+                foreach (Transform block in tetromino.transform)
+                {
+                    var sr = block.GetComponent<SpriteRenderer>();
+                    sr.sprite = CurrentBlock;
+                }
+            }
         }
     }
 }

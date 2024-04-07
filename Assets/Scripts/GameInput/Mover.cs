@@ -13,6 +13,9 @@ namespace GameInput
     {
         [SerializeField][Range((float)0.01, 1)] private float verticalSpeed = 1f;
         [SerializeField][Range((float)0.01, 1)] private float horizontalSpeed = 1f;
+        [SerializeField] private Logic _logic;
+        [SerializeField] private GameGrid _gameGrid;
+        [SerializeField] private TetrominoOrder _tetrominoOrder;
 
         public float VerticalSpeed => Save.GetValue(_verticalMS);
         public float HorizontalSpeed => Save.GetValue(_horizontalMS);
@@ -22,10 +25,6 @@ namespace GameInput
         
         private float VerticalSpeedTimer => (float)0.01 / VerticalSpeed;
         private float HorizontalSpeedTimer => (float)0.01 / HorizontalSpeed;
-
-        private TetrominoOrder _tetrominoOrder;
-        private GameGrid _gameGrid;
-        private Logic _logic;
         
         private GameGrid.GridAction _currentAction;
         private Timer _autoMoveTimer, _accelerateTimer;
@@ -40,8 +39,8 @@ namespace GameInput
         
         public OptionsSave Save
         {
-            get => Game.SaveData.options;
-            private set => Game.SaveData.options = value;
+            get => Saver.SaveData.options;
+            private set => Saver.SaveData.options = value;
         }
 
         private readonly string _horizontalMS = "HorizontalMoveSpeed",
@@ -51,9 +50,6 @@ namespace GameInput
         {
             GameInput = new InputController();
             _inputProvider = new GameplayInputProvider(GameInput);
-            _tetrominoOrder = GetComponent<TetrominoOrder>();
-            _gameGrid = GetComponent<GameGrid>();
-            _logic = GetComponent<Logic>();
             _movementStartedHandler = ctx 
                 => OnMovementStarted(_inputProvider.GetMovementAction(ctx));
             _rotationStartedHandler = ctx 
@@ -76,7 +72,9 @@ namespace GameInput
 
         private void Update()
         {
-            if (_isBlockedToMove || Time.timeScale == 0 || Game.IsGameOver) return;
+            if (Game.IsGameOver) OnDisable();
+            
+            if (_isBlockedToMove || Time.timeScale == 0) return;
             
             UpdateTimeToNextStep();
             
@@ -184,12 +182,12 @@ namespace GameInput
         
         public void StoreSaveData()
         {
-            Game.Store.Save(Game.SaveData);
+            Saver.Store.Save(Saver.SaveData);
         }
         
         public void ResetSaveData()
         {
-            Save = Game.Store.Load()?.options;
+            Save = Saver.Store.Load()?.options;
             LoadSaveData();
         }
         
