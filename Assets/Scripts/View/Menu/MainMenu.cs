@@ -22,13 +22,13 @@ namespace View.Menu
 
         public void StartGame()
         {
-            if (Options.CurrentDevice == Options.Device.Desktop)
+            if (ScreenDetector.CurrentDevice == ScreenDetector.Device.Desktop)
             {
-                SceneManager.LoadScene("GameDesktop");
+                SceneManager.LoadScene("Desktop");
             }
-            else if (Options.CurrentDevice == Options.Device.Mobile)
+            else if (ScreenDetector.CurrentDevice == ScreenDetector.Device.Mobile)
             {
-                SceneManager.LoadScene("GameMobile");
+                SceneManager.LoadScene("Mobile");
             }
             
         }

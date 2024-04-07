@@ -56,7 +56,7 @@ namespace GameFigures.Combine
                 Add(block);
             }
 
-            SetChildrenColor(BlockColors.Colors[BlockType]);
+            SetChildrenColor(ColorScheme.BlockColors[BlockType]);
         }
 
         private T CreateObject(string name)

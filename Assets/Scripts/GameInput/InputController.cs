@@ -33,7 +33,7 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""id"": ""ab25b04d-58c6-4595-90f6-6dd353b3b3a9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.5)"",
+                    ""interactions"": ""Hold(duration=0.15)"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -42,8 +42,8 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""id"": ""260b1ba4-15d9-4e8a-a83e-3ddcb7718bb4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.5)"",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Hold(duration=0.15)"",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""MovementDown"",
@@ -51,8 +51,8 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""id"": ""0ca74d21-cc82-4c5e-9a5d-8603afec7b55"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.5)"",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Hold(duration=0.15)"",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Rotation"",

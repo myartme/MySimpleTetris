@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Engine.Grid;
+using UnityEngine;
 
 namespace Engine
 {
@@ -6,29 +7,23 @@ namespace Engine
     {
         [SerializeField] public float timeToNextStep = 2f;
         [SerializeField] public float timeStepDecreasePerLevel = 0.5f;
+        [SerializeField] private GUIManager _guiManager;
         
-        private GUIManager _guiManager;
+        public int TotalPoints => _totalPoints;
+        public int Level => _level;
+        public int LinesDeleted => _linesDeleted;
+        public int TetrominoCompleted => _tetrominoCompletedCount;
+        
         private int _totalPoints;
         private int _level = 1;
         private int _linesDeleted;
         private int _tetrominoCompletedCount = -1;
-        
-        private void Awake()
-        {
-            _guiManager = GetComponent<GUIManager>();
-        }
 
         private void Start()
         {
             _guiManager.UpdateLevel(_level);
         }
-
-        private void OnEnable()
-        {
-            GameGrid.OnGetTetromino += IncreaseTetrominoCompletedCount;
-            GameGrid.OnDeleteLinesCount += UpdateStatistics;
-        }
-
+        
         private void UpdateStatistics(int linesDeleted)
         {
             var points = linesDeleted switch
@@ -65,18 +60,30 @@ namespace Engine
         private void IncreaseLevel()
         {
             if ((float)_linesDeleted / 10 <= _level) return;
-            
+
+            UpdateTimeToNextStep();
+            _guiManager.UpdateLevel(++_level);
+        }
+
+        private void UpdateTimeToNextStep()
+        {
             timeToNextStep -= timeStepDecreasePerLevel;
+            
             if (timeToNextStep <= 0)
             {
                 timeToNextStep = 0.1f;
             }
-            _guiManager.UpdateLevel(++_level);
+        }
+        
+        private void OnEnable()
+        {
+            TetrominoOrder.OnGetTetromino += IncreaseTetrominoCompletedCount;
+            GameGrid.OnDeleteLinesCount += UpdateStatistics;
         }
         
         private void OnDisable()
         {
-            GameGrid.OnGetTetromino -= IncreaseTetrominoCompletedCount;
+            TetrominoOrder.OnGetTetromino -= IncreaseTetrominoCompletedCount;
             GameGrid.OnDeleteLinesCount -= UpdateStatistics;
         }
     }

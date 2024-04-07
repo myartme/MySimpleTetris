@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine;
+using Engine.Grid;
 using GameFigures.Combine;
 using UnityEngine;
 using View.Scene;
@@ -24,14 +25,8 @@ namespace GameFigures.Shape
         public Shadow(Sprite blocksSprite, BlockType blockType) : base(blocksSprite, blockType)
         {
             Name = $"Shadow {gameObject.name}";
-            Color = BlockColors.Shadow;
+            Color = ColorScheme.Shadow;
             IsActive = false;
-        }
-
-        public void SetupAsActive(Vector3 position, int rotation, Combine<Block> children)
-        {
-            UpdatePositionAndRotation(position, rotation, children);
-            IsActive = true;
         }
         
         public void UpdatePositionAndRotation(Vector3 position, int rotation, Combine<Block> children)
@@ -47,6 +42,17 @@ namespace GameFigures.Shape
             Position = new Vector3(position.x, 
                 position.y - offsetY, 
                 5f);
+        }
+        
+        public void UpdatePositionAndRotation(Tetromino tetromino)
+        {
+            UpdatePositionAndRotation(tetromino.Position, tetromino.Rotation, tetromino.Children);
+        }
+        
+        public void SetupAsActive(Tetromino tetromino)
+        {
+            UpdatePositionAndRotation(tetromino);
+            IsActive = true;
         }
 
         private bool GoDownYToBarrier(ref int offsetY, Combine<Block> children)

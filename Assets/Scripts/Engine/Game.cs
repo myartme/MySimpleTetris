@@ -1,42 +1,29 @@
 ﻿using Sounds;
-using Spawn;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Engine
 {
-    [RequireComponent(typeof(GUIManager))]
     public class Game : MonoBehaviour
     {
-        [SerializeField] public Spawner spawner;
-        [SerializeField] private Transform tetrominoParent;
-        [SerializeField] public SoundsEffects soundsEffects;
-        public static Transform BoardTransform { get; private set; }
+        [SerializeField] public GameObject TetrominoParent;
+        [SerializeField] public SoundsEffects SoundsEffects;
+        [SerializeField] private GUIManager _guiManager;
         
-        private GUIManager _guiManager;
+        public static Transform BoardTransform { get; private set; }
+        public static bool IsGameOver;
 
         private void Awake()
         {
-            _guiManager = GetComponent<GUIManager>();
-            BoardTransform = tetrominoParent;
+            BoardTransform = TetrominoParent.transform;
         }
 
         private void Update()
         {
-            if (Options.IsGameOver)
+            if (IsGameOver)
             {
                 _guiManager.ShowGameOverScreen();
             }
-        }
-        
-        public void ShowOption()
-        {
-            _guiManager.ShowOptionScreen();
-        }
-        
-        public void HideOption()
-        {
-            _guiManager.HideOptionScreen();
         }
         
         public void PauseGame()
@@ -53,9 +40,9 @@ namespace Engine
 
         public void RestartGame()
         {
-            Destroy(tetrominoParent);
+            Destroy(TetrominoParent);
             _guiManager.HideGameOverScreen();
-            Options.IsGameOver = false;
+            IsGameOver = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }

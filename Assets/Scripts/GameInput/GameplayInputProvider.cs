@@ -12,7 +12,7 @@ namespace GameInput
             _movementLeft = inputController.Gameplay.MovementLeft;
             _movementRight = inputController.Gameplay.MovementRight;
             _movementDown = inputController.Gameplay.MovementDown;
-            MovementInputAction = new []{ _movementLeft, _movementRight, _movementDown };
+            MovementInputAction = new[] { _movementLeft, _movementRight, _movementDown };
             RotationInputAction = new[] { inputController.Gameplay.Rotation };
         }
         
@@ -21,7 +21,7 @@ namespace GameInput
             return callbackContext.action == _movementLeft ? MovementType.Left : 
                 callbackContext.action == _movementRight ? MovementType.Right :
                 callbackContext.action == _movementDown ? MovementType.Down :
-                throw new System.ArgumentException("GameGrid Action Movement is not support that data.");
+                throw new System.ArgumentException("GameGrid Action Movement is not support current data.");
         }
 
         public override RotationType GetRotationAction(InputAction.CallbackContext callbackContext)
@@ -30,7 +30,7 @@ namespace GameInput
             
             return value < 0 ? RotationType.Anticlockwise :
                 value > 0 ? RotationType.Clockwise : 
-                throw new System.ArgumentException("GameGrid Action Rotation is not support that data.");
+                throw new System.ArgumentException("GameGrid Action Rotation is not support current data.");
         }
     }
 }

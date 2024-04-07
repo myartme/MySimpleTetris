@@ -5,21 +5,21 @@ namespace View.GUI.Buttons
 {
     public class SwitchSprite : ResourcesButton
     {
-        [SerializeField] private Sprite _switchNormal, _switchPressed;
-
-        private bool _isSwitched;
-
+        [SerializeField] protected Sprite switchNormal;
+        [SerializeField] protected Sprite switchPressed;
+        protected bool isSwitched;
+        
         public override void OnPointerUp(PointerEventData eventData)
         {
-            _image.sprite = _isSwitched ? _normal : _switchNormal;
-            _audioSource.PlayOneShot(_uncompressClip);
-            _isSwitched = !_isSwitched;
+            image.sprite = isSwitched ? normal : switchNormal;
+            audioSource.PlayOneShot(uncompressClip);
+            isSwitched = !isSwitched;
         }
         
         public override void OnPointerDown(PointerEventData eventData)
         {
-            _image.sprite = _isSwitched ? _pressed : _switchPressed;
-            _audioSource.PlayOneShot(_compressClip);
+            image.sprite = isSwitched ? pressed : switchPressed;
+            audioSource.PlayOneShot(compressClip);
         }
     }
 }

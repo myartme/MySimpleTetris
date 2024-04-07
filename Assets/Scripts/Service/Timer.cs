@@ -4,7 +4,7 @@ namespace Service
 {
     public class Timer
     {
-        public float CurrentTimer { get; set; }
+        public float CurrentTimer { get; private set; }
         public float Ending { get; set; }
 
         public Timer(float ending)

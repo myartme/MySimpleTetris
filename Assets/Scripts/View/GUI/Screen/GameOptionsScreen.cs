@@ -1,6 +1,4 @@
-﻿using Engine;
-
-namespace View.GUI.Screen
+﻿namespace View.GUI.Screen
 {
     public class GameOptionsScreen : BaseScreen<GameOptionsScreen>
     {
