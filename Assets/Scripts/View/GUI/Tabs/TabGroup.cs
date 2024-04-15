@@ -22,6 +22,11 @@ namespace View.GUI.Tabs
             SelectTab(_defaultTab);
         }
 
+        public void CloseGroups()
+        {
+            SelectTab(_defaultTab);
+        }
+
         public void Subscribe(TabHead button)
         {
             _headTabList.Add(button);
@@ -42,7 +47,7 @@ namespace View.GUI.Tabs
             _selectedTab = button;
             _selectedTab.TabWrapper.ColorElementType = ColorElementType.Active;
             _selectedTab.TabLabel.ColorElementType = ColorElementType.Active;
-            SetActive(_selectedTab.TabBody, true);
+            _selectedTab.TabBody.SetActive(true);
             foreach (var tabHead in _headTabList.Where(tabHead => tabHead != _selectedTab))
             {
                 SetActive(tabHead.TabBody, false);

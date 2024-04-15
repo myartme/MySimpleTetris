@@ -1,4 +1,5 @@
-﻿using GameInput;
+﻿using System.Collections;
+using GameInput;
 using UnityEngine;
 using View.GUI.TextField;
 
@@ -12,8 +13,15 @@ namespace View.GUI.Tabs.TabBodies
         
         protected override void UpdateValues()
         {
-            _horizontalMS.ChangeSliderValue(_mover.HorizontalSpeed);
-            _verticalMS.ChangeSliderValue(_mover.VerticalSpeed);
+            /*_horizontalMS.ChangeSliderValue(_mover.HorizontalSpeed);
+            _verticalMS.ChangeSliderValue(_mover.VerticalSpeed);*/
+            //StartCoroutine(UpdateSliders());
+        }
+
+        private IEnumerator UpdateSliders()
+        {
+            yield return _horizontalMS.ChangeSliderValueIfIsset(_mover.HorizontalSpeed);
+            yield return _verticalMS.ChangeSliderValueIfIsset(_mover.VerticalSpeed);
         }
     }
 }

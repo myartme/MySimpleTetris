@@ -11,11 +11,11 @@ namespace View.GUI.Buttons
         [SerializeField] private Image _blockImage;
         [SerializeField] private ColorTheme _colorTheme;
         
-        private void OnEnable()
+        public void UpdateBlockSprite()
         {
-            UpdateBlockSprite();
+            _blockImage.sprite = _colorTheme.CurrentBlock;
         }
-
+        
         public void NextBlock()
         {
             _colorTheme.IncrementBlockId();
@@ -26,11 +26,6 @@ namespace View.GUI.Buttons
         {
             _colorTheme.DecrementBlockId();
             UpdateBlockSprite();
-        }
-
-        private void UpdateBlockSprite()
-        {
-            _blockImage.sprite = _colorTheme.CurrentBlock;
         }
     }
 }

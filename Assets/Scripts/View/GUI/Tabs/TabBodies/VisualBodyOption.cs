@@ -12,8 +12,8 @@ namespace View.GUI.Tabs.TabBodies
 
         protected override void UpdateValues()
         {
-            _toggleTheme.IsToggleOn = _colorTheme.CurrentThemeId == 1;
-            
+            //_toggleTheme.IsToggleOn = _colorTheme.CurrentThemeId == 1;
+            //_blocksSelector.UpdateBlockSprite();
         }
     }
 }

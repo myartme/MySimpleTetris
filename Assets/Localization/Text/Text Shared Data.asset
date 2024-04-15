@@ -1,0 +1,306 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Text Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Text
+  m_TableCollectionNameGuidString: 443b75269a4f56e4da3830f8778b8cb1
+  m_Entries:
+  - m_Id: 7465934905344
+    m_Key: Mobile/CanvasRightPanel/Panel/Score/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7521404575744
+    m_Key: Mobile/CanvasRightPanel/Panel/TetrominoField/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7548822740992
+    m_Key: Mobile/CanvasRightPanel/Panel/Count/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7740523405312
+    m_Key: Mobile/CanvasRightPanel/Panel/Lines/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7763453665280
+    m_Key: Mobile/CanvasRightPanel/Panel/Level/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7950582538240
+    m_Key: Mobile/CanvasScreens/OptionsScreen/OptionsTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8120724480000
+    m_Key: Mobile/CanvasScreens/GameOverScreen/EndGameTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8226404163584
+    m_Key: Mobile/CanvasScreens/PauseScreen/PauseTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8326065020928
+    m_Key: Mobile/CanvasScreens/GameOverScreen/RestartButton/ButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8414233485312
+    m_Key: Mobile/CanvasScreens/PauseScreen/OptionsButton/OptionsButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8446126972928
+    m_Key: Mobile/CanvasScreens/PauseScreen/ResumeButton/ResumeButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8651513651200
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Audio/AudioButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8669561741312
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Control/ControlButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8854232752128
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead (1)/Visual/VisualButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8876726804480
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead (1)/Language/VisualButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9163671724032
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/SoundSwitcher/SoundSwitcherLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9189273755648
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Music/MusicLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9210425630720
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Buttons/ButtonsLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9229635543040
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Effects/EffectsLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9640002052096
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/ControlTabBody/HorizontalMoveSpeed/HorizontalMoveSpeedLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9717579898880
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/ControlTabBody/VerticalMoveSpeed/VerticalMoveSpeedLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10085487468544
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/VisualTabBody/ThemeSwitcher/ThemeSwitcherLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10104651243520
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/VisualTabBody/Blocks/BlockLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12915791224832
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/Buttons/ConfirmButton/ConfirmButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12948930420736
+    m_Key: Mobile/CanvasScreens/OptionsScreen/Body/Buttons/CancelButton/CancelButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153771630256128
+    m_Key: MainMenu/CanvasScreens/GameStartScreen/StartButton/StartButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153850483171328
+    m_Key: MainMenu/CanvasScreens/GameStartScreen/OptionButton/OptionButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394512226967552
+    m_Key: Desktop/CanvasScreens/GameOverScreen/EndGameTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 398977512366080
+    m_Key: Desktop/CanvasScreens/GameOverScreen/RestartButton/ButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399060840603648
+    m_Key: Desktop/CanvasScreens/PauseScreen/PauseTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399119074320384
+    m_Key: Desktop/CanvasScreens/PauseScreen/OptionsButton/OptionsButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399246975426560
+    m_Key: Desktop/CanvasScreens/PauseScreen/ResumeButton/ResumeButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399282077556736
+    m_Key: Desktop/CanvasScreens/OptionsScreen/OptionsTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399313400619008
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Audio/AudioButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399367184179200
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Control/ControlButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399425560502272
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Visual/VisualButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399447358300160
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Language/VisualButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399594511261696
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/SoundSwitcher/SoundSwitcherLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399617542184960
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Music/MusicLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399647221080064
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Buttons/ButtonsLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399669845155840
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Effects/EffectsLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399698219622400
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/ControlTabBody/HorizontalMoveSpeed/HorizontalMoveSpeedLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399742003961856
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/ControlTabBody/VerticalMoveSpeed/VerticalMoveSpeedLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399779450707968
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/VisualTabBody/ThemeSwitcher/ThemeSwitcherLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399800669691904
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/VisualTabBody/Blocks/BlockLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399924934336512
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/Buttons/ConfirmButton/ConfirmButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 399949185802240
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/Buttons/CancelButton/CancelButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 420699590483968
+    m_Key: New Entry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 420907997061120
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/ControlTabBody/HorizontalMoveSpeed/HorizontalMoveSpeedLabel
+      1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 421365243305984
+    m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/ControlTabBody/HorizontalMoveSpeed/HorizontalMoveSpeedLabel
+      2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 424433871609856
+    m_Key: Desktop/CanvasRightPanel/Panel/Level/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 424875028504576
+    m_Key: Desktop/CanvasRightPanel/Panel/Lines/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 425042175713280
+    m_Key: Desktop/CanvasRightPanel/Panel/Count/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 426469337980928
+    m_Key: Desktop/CanvasRightPanel/Panel/Count/Field/Label 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 426587873206272
+    m_Key: Desktop/CanvasRightPanel/Panel/TetrominoField/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 426926223515648
+    m_Key: Desktop/CanvasRightPanel/Panel/Score/Field/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 561968463601664
+    m_Key: MainMenu/CanvasScreens/GameStartScreen/OptionsButton/OptionsButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735207907254272
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Audio/AudioButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735269760655360
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Other/OtherButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735453638942720
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/SoundSwitcher/SoundSwitcherLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735477357731840
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Music/MusicLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735503219810304
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Buttons/ButtonsLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735526510780416
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Effects/EffectsLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735553362714624
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/OtherTabBody/VisualTabBody/ThemeSwitcher/ThemeSwitcherLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735573260492800
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/OtherTabBody/VisualTabBody/Blocks/BlockLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735661449928704
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/Buttons/ConfirmButton/ConfirmButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735688993923072
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/Body/Buttons/CancelButton/CancelButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 736595848585216
+    m_Key: MainMenu/CanvasScreens/OptionsScreen/OptionsTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 804704458498048
+    m_Key: MainMenu/CanvasScreens/GameStartScreen/StartButton/StartButtonText 1
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5353797257061466125
+  references:
+    version: 2
+    RefIds:
+    - rid: 5353797257061466125
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1712848996550

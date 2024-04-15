@@ -18,39 +18,29 @@ namespace Save.Data.Format
             throw new NullReferenceException();
         }
 
-        public void SetValueByName(string name, float value, int decimals = 0)
+        public void SetValueByName(string name, float value)
         {
             var index = list.FindIndex(opt => opt.name == name);
 
             if (index != -1)
             {
-                list[index] = CreateElement(name, value, decimals);
+                list[index] = CreateElement(name, value);
             }
         }
         
-        public void AddToList(string name, float value, int decimals = 0)
+        public void AddToList(string name, float value)
         {
             var index = list.FindIndex(opt => opt.name == name);
             
             if (index == -1)
             {
-                list.Add(CreateElement(name, value, decimals));
+                list.Add(CreateElement(name, value));
             }
         }
 
-        public Option CreateElement(string name, float value, int decimals = 0)
+        public Option CreateElement(string name, float value)
         {
-            return new Option { name = name, value = SetValue(value, decimals) }; 
-        }
-
-        private float SetValue(float value, int decimals = -1)
-        {
-            if (decimals > 0)
-            {
-                return Mathf.Round(value * 10 * decimals) / (10 * decimals);
-            }
-
-            return value;
+            return new Option { name = name, value = value }; 
         }
     }
 }

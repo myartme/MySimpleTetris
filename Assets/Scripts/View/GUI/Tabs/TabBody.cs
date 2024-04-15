@@ -10,16 +10,15 @@ namespace View.GUI.Tabs
         {
             CanvasGroup = GetComponent<CanvasGroup>();
         }
-
-        private void Start()
-        {
-            _isInitialized = true;
-        }
         
-        private void OnEnable()
+        public virtual void SetActive(bool isActive)
         {
-            if(!_isInitialized) return;
-            UpdateValues();
+            CanvasGroup.alpha = isActive ? 1 : 0;
+            CanvasGroup.blocksRaycasts = isActive;
+            if (isActive)
+            {
+                UpdateValues();
+            }
         }
         
         protected virtual void UpdateValues(){}

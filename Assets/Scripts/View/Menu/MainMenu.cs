@@ -1,23 +1,24 @@
+using System.Collections;
 using Engine;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
+using View.GUI.Screen;
 
 namespace View.Menu
 {
-    [RequireComponent(typeof(GUIManager))]
     public class MainMenu : MonoBehaviour
     {
-        private GUIManager _guiManager;
+        [SerializeField] private GUIManager _guiManager;
+        [SerializeField] private Localization _localization;
         private static bool _gameIsRestarted;
 
-        private void Awake()
+        private IEnumerator Start()
         {
-            _guiManager = GetComponent<GUIManager>();
-        }
-
-        private void Start()
-        {
+            yield return GameStartScreen.ClassInstance;
+            yield return LocalizationSettings.InitializationOperation;
             _guiManager.ShowMainMenu();
+            yield return null;
         }
 
         public void StartGame()
@@ -31,11 +32,6 @@ namespace View.Menu
                 SceneManager.LoadScene("Mobile");
             }
             
-        }
-        
-        public void OpenOptions()
-        {
-            //SceneManager.LoadScene("MainMenu");
         }
     }
 }

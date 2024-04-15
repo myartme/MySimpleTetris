@@ -2,9 +2,15 @@
 {
     public class GameOverScreen : BaseScreen<GameOverScreen>
     {
+        protected override void Start()
+        {
+            base.Start();
+            SetActiveScreen(false);
+        }
+
         public void ShowScreen(bool isShowScreen)
         {
-            SetShowScreen(isShowScreen);
+            SetActiveScreen(isShowScreen);
         }
     }
 }

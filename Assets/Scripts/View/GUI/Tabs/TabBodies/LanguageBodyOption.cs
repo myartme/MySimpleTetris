@@ -1,16 +1,15 @@
 ﻿using Engine;
 using UnityEngine;
-using View.GUI.Buttons;
 
 namespace View.GUI.Tabs.TabBodies
 {
     public class LanguageBodyOption : TabBody
     {
-
-
-        protected override void UpdateValues()
+        [SerializeField] private Localization _localization;
+        
+        public void ChangeLocale(float value)
         {
-            
+            //_localization.ChangeLocale(value);
         }
     }
 }
