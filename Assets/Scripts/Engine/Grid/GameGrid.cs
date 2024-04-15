@@ -57,7 +57,7 @@ namespace Engine.Grid
                     {
                         if (_grid[i][j])
                             _grid[i][j].DropMeDown(linesDeleted);
-                        
+
                         _grid[i - linesDeleted][j] = _grid[i][j];
                     }
                 }
@@ -76,61 +76,61 @@ namespace Engine.Grid
                 var childPosition = Vector3Int.RoundToInt(position + blockLocalPos);
                 var x = childPosition.x;
                 var y = childPosition.y;
-                
+
                 if (_isTetrominoStepDown && (y <= 0 || !IsEmptyGridPosition(x, y)))
                 {
                     Tetromino.SetAsMakeComplete();
                 }
-                
+
                 if (IsOutOfGrid(x, y) || (!IsOutOfGrid(x, y) && !IsEmptyGridPosition(x, y)))
                 {
                     return false;
                 }
             }
-            
+
             return true;
         }
-        
+
         public void StepLeft()
         {
             Step(new Vector3(Tetromino.Position.x - 1, Tetromino.Position.y));
         }
-        
+
         public void StepRight()
         {
             Step(new Vector3(Tetromino.Position.x + 1, Tetromino.Position.y));
         }
-        
+
         public void StepDown()
         {
             _isTetrominoStepDown = true;
             Step(new Vector3(Tetromino.Position.x, Tetromino.Position.y - 1));
             _isTetrominoStepDown = false;
         }
-        
+
         public void ClockwiseAngleRotation()
         {
             Step(Tetromino.PrevRotation);
         }
-        
+
         public void AnticlockwiseAngleRotation()
         {
             Step(Tetromino.NextRotation);
         }
-        
+
         private void Step(Vector3 position, int rotation)
         {
             if (IsPossibleMovement(Tetromino, position, rotation))
             {
                 if (Tetromino.Position != position)
                     Tetromino.Position = position;
-                
+
                 if (Tetromino.Rotation != rotation)
                     Tetromino.Rotation = rotation;
             }
-            
+
             if (Tetromino.Status != ObjectStatus.MakeComplete) return;
-            
+
             _game.SoundsEffects.PlayComplete();
             UpdateTetrominoBlockPositionsOnGrid();
             DeleteLines();
@@ -149,7 +149,7 @@ namespace Engine.Grid
             for (var i = 0; i < _grid.Length; i++)
             {
                 var allCompleted = _grid[i].All(item => item != null);
-                
+
                 if (allCompleted)
                 {
                     for (int j = 4, k = 5; j >= 0 && k < _grid[i].Length; j--, k++)
@@ -182,7 +182,7 @@ namespace Engine.Grid
                     {
                         count++;
                     }
-                        
+
                     if (count == _grid[line].Length)
                     {
                         counter++;
@@ -192,18 +192,18 @@ namespace Engine.Grid
 
             return counter;
         }
-        
-        private void Step(Vector3 position) 
+
+        private void Step(Vector3 position)
             => Step(position, Tetromino.Rotation);
 
         private void Step(int rotation)
             => Step(Tetromino.Position, rotation);
-        
+
         public static bool IsEmptyGridPosition(int x, int y)
         {
             return _grid[y - 1][x - 1] is null;
         }
-        
+
         private bool IsOutOfGrid(int x, int y)
         {
             return x is <= 0 or > WIDTH || y is <= 0 or > HEIGHT;

@@ -17,10 +17,10 @@ namespace View.GUI.Tabs
             _headTabList = new List<TabHead>();
         }
 
-        private void OnEnable()
+        /*private void OnEnable()
         {
             SelectTab(_defaultTab);
-        }
+        }*/
 
         public void CloseGroups()
         {
