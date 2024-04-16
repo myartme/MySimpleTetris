@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using System.Collections;
+using Engine;
 using UnityEngine;
 using View.GUI.Buttons;
 using View.GUI.TextField;
@@ -12,13 +13,22 @@ namespace View.GUI.Tabs.TabBodies
         [SerializeField] private SliderValue _music;
         [SerializeField] private SliderValue _buttons;
         [SerializeField] private SliderValue _effects;
-
+        
         protected override void UpdateValues()
         {
-            _toggleMusic.IsToggleOn = _mixerController.IsMasterEnabled;
-            _music.ChangeSliderValue(_mixerController.MusicValue);
-            _effects.ChangeSliderValue(_mixerController.EffectsValue);
-            _buttons.ChangeSliderValue(_mixerController.UIValue);
+            //_toggleMusic.IsToggleOn = _mixerController.IsMasterEnabled;
+            //_music.ChangeSliderValue(_mixerController.MusicValue);
+            //_effects.ChangeSliderValue(_mixerController.EffectsValue);
+            //_buttons.ChangeSliderValue(_mixerController.UIValue);
+            StartCoroutine(UpdateElements());
+        }
+
+        private IEnumerator UpdateElements()
+        {
+            yield return _toggleMusic.SetToggle(_mixerController.IsMasterEnabled);
+            yield return _music.ChangeSliderValueIfIsset(_mixerController.MusicValue);
+            yield return _effects.ChangeSliderValueIfIsset(_mixerController.EffectsValue);
+            yield return _buttons.ChangeSliderValueIfIsset(_mixerController.UIValue);
         }
     }
 }

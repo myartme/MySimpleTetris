@@ -1,5 +1,4 @@
-﻿using Engine;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using View.GUI.Scheme.ColorStyleWrappers;
 using View.Scene;
@@ -20,17 +19,22 @@ namespace View.GUI
 			backgroung = ClassInstance.GetComponent<ColorImageWrapper>();
 		}
 
-		protected void Start()
+		protected virtual void Start()
 		{
 			backgroung.ColorElementType = ColorElementType.Background;
 			SetShowScreen(false);
 		}
 
+		protected void SetActiveScreen(bool isShowScreen)
+		{
+			SetShowScreen(isShowScreen);
+			SetActiveByAlpha();
+		}
+		
 		protected void SetShowScreen(bool isShowScreen)
 		{
 			canvasGroup.alpha = isShowScreen ? 1 : 0;
 			canvasGroup.blocksRaycasts = isShowScreen;
-			SetActiveByAlpha();
 		}
 
 		protected void SetActiveByAlpha()

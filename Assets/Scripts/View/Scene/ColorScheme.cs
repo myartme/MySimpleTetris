@@ -25,7 +25,7 @@ namespace View.Scene
         static ColorScheme()
         {
             _light.SetColor(ColorElementType.Background, new Color32(205, 190, 167, 255))
-                .SetColor(ColorElementType.Main, new Color32(173, 131, 55, 255))
+                .SetColor(ColorElementType.Main, new Color32(155, 100, 0, 255))
                 .SetColor(ColorElementType.Shadow, new Color32(50, 48, 48, 255))
                 .SetColor(ColorElementType.Active, new Color32(136, 36, 38, 255));
             

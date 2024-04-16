@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using View.GUI.Scheme.ColorStyleWrappers;
@@ -17,16 +18,6 @@ namespace View.GUI.Buttons
         private ColorImageWrapper _fillColorWrapper;
         private float _swapX;
 
-        public bool IsToggleOn
-        {
-            get => _toggle.isOn;
-            set
-            {
-                _toggle.isOn = value;
-                CheckToggle();
-            }
-        }
-
         private void Awake()
         {
             _toggle = GetComponent<Toggle>();
@@ -40,6 +31,13 @@ namespace View.GUI.Buttons
         {
             CheckToggle();
             _handleColorWrapper.ColorElementType = ColorElementType.Main;
+        }
+        
+        public IEnumerator SetToggle(bool isToggleOn)
+        {
+            yield return new WaitWhile(() => _toggle == null);
+            _toggle.isOn = isToggleOn;
+            CheckToggle();
         }
 
         public void ToggleEnable()
@@ -61,7 +59,7 @@ namespace View.GUI.Buttons
         
         private void CheckToggle()
         {
-            if (IsToggleOn)
+            if (_toggle.isOn)
             {
                 ToggleEnable();
             }

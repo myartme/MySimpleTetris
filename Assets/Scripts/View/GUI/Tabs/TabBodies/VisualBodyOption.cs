@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using System.Collections;
+using Engine;
 using UnityEngine;
 using View.GUI.Buttons;
 
@@ -12,8 +13,14 @@ namespace View.GUI.Tabs.TabBodies
 
         protected override void UpdateValues()
         {
-            _toggleTheme.IsToggleOn = _colorTheme.CurrentThemeId == 1;
-            
+            //_toggleTheme.IsToggleOn = _colorTheme.CurrentThemeId == 1;
+            StartCoroutine(UpdateElements());
+            _blocksSelector.UpdateBlockSprite();
+        }
+        
+        private IEnumerator UpdateElements()
+        {
+            yield return _toggleTheme.SetToggle(_colorTheme.CurrentThemeId == 1);
         }
     }
 }

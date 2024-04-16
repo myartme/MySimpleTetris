@@ -206,12 +206,12 @@ namespace GameInput
         
         public void ToggleHorizontalMoveSpeed(float value)
         {
-            Save.SetValueByName(_horizontalMS, value, 1);
+            Save.SetValueByName(_horizontalMS, value);
         }
         
         public void ToggleVerticalMoveSpeed(float value)
         {
-            Save.SetValueByName(_verticalMS, value, 1);
+            Save.SetValueByName(_verticalMS, value);
         }
         
         private void OnEnable()

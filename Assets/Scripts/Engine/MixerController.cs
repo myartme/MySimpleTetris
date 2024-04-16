@@ -12,27 +12,24 @@ namespace Engine
         [SerializeField] private MasterSoundSwitchSprite _switchSprite;
         public event Action<bool> OnIsMasterEnabled;
         public float MusicValue => Save.GetValue(_music);
-        public float EffectsValue => Save.GetValue(_effect);
+        public float EffectsValue =>Save.GetValue(_effect);
         public float UIValue => Save.GetValue(_ui);
 
         public bool IsMasterEnabled
         {
-            get => _isMasterEnabled;
-            set
+            get => Save.GetValue(_master) == 0;
+            private set
             {
-                _isMasterEnabled = value;
-                ToggleMasterMixer(_isMasterEnabled ? 0 : -80);
-                OnIsMasterEnabled?.Invoke(_isMasterEnabled);
+                ToggleMasterMixer(value ? 0 : -80);
+                OnIsMasterEnabled?.Invoke(value);
             }
         }
-        
         public OptionsSave Save
         {
             get => Saver.SaveData.options;
             private set => Saver.SaveData.options = value;
         }
         
-        private bool _isMasterEnabled;
         private readonly string _master = "MasterVolume",
             _music = "MusicVolume",
             _effect = "EffectsVolume",
