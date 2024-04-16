@@ -11,13 +11,13 @@ namespace Engine
         [SerializeField] private AudioMixerGroup audioMixer;
         [SerializeField] private MasterSoundSwitchSprite _switchSprite;
         public event Action<bool> OnIsMasterEnabled;
-        public float MusicValue => 0.1f;//Save.GetValue(_music);
-        public float EffectsValue => 0.1f;//Save.GetValue(_effect);
-        public float UIValue => 0.1f;//Save.GetValue(_ui);
+        public float MusicValue => Save.GetValue(_music);
+        public float EffectsValue =>Save.GetValue(_effect);
+        public float UIValue => Save.GetValue(_ui);
 
         public bool IsMasterEnabled
         {
-            get => true;//Save.GetValue(_master) == 0;
+            get => Save.GetValue(_master) == 0;
             private set
             {
                 ToggleMasterMixer(value ? 0 : -80);

@@ -9,7 +9,7 @@ namespace View.GUI.Tabs.TabBodies
         
         public void ChangeLocale(float value)
         {
-            //_localization.ChangeLocale(value);
+            _localization.ChangeLocale(value);
         }
     }
 }

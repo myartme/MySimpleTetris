@@ -6,7 +6,7 @@ namespace Save
     public interface IStorable
     {
         public bool IsExists { get; }
-        public void Create();
+        public SaveData Create();
         public void Save(SaveData data);
         [CanBeNull] public SaveData Load();
     }

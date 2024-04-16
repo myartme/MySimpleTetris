@@ -17,8 +17,8 @@ namespace GameInput
         [SerializeField] private GameGrid _gameGrid;
         [SerializeField] private TetrominoOrder _tetrominoOrder;
 
-        public float VerticalSpeed => 0.2f;//Save.GetValue(_verticalMS);
-        public float HorizontalSpeed => 0.2f;//Save.GetValue(_horizontalMS);
+        public float VerticalSpeed => Save.GetValue(_verticalMS);
+        public float HorizontalSpeed => Save.GetValue(_horizontalMS);
         
         private InputController GameInput { get; set; }
         private InputProvider _inputProvider;

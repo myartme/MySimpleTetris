@@ -11,8 +11,8 @@ namespace View.GUI.Tabs.TabBodies
         public override void SetActive(bool isActive)
         {
             base.SetActive(isActive);
-            //_visualBody.SetActive(isActive);
-            //_languageBody.SetActive(isActive);
+            _visualBody.SetActive(isActive);
+            _languageBody.SetActive(isActive);
         }
     }
 }

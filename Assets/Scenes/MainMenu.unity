@@ -3219,6 +3219,7 @@ GameObject:
   - component: {fileID: 905935597}
   - component: {fileID: 905935596}
   - component: {fileID: 905935598}
+  - component: {fileID: 905935599}
   m_Layer: 0
   m_Name: MainObjectOptions
   m_TagString: Untagged
@@ -3267,6 +3268,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guiManager: {fileID: 762566062}
   _localization: {fileID: 401304165}
+--- !u!114 &905935599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905935595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff0369d3ced44f39f169e870dd60054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &945508353
 GameObject:
   m_ObjectHideFlags: 0
@@ -3370,7 +3383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 989937275}
-  _localization: {fileID: 401304165}
+  _localization: {fileID: 0}
 --- !u!1 &1047830234
 GameObject:
   m_ObjectHideFlags: 0

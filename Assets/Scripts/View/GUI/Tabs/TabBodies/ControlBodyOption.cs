@@ -15,7 +15,7 @@ namespace View.GUI.Tabs.TabBodies
         {
             /*_horizontalMS.ChangeSliderValue(_mover.HorizontalSpeed);
             _verticalMS.ChangeSliderValue(_mover.VerticalSpeed);*/
-            //StartCoroutine(UpdateSliders());
+            StartCoroutine(UpdateSliders());
         }
 
         private IEnumerator UpdateSliders()

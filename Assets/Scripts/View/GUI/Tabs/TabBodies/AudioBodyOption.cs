@@ -20,11 +20,12 @@ namespace View.GUI.Tabs.TabBodies
             //_music.ChangeSliderValue(_mixerController.MusicValue);
             //_effects.ChangeSliderValue(_mixerController.EffectsValue);
             //_buttons.ChangeSliderValue(_mixerController.UIValue);
-            //StartCoroutine(UpdateSliders());
+            StartCoroutine(UpdateElements());
         }
 
-        private IEnumerator UpdateSliders()
+        private IEnumerator UpdateElements()
         {
+            yield return _toggleMusic.SetToggle(_mixerController.IsMasterEnabled);
             yield return _music.ChangeSliderValueIfIsset(_mixerController.MusicValue);
             yield return _effects.ChangeSliderValueIfIsset(_mixerController.EffectsValue);
             yield return _buttons.ChangeSliderValueIfIsset(_mixerController.UIValue);

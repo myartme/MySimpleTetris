@@ -17,11 +17,12 @@ namespace Save
             _filePath = GetFilePath("save");
         }
         
-        public void Create()
+        public SaveData Create()
         {
-            if(IsExists) return;
+            if(IsExists) return default;
 
-            using (File.Create(_filePath)) { }
+            using var file = File.Create(_filePath);
+            return (SaveData)_binaryFormatter.Deserialize(file);
         }
 
         public void Save(SaveData data)
