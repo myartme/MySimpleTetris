@@ -9,15 +9,15 @@ namespace View.Menu
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField] private GUIManager _guiManager;
-        [SerializeField] private Localization _localization;
+        [SerializeField] private GUIManager guiManager;
+        [SerializeField] private Localization localization;
         private static bool _gameIsRestarted;
 
         private IEnumerator Start()
         {
             yield return GameStartScreen.ClassInstance;
             yield return LocalizationSettings.InitializationOperation;
-            _guiManager.ShowMainMenu();
+            guiManager.ShowMainMenu();
             yield return null;
         }
 

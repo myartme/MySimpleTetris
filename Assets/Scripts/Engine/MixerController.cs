@@ -2,14 +2,12 @@
 using Save.Data.Format;
 using UnityEngine;
 using UnityEngine.Audio;
-using View.GUI.Buttons;
 
 namespace Engine
 {
     public class MixerController : MonoBehaviour
     {
         [SerializeField] private AudioMixerGroup audioMixer;
-        [SerializeField] private MasterSoundSwitchSprite _switchSprite;
         public event Action<bool> OnIsMasterEnabled;
         public float MusicValue => Save.GetValue(_music);
         public float EffectsValue =>Save.GetValue(_effect);

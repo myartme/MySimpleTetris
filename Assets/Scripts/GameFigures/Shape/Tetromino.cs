@@ -9,7 +9,6 @@ namespace GameFigures.Shape
         public event Action<Tetromino> OnChangeStatus;
         
         private Shadow _shadow;
-
         private ObjectStatus _status;
 
         public ObjectStatus Status

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Engine;
 using UnityEngine;
+using UnityEngine.Serialization;
 using View.GUI.Buttons;
 using View.GUI.TextField;
 
@@ -8,27 +9,23 @@ namespace View.GUI.Tabs.TabBodies
 {
     public sealed class AudioBodyOption : TabBody
     {
-        [SerializeField] private MixerController _mixerController;
-        [SerializeField] private ToggleSwitchButton _toggleMusic;
-        [SerializeField] private SliderValue _music;
-        [SerializeField] private SliderValue _buttons;
-        [SerializeField] private SliderValue _effects;
+        [FormerlySerializedAs("_mixerController")] [SerializeField] private MixerController mixerController;
+        [FormerlySerializedAs("_toggleMusic")] [SerializeField] private ToggleSwitchButton toggleMusic;
+        [FormerlySerializedAs("_music")] [SerializeField] private SliderValue music;
+        [FormerlySerializedAs("_buttons")] [SerializeField] private SliderValue buttons;
+        [FormerlySerializedAs("_effects")] [SerializeField] private SliderValue effects;
         
         protected override void UpdateValues()
         {
-            //_toggleMusic.IsToggleOn = _mixerController.IsMasterEnabled;
-            //_music.ChangeSliderValue(_mixerController.MusicValue);
-            //_effects.ChangeSliderValue(_mixerController.EffectsValue);
-            //_buttons.ChangeSliderValue(_mixerController.UIValue);
             StartCoroutine(UpdateElements());
         }
 
         private IEnumerator UpdateElements()
         {
-            yield return _toggleMusic.SetToggle(_mixerController.IsMasterEnabled);
-            yield return _music.ChangeSliderValueIfIsset(_mixerController.MusicValue);
-            yield return _effects.ChangeSliderValueIfIsset(_mixerController.EffectsValue);
-            yield return _buttons.ChangeSliderValueIfIsset(_mixerController.UIValue);
+            yield return toggleMusic.SetToggle(mixerController.IsMasterEnabled);
+            yield return music.ChangeSliderValueIfIsset(mixerController.MusicValue);
+            yield return effects.ChangeSliderValueIfIsset(mixerController.EffectsValue);
+            yield return buttons.ChangeSliderValueIfIsset(mixerController.UIValue);
         }
     }
 }

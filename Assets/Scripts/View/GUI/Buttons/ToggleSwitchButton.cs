@@ -9,8 +9,8 @@ namespace View.GUI.Buttons
 {
     public class ToggleSwitchButton : MonoBehaviour, IPointerClickHandler
     {
-        [SerializeField] private GameObject _handle;
-        [SerializeField] private GameObject _fill;
+        [SerializeField] private GameObject handle;
+        [SerializeField] private GameObject fill;
         
         private Toggle _toggle;
         private RectTransform _handleTransform;
@@ -21,9 +21,9 @@ namespace View.GUI.Buttons
         private void Awake()
         {
             _toggle = GetComponent<Toggle>();
-            _fillColorWrapper = _fill.GetComponent<ColorImageWrapper>();
-            _handleColorWrapper = _handle.GetComponent<ColorImageWrapper>();
-            _handleTransform = _handle.GetComponent<RectTransform>();
+            _fillColorWrapper = fill.GetComponent<ColorImageWrapper>();
+            _handleColorWrapper = handle.GetComponent<ColorImageWrapper>();
+            _handleTransform = handle.GetComponent<RectTransform>();
             _swapX = _handleTransform.rect.width / 2;
         }
 

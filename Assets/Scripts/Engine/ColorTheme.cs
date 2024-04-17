@@ -8,7 +8,7 @@ namespace Engine
 {
     public class ColorTheme : MonoBehaviour
     {
-        [SerializeField]private List<Sprite> blockVisualList;
+        [SerializeField] private List<Sprite> blockVisualList;
         [SerializeField] private GameObject creatableTetrominos;
         public static event Action OnCurrentTheme;
         

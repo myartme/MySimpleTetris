@@ -2965,8 +2965,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81776ef7ac9e4574972cde5f72d3a7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handle: {fileID: 2104864087}
-  _fill: {fileID: 2027510072}
+  handle: {fileID: 2104864087}
+  fill: {fileID: 2027510072}
 --- !u!114 &751375881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3266,8 +3266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9379c899dd6c49019d381a78789ed6a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guiManager: {fileID: 762566062}
-  _localization: {fileID: 401304165}
+  guiManager: {fileID: 762566062}
+  localization: {fileID: 401304165}
 --- !u!114 &905935599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3383,7 +3383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 989937275}
-  _localization: {fileID: 0}
+  localization: {fileID: 401304165}
 --- !u!1 &1047830234
 GameObject:
   m_ObjectHideFlags: 0
@@ -4218,7 +4218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6474972379550262887, guid: 50b03faaa0526b340b2049bf803882dc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
-      value: CloseGroups
+      value: ResetGroup
       objectReference: {fileID: 0}
     - target: {fileID: 6474972379550262887, guid: 50b03faaa0526b340b2049bf803882dc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -5034,8 +5034,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 1175805024}
-  _visualBody: {fileID: 1928986266}
-  _languageBody: {fileID: 989937276}
+  visualBody: {fileID: 1928986266}
+  languageBody: {fileID: 989937276}
 --- !u!1 &1181243001
 GameObject:
   m_ObjectHideFlags: 0
@@ -6345,7 +6345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16ac1f0b0194b698915fb6359b613ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultTab: {fileID: 1326300631}
+  defaultTab: {fileID: 1326300631}
 --- !u!222 &1646223016
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6809,7 +6809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6474972379550262887, guid: 50b03faaa0526b340b2049bf803882dc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
-      value: CloseGroups
+      value: ResetGroup
       objectReference: {fileID: 0}
     - target: {fileID: 6474972379550262887, guid: 50b03faaa0526b340b2049bf803882dc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -7603,8 +7603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81776ef7ac9e4574972cde5f72d3a7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handle: {fileID: 2049576028}
-  _fill: {fileID: 1892344790}
+  handle: {fileID: 2049576028}
+  fill: {fileID: 1892344790}
 --- !u!114 &1878750325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8103,11 +8103,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 1916015283}
-  _mixerController: {fileID: 424796266}
-  _toggleMusic: {fileID: 751375880}
-  _music: {fileID: 662554471}
-  _buttons: {fileID: 547490124}
-  _effects: {fileID: 2217445}
+  mixerController: {fileID: 424796266}
+  toggleMusic: {fileID: 751375880}
+  music: {fileID: 662554471}
+  buttons: {fileID: 547490124}
+  effects: {fileID: 2217445}
 --- !u!1 &1918687543
 GameObject:
   m_ObjectHideFlags: 0
@@ -8160,10 +8160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb13de0cae0c4f6480ac4f35e29a1e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _left: {fileID: 1075627452}
-  _right: {fileID: 1820212781}
-  _blockImage: {fileID: 247967999}
-  _colorTheme: {fileID: 1760933428}
+  left: {fileID: 1075627452}
+  right: {fileID: 1820212781}
+  blockImage: {fileID: 247967999}
+  colorTheme: {fileID: 1760933428}
 --- !u!1 &1928986263
 GameObject:
   m_ObjectHideFlags: 0
@@ -8212,7 +8212,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928986263}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -8229,9 +8229,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 1928986265}
-  _colorTheme: {fileID: 1760933428}
-  _toggleTheme: {fileID: 1878750324}
-  _blocksSelector: {fileID: 1918687545}
+  colorTheme: {fileID: 1760933428}
+  toggleTheme: {fileID: 1878750324}
+  blocksSelector: {fileID: 1918687545}
 --- !u!1 &2027510072
 GameObject:
   m_ObjectHideFlags: 0

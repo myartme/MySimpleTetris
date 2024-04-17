@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Engine;
 using UnityEngine;
 
@@ -7,9 +6,9 @@ namespace View.GUI.Grid
 {
     public class TotalTableGrid : MonoBehaviour
     {
-        [SerializeField] private Logic _logic;
-        [SerializeField] private TotalTableHorizontalGroup _positions;
-        [SerializeField] private TotalTableHorizontalGroup _results;
+        [SerializeField] private Logic logic;
+        [SerializeField] private TotalTableHorizontalGroup positions;
+        [SerializeField] private TotalTableHorizontalGroup results;
         private TotalPointsTable _totalPointsTable;
         private List<string> _positionsList;
         private List<string> _resultsList;
@@ -29,21 +28,21 @@ namespace View.GUI.Grid
         {
             if(!_isInit) return;
             
-            var position = _totalPointsTable.Save.GetSupposedPositionByValue(_logic.TotalPoints);
-            _totalPointsTable.Save.SetValueWithShift(_logic.TotalPoints);
+            var position = _totalPointsTable.Save.GetSupposedPositionByValue(logic.TotalPoints);
+            _totalPointsTable.Save.SetValueWithShift(logic.TotalPoints);
             _totalPointsTable.StoreSaveData();
             
             foreach (var totalPoints in _totalPointsTable.Save.list)
             {
                 var selector = position == totalPoints.position;
-                _positions.CreateElementList(totalPoints.position, selector);
-                _results.CreateElementList(totalPoints.value, selector);
+                positions.CreateElementList(totalPoints.position, selector);
+                results.CreateElementList(totalPoints.value, selector);
             }
 
             if (position == 0)
             {
-                _positions.CreateElementList(position, true);
-                _results.CreateElementList(_logic.TotalPoints, true);
+                positions.CreateElementList(position, true);
+                results.CreateElementList(logic.TotalPoints, true);
             }
         }
     }

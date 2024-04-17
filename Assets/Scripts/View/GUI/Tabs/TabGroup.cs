@@ -7,7 +7,7 @@ namespace View.GUI.Tabs
 {
     public class TabGroup : MonoBehaviour
     {
-        [SerializeField] private TabHead _defaultTab;
+        [SerializeField] private TabHead defaultTab;
         
         private List<TabHead> _headTabList;
         private TabHead _selectedTab;
@@ -17,9 +17,9 @@ namespace View.GUI.Tabs
             _headTabList = new List<TabHead>();
         }
 
-        public void CloseGroups()
+        public void ResetGroup()
         {
-            SelectTab(_defaultTab);
+            SelectTab(defaultTab);
         }
 
         public void Subscribe(TabHead button)

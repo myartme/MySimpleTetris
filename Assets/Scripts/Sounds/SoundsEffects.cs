@@ -4,8 +4,8 @@ namespace Sounds
 {
     public class SoundsEffects : MonoBehaviour
     {
-        [SerializeField] public AudioClip completeTetromino;
-        [SerializeField] public AudioClip deleteLine;
+        [SerializeField] public AudioClip CompleteTetromino;
+        [SerializeField] public AudioClip DeleteLine;
         
         private AudioSource _audioSource;
 
@@ -16,12 +16,12 @@ namespace Sounds
 
         public void PlayComplete()
         {
-            Play(completeTetromino);
+            Play(CompleteTetromino);
         }
         
         public void PlayDeleteLine()
         {
-            Play(deleteLine);
+            Play(DeleteLine);
         }
 
         private void Play(AudioClip audioClip)

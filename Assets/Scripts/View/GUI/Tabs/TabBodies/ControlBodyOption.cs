@@ -7,21 +7,19 @@ namespace View.GUI.Tabs.TabBodies
 {
     public class ControlBodyOption : TabBody
     {
-        [SerializeField] private Mover _mover;
-        [SerializeField] private SliderValue _horizontalMS;
-        [SerializeField] private SliderValue _verticalMS;
+        [SerializeField] private Mover mover;
+        [SerializeField] private SliderValue horizontalMS;
+        [SerializeField] private SliderValue verticalMS;
         
         protected override void UpdateValues()
         {
-            /*_horizontalMS.ChangeSliderValue(_mover.HorizontalSpeed);
-            _verticalMS.ChangeSliderValue(_mover.VerticalSpeed);*/
             StartCoroutine(UpdateSliders());
         }
 
         private IEnumerator UpdateSliders()
         {
-            yield return _horizontalMS.ChangeSliderValueIfIsset(_mover.HorizontalSpeed);
-            yield return _verticalMS.ChangeSliderValueIfIsset(_mover.VerticalSpeed);
+            yield return horizontalMS.ChangeSliderValueIfIsset(mover.HorizontalSpeed);
+            yield return verticalMS.ChangeSliderValueIfIsset(mover.VerticalSpeed);
         }
     }
 }

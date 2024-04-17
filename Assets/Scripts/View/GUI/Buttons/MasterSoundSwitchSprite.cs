@@ -5,7 +5,7 @@ namespace View.GUI.Buttons
 {
     public class MasterSoundSwitchSprite : SwitchSprite
     {
-        [SerializeField] private MixerController _mixerController;
+        [SerializeField] private MixerController mixerController;
 
         public void MasterIconInit(bool isMasterEnabled)
         {
@@ -23,12 +23,12 @@ namespace View.GUI.Buttons
         
         private void OnEnable()
         {
-            _mixerController.OnIsMasterEnabled += MasterIconInit;
+            mixerController.OnIsMasterEnabled += MasterIconInit;
         }
 
         private void OnDisable()
         {
-            _mixerController.OnIsMasterEnabled -= MasterIconInit;
+            mixerController.OnIsMasterEnabled -= MasterIconInit;
         }
     }
 }

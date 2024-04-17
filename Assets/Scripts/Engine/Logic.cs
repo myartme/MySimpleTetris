@@ -5,9 +5,9 @@ namespace Engine
 {
     public class Logic : MonoBehaviour
     {
-        [SerializeField] public float timeToNextStep = 2f;
-        [SerializeField] public float timeStepDecreasePerLevel = 0.5f;
-        [SerializeField] private GUIManager _guiManager;
+        [SerializeField] public float TimeToNextStep = 2f;
+        [SerializeField] public float TimeStepDecreasePerLevel = 0.5f;
+        [SerializeField] private GUIManager guiManager;
         
         public int TotalPoints => _totalPoints;
         public int Level => _level;
@@ -21,7 +21,7 @@ namespace Engine
 
         private void Start()
         {
-            _guiManager.UpdateLevel(_level);
+            guiManager.UpdateLevel(_level);
         }
         
         private void UpdateStatistics(int linesDeleted)
@@ -43,18 +43,18 @@ namespace Engine
         private void IncreaseTotalPoints(int totalPoints)
         {
             _totalPoints += totalPoints;
-            _guiManager.UpdateScore(_totalPoints);
+            guiManager.UpdateScore(_totalPoints);
         }
 
         private void IncreaseDeleteLines(int linesDeleted)
         {
             _linesDeleted += linesDeleted;
-            _guiManager.UpdateLinesDeleted(_linesDeleted);
+            guiManager.UpdateLinesDeleted(_linesDeleted);
         }
 
         private void IncreaseTetrominoCompletedCount()
         {
-            _guiManager.UpdateTetrominoCount(++_tetrominoCompletedCount);
+            guiManager.UpdateTetrominoCount(++_tetrominoCompletedCount);
         }
 
         private void IncreaseLevel()
@@ -62,16 +62,16 @@ namespace Engine
             if ((float)_linesDeleted / 10 <= _level) return;
 
             UpdateTimeToNextStep();
-            _guiManager.UpdateLevel(++_level);
+            guiManager.UpdateLevel(++_level);
         }
 
         private void UpdateTimeToNextStep()
         {
-            timeToNextStep -= timeStepDecreasePerLevel;
+            TimeToNextStep -= TimeStepDecreasePerLevel;
             
-            if (timeToNextStep <= 0)
+            if (TimeToNextStep <= 0)
             {
-                timeToNextStep = 0.1f;
+                TimeToNextStep = 0.1f;
             }
         }
         

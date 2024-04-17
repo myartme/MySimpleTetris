@@ -8,7 +8,7 @@ namespace Engine
     {
         [SerializeField] public GameObject TetrominoParent;
         [SerializeField] public SoundsEffects SoundsEffects;
-        [SerializeField] private GUIManager _guiManager;
+        [SerializeField] private GUIManager guiManager;
         
         public static Transform BoardTransform { get; private set; }
         public static bool IsGameOver;
@@ -22,26 +22,26 @@ namespace Engine
         {
             if (IsGameOver)
             {
-                _guiManager.ShowGameOverScreen();
+                guiManager.ShowGameOverScreen();
             }
         }
         
         public void PauseGame()
         {
-            _guiManager.ShowPauseScreen();
+            guiManager.ShowPauseScreen();
             Time.timeScale = 0;
         }
 
         public void ResumeGame()
         {
-            _guiManager.HidePauseScreen();
+            guiManager.HidePauseScreen();
             Time.timeScale = 1;
         }
 
         public void RestartGame()
         {
             Destroy(TetrominoParent);
-            _guiManager.HideGameOverScreen();
+            guiManager.HideGameOverScreen();
             IsGameOver = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }

@@ -1,5 +1,4 @@
-﻿using Engine;
-using Engine.Grid;
+﻿using Engine.Grid;
 using UnityEngine;
 
 namespace View.Scene
