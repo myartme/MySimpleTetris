@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Engine;
+﻿using Engine;
 using UnityEngine;
 using View.GUI.Buttons;
 using View.GUI.TextField;
@@ -15,19 +14,10 @@ namespace View.GUI.Tabs.TabBodies
 
         protected override void UpdateValues()
         {
-            toggleMusic.SetTToggle(MixerController.Instance.IsMasterEnabled);
-            music.ChangeSliderTValueIfIsset(MixerController.Instance.MusicValue);
-            effects.ChangeSliderTValueIfIsset(MixerController.Instance.EffectsValue);
-            buttons.ChangeSliderTValueIfIsset(MixerController.Instance.UIValue);
-            //StartCoroutine(UpdateElements());
-        }
-
-        private IEnumerator UpdateElements()
-        {
-            yield return toggleMusic.SetToggle(MixerController.Instance.IsMasterEnabled);
-            yield return music.ChangeSliderValueIfIsset(MixerController.Instance.MusicValue);
-            yield return effects.ChangeSliderValueIfIsset(MixerController.Instance.EffectsValue);
-            yield return buttons.ChangeSliderValueIfIsset(MixerController.Instance.UIValue);
+            toggleMusic.SetToggle(MixerController.Instance.IsMasterEnabled);
+            music.ChangeSliderValue(MixerController.Instance.MusicValue);
+            effects.ChangeSliderValue(MixerController.Instance.EffectsValue);
+            buttons.ChangeSliderValue(MixerController.Instance.UIValue);
         }
     }
 }

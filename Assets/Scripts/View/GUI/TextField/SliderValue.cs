@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
@@ -38,17 +37,6 @@ namespace View.GUI.TextField
             _slider.onValueChanged.AddListener(ChangeSliderValue);
             _slider.minValue = _min;
             _slider.maxValue = _max;
-        }
-        
-        public void ChangeSliderTValueIfIsset(float value)
-        {
-            ChangeSliderValue(value);
-        }
-
-        public IEnumerator ChangeSliderValueIfIsset(float value)
-        {
-            yield return new WaitWhile(() => _slider == null);
-            ChangeSliderValue(value);
         }
 
         public void ChangeSliderValue(float value)

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using View.GUI.Scheme.ColorStyleWrappers;
@@ -33,15 +32,8 @@ namespace View.GUI.Buttons
             _handleColorWrapper.ColorElementType = ColorElementType.Main;
         }
         
-        public void SetTToggle(bool isToggleOn)
+        public void SetToggle(bool isToggleOn)
         {
-            _toggle.isOn = isToggleOn;
-            CheckToggle();
-        }
-        
-        public IEnumerator SetToggle(bool isToggleOn)
-        {
-            yield return new WaitWhile(() => _toggle == null);
             _toggle.isOn = isToggleOn;
             CheckToggle();
         }
