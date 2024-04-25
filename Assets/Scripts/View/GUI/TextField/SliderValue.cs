@@ -39,6 +39,11 @@ namespace View.GUI.TextField
             _slider.minValue = _min;
             _slider.maxValue = _max;
         }
+        
+        public void ChangeSliderTValueIfIsset(float value)
+        {
+            ChangeSliderValue(value);
+        }
 
         public IEnumerator ChangeSliderValueIfIsset(float value)
         {

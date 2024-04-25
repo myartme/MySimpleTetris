@@ -13,7 +13,9 @@ namespace View.GUI.Tabs.TabBodies
         
         protected override void UpdateValues()
         {
-            StartCoroutine(UpdateSliders());
+            horizontalMS.ChangeSliderTValueIfIsset(mover.HorizontalSpeed);
+            verticalMS.ChangeSliderTValueIfIsset(mover.VerticalSpeed);
+            //StartCoroutine(UpdateSliders());
         }
 
         private IEnumerator UpdateSliders()

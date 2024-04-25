@@ -7,13 +7,13 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
-    guid: 973feeb2bd6fb8e4eb2af5348201ac41
+    guid: dd7510bc252747f383290ccc95148c5e
   - enabled: 1
     path: Assets/Scenes/Desktop.unity
-    guid: 80d5aa46bea5ddb43a69e045ce1b42cd
-  - enabled: 1
+    guid: 439c8c7f78f54b7d8216d8f3ac67f285
+  - enabled: 0
     path: Assets/Scenes/Mobile.unity
-    guid: 4c4a596ba9550e0438d96d9040bf9ea5
+    guid: 23899ea3afea4c2b94eb4ee4bd35d4e1
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 972f068d37f396947b4dae557d2d78ac, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 2b6518e1366119e4691ce25afba1aac6, type: 2}

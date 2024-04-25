@@ -40,21 +40,19 @@ namespace View.GUI.Tabs
         private void SelectTab(TabHead button)
         {
             _selectedTab = button;
-            _selectedTab.TabWrapper.ColorElementType = ColorElementType.Active;
-            _selectedTab.TabLabel.ColorElementType = ColorElementType.Active;
-            _selectedTab.TabBody.SetActive(true);
             foreach (var tabHead in _headTabList.Where(tabHead => tabHead != _selectedTab))
             {
-                SetActive(tabHead.TabBody, false);
-                tabHead.TabWrapper.ColorElementType = ColorElementType.Main;
-                tabHead.TabLabel.ColorElementType = ColorElementType.Main;
+                SetActiveHead(tabHead, false);
             }
+            SetActiveHead(_selectedTab, true);
         }
 
-        private void SetActive(TabBody tabBody, bool isActive)
+        private void SetActiveHead(TabHead tabHead, bool isActive)
         {
-            tabBody.CanvasGroup.alpha = isActive ? 1 : 0;
-            tabBody.CanvasGroup.blocksRaycasts = isActive;
+            var color = isActive ? ColorElementType.Active : ColorElementType.Main;
+            tabHead.TabBody.SetActive(isActive);
+            tabHead.TabWrapper.ColorElementType = color;
+            tabHead.TabLabel.ColorElementType = color;
         }
     }
 }

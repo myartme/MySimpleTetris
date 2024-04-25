@@ -9,22 +9,21 @@ namespace View.GUI.Buttons
         [SerializeField] private ResourcesButton left;
         [SerializeField] private ResourcesButton right;
         [SerializeField] private Image blockImage;
-        [SerializeField] private ColorTheme colorTheme;
         
         public void UpdateBlockSprite()
         {
-            blockImage.sprite = colorTheme.CurrentBlock;
+            blockImage.sprite = ColorTheme.Instance.CurrentBlock;
         }
         
         public void NextBlock()
         {
-            colorTheme.IncrementBlockId();
+            ColorTheme.Instance.IncrementBlockId();
             UpdateBlockSprite();
         }
 
         public void PreviousBlock()
         {
-            colorTheme.DecrementBlockId();
+            ColorTheme.Instance.DecrementBlockId();
             UpdateBlockSprite();
         }
     }

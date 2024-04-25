@@ -10,7 +10,6 @@ namespace Engine.Grid
     {
         [SerializeField] private Transform previewTransform;
         [SerializeField] private Transform spawnTransform;
-        [SerializeField] private ColorTheme colorTheme;
         public static event Action OnGetTetromino;
         public event Action<Tetromino> OnChangeStatus;
         public Tetromino CurrentTetromino => _current;
@@ -77,7 +76,7 @@ namespace Engine.Grid
         
         private Tetromino CreateTetromino()
         {
-            return new Tetromino(colorTheme.CurrentBlock, _generator.Next());
+            return new Tetromino(ColorTheme.Instance.CurrentBlock, _generator.Next());
         }
     }
 }

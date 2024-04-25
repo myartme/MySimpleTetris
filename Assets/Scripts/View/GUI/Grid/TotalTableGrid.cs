@@ -21,13 +21,10 @@ namespace View.GUI.Grid
         private void Start()
         {
             _totalPointsTable.InitializeSaveData();
-            _isInit = true;
         }
 
-        private void OnEnable()
+        public void GenerateTotalTable()
         {
-            if(!_isInit) return;
-            
             var position = _totalPointsTable.Save.GetSupposedPositionByValue(logic.TotalPoints);
             _totalPointsTable.Save.SetValueWithShift(logic.TotalPoints);
             _totalPointsTable.StoreSaveData();

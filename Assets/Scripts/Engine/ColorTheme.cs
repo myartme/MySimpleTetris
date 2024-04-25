@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Save.Data.Format;
+using Service.Singleton;
 using UnityEngine;
 using View.Scene;
 
 namespace Engine
 {
-    public class ColorTheme : MonoBehaviour
+    public class ColorTheme : AbstractSingleton<ColorTheme>
     {
         [SerializeField] private List<Sprite> blockVisualList;
-        [SerializeField] private GameObject creatableTetrominos;
         public static event Action OnCurrentTheme;
-        
+        public static event Action OnCurrentBlock;
+
         public ColorScheme.Theme CurrentTheme 
             => ColorScheme.GetTheme((ColorThemeType)CurrentThemeId);
 
@@ -21,7 +22,6 @@ namespace Engine
             private set
             {
                 _currentThemeId = value;
-                
                 Save.SetValueByName(_theme, _currentThemeId);
                 OnCurrentTheme?.Invoke();
             }
@@ -35,6 +35,7 @@ namespace Engine
             {
                 _currentBlockId = value;
                 Save.SetValueByName(_block, _currentBlockId);
+                OnCurrentBlock?.Invoke();
             }
         }
         
@@ -48,7 +49,12 @@ namespace Engine
             _block = "BlockType";
 
         private int _currentBlockId, _currentThemeId = -1;
-
+        
+        private void Awake()
+        {
+            GetComponent<ISingularObject>().Initialize();
+        }
+        
         private void Start()
         {
             InitializeSaveData();
@@ -58,7 +64,7 @@ namespace Engine
         public void StoreSaveData()
         {
             Saver.Store.Save(Saver.SaveData);
-            ChangeBlocks();
+            OnCurrentBlock?.Invoke();
         }
         
         public void ResetSaveData()
@@ -107,20 +113,6 @@ namespace Engine
         public void ChangeColorTheme(bool theme)
         {
             CurrentThemeId = theme ? 1 : 0;
-        }
-
-        private void ChangeBlocks()
-        {
-            if(!creatableTetrominos) return;
-            
-            foreach (Transform tetromino in creatableTetrominos.transform)
-            {
-                foreach (Transform block in tetromino.transform)
-                {
-                    var sr = block.GetComponent<SpriteRenderer>();
-                    sr.sprite = CurrentBlock;
-                }
-            }
         }
     }
 }

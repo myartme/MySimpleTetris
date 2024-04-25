@@ -13,6 +13,8 @@ namespace Engine
         public static Transform BoardTransform { get; private set; }
         public static bool IsGameOver;
 
+        private bool _gameOverScreenIsShow;
+
         private void Awake()
         {
             BoardTransform = TetrominoParent.transform;
@@ -20,8 +22,9 @@ namespace Engine
 
         private void Update()
         {
-            if (IsGameOver)
+            if (IsGameOver && !_gameOverScreenIsShow)
             {
+                _gameOverScreenIsShow = true;
                 guiManager.ShowGameOverScreen();
             }
         }

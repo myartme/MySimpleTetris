@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Save.Data;
 using UnityEngine;
 using Application = UnityEngine.Device.Application;
@@ -16,12 +17,11 @@ namespace Save
             _filePath = GetFilePath("save");
         }
         
-        public SaveData Create()
+        public void Create()
         {
-            if(IsExists) return default;
+            if(IsExists) return;
 
             using (File.Create(_filePath)) { }
-            return Load();
         }
 
         public void Save(SaveData data)
@@ -38,7 +38,17 @@ namespace Save
             if (!File.Exists(_filePath)) return default;
 
             var json = File.ReadAllText(_filePath);
-            return JsonUtility.FromJson<SaveData>(json);
+            SaveData fileData = null;
+            try
+            {
+                fileData = JsonUtility.FromJson<SaveData>(json);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("SaveSystem: Json Parse error " + e.Message);
+            }
+
+            return fileData;
         }
 
         private string GetFilePath(string name)
