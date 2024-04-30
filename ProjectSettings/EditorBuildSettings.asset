@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Desktop.unity
     guid: 439c8c7f78f54b7d8216d8f3ac67f285
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Mobile.unity
     guid: 23899ea3afea4c2b94eb4ee4bd35d4e1
   m_configObjects:

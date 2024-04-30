@@ -1,4 +1,5 @@
-﻿using Engine.Grid;
+﻿using System;
+using Engine.Grid;
 using UnityEngine;
 
 namespace Engine
@@ -6,7 +7,6 @@ namespace Engine
     public class Logic : MonoBehaviour
     {
         [SerializeField] public float TimeToNextStep = 2f;
-        [SerializeField] public float TimeStepDecreasePerLevel = 0.5f;
         [SerializeField] private GUIManager guiManager;
         
         public int TotalPoints => _totalPoints;
@@ -67,11 +67,14 @@ namespace Engine
 
         private void UpdateTimeToNextStep()
         {
-            TimeToNextStep -= TimeStepDecreasePerLevel;
+            TimeToNextStep = -0.0000139f*(float)Math.Pow(_level, 3) 
+                + 0.0057154f*(float)Math.Pow(_level, 2) 
+                - 0.2166372f*_level 
+                + 2.2071947f;
             
             if (TimeToNextStep <= 0)
             {
-                TimeToNextStep = 0.1f;
+                TimeToNextStep = 0.05f;
             }
         }
         
