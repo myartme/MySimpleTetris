@@ -203,7 +203,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 399949185802240
-    m_Localized: Calcel
+    m_Localized: Cancel
     m_Metadata:
       m_Items: []
   - m_Id: 420907997061120
@@ -288,6 +288,50 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 804704458498048
     m_Localized: Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5049401456582656
+    m_Localized: Audio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5049425598996480
+    m_Localized: Visual
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5049443584172032
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050371137724416
+    m_Localized: Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050473084477440
+    m_Localized: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050548502257664
+    m_Localized: Buttons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050569117261824
+    m_Localized: Effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050665670139904
+    m_Localized: Theme
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050690504613888
+    m_Localized: Blocks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050789582462976
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050819735314432
+    m_Localized: Cancel
     m_Metadata:
       m_Items: []
   references:

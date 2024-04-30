@@ -203,10 +203,6 @@ MonoBehaviour:
     m_Key: Desktop/CanvasScreens/OptionsScreen/Body/Buttons/CancelButton/CancelButtonText
     m_Metadata:
       m_Items: []
-  - m_Id: 420699590483968
-    m_Key: New Entry
-    m_Metadata:
-      m_Items: []
   - m_Id: 420907997061120
     m_Key: Desktop/CanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/ControlTabBody/HorizontalMoveSpeed/HorizontalMoveSpeedLabel
       1
@@ -291,6 +287,50 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 804704458498048
     m_Key: MainMenu/CanvasScreens/GameStartScreen/StartButton/StartButtonText 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5049401456582656
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Audio/AudioButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5049425598996480
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Visual/VisualButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5049443584172032
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsHead/Language/LanguageButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050371137724416
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/SoundSwitcher/SoundSwitcherLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050473084477440
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Music/MusicLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050548502257664
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Buttons/ButtonsLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050569117261824
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/AudioTabBody/Effects/EffectsLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050665670139904
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/VisualTabBody/ThemeSwitcher/ThemeSwitcherLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050690504613888
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/TabsOptions/TabsBody/VisualTabBody/Blocks/BlockLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050789582462976
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/Buttons/ConfirmButton/ConfirmButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5050819735314432
+    m_Key: MainMenu/DesktopCanvasScreens/OptionsScreen/Body/Buttons/CancelButton/CancelButtonText
     m_Metadata:
       m_Items: []
   m_Metadata:

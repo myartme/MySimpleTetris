@@ -1,37 +1,35 @@
-using System.Collections;
 using Engine;
 using UnityEngine;
-using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
-using View.GUI.Screen;
 
 namespace View.Menu
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField] private GUIManager _guiManager;
-        [SerializeField] private Localization _localization;
+        [SerializeField] private GUIManager guiManager;
+        [SerializeField] private Localization localization;
+        [SerializeField] private GameObject desktopCanvasScreens;
+        [SerializeField] private GameObject mobileCanvasScreens;
         private static bool _gameIsRestarted;
+        private string _scene;
 
-        private IEnumerator Start()
+        private void Awake()
         {
-            yield return GameStartScreen.ClassInstance;
-            yield return LocalizationSettings.InitializationOperation;
-            _guiManager.ShowMainMenu();
-            yield return null;
+            if (ScreenDetector.CurrentDevice == ScreenDetector.Device.Desktop)
+            {
+                _scene = "Desktop";
+                mobileCanvasScreens.SetActive(false);
+            }
+            else if (ScreenDetector.CurrentDevice == ScreenDetector.Device.Mobile)
+            {
+                _scene = "Mobile";
+                desktopCanvasScreens.SetActive(false);
+            }
         }
 
         public void StartGame()
         {
-            if (ScreenDetector.CurrentDevice == ScreenDetector.Device.Desktop)
-            {
-                SceneManager.LoadScene("Desktop");
-            }
-            else if (ScreenDetector.CurrentDevice == ScreenDetector.Device.Mobile)
-            {
-                SceneManager.LoadScene("Mobile");
-            }
-            
+            SceneManager.LoadScene(_scene);
         }
     }
 }

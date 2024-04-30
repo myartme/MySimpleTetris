@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Save.Data;
+using UnityEngine;
 using Application = UnityEngine.Device.Application;
 
 namespace Save
@@ -17,12 +19,11 @@ namespace Save
             _filePath = GetFilePath("save");
         }
         
-        public SaveData Create()
+        public void Create()
         {
-            if(IsExists) return default;
+            if(IsExists) return;
 
-            using var file = File.Create(_filePath);
-            return (SaveData)_binaryFormatter.Deserialize(file);
+            using (File.Create(_filePath)) { }
         }
 
         public void Save(SaveData data)
@@ -37,8 +38,19 @@ namespace Save
         {
             if (!File.Exists(_filePath)) return default;
             
-            using var file = File.Open(_filePath, FileMode.Open);
-            return (SaveData)_binaryFormatter.Deserialize(file);
+            SaveData fileData = null;
+            
+            try
+            {
+                using var file = File.Open(_filePath, FileMode.Open);
+                fileData = (SaveData)_binaryFormatter.Deserialize(file);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("SaveSystem: Binary Parse error " + e.Message);
+            }
+
+            return fileData;
         }
 
         private string GetFilePath(string name)

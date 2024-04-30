@@ -1,18 +1,18 @@
 ﻿using System;
 using Save.Data.Format;
+using Service.Singleton;
 using UnityEngine;
 using UnityEngine.Audio;
-using View.GUI.Buttons;
 
 namespace Engine
 {
-    public class MixerController : MonoBehaviour
+    [DisallowMultipleComponent]
+    public class MixerController : AbstractSingleton<MixerController>
     {
         [SerializeField] private AudioMixerGroup audioMixer;
-        [SerializeField] private MasterSoundSwitchSprite _switchSprite;
-        public event Action<bool> OnIsMasterEnabled;
+        public static event Action<bool> OnIsMasterEnabled;
         public float MusicValue => Save.GetValue(_music);
-        public float EffectsValue =>Save.GetValue(_effect);
+        public float EffectsValue => Save.GetValue(_effect);
         public float UIValue => Save.GetValue(_ui);
 
         public bool IsMasterEnabled
@@ -20,7 +20,7 @@ namespace Engine
             get => Save.GetValue(_master) == 0;
             private set
             {
-                ToggleMasterMixer(value ? 0 : -80);
+                ChangeMasterMixer(value ? 0 : -80);
                 OnIsMasterEnabled?.Invoke(value);
             }
         }
@@ -34,6 +34,11 @@ namespace Engine
             _music = "MusicVolume",
             _effect = "EffectsVolume",
             _ui = "InterfaceVolume";
+
+        private void Awake()
+        {
+            GetComponent<ISingularObject>().Initialize();
+        }
 
         private void Start()
         {
@@ -52,13 +57,17 @@ namespace Engine
             LoadSaveData();
         }
         
+        public void ToggleMasterMixer(bool value)
+        {
+            IsMasterEnabled = value;
+        }
+        
         public void ToggleMasterMixer()
         {
             IsMasterEnabled = !IsMasterEnabled;
-            StoreSaveData();
         }
         
-        public void ToggleMasterMixer(float volume)
+        public void ChangeMasterMixer(float volume)
         {
             audioMixer.audioMixer.SetFloat(_master, volume);
             Save.SetValueByName(_master, volume);

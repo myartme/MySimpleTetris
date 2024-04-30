@@ -10,7 +10,7 @@ namespace Engine.Grid
 {
     public class GameGrid : MonoBehaviour
     {
-        [SerializeField] private Game _game;
+        [SerializeField] private Game game;
         private Tetromino Tetromino => _tetrominoOrder.CurrentTetromino;
         
         public const int WIDTH = 10;
@@ -131,7 +131,7 @@ namespace Engine.Grid
 
             if (Tetromino.Status != ObjectStatus.MakeComplete) return;
 
-            _game.SoundsEffects.PlayComplete();
+            game.SoundsEffects.PlayComplete();
             UpdateTetrominoBlockPositionsOnGrid();
             DeleteLines();
         }
@@ -167,7 +167,7 @@ namespace Engine.Grid
             }
             else
             {
-                _game.SoundsEffects.PlayDeleteLine();
+                game.SoundsEffects.PlayDeleteLine();
             }
         }
 

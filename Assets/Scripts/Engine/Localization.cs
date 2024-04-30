@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using Save.Data.Format;
-using UnityEngine;
+using Service.Singleton;
 using UnityEngine.Localization.Settings;
 
 namespace Engine
 {
-    public class Localization : MonoBehaviour
+    public class Localization : AbstractSingleton<Localization>
     {
         public OptionsSave Save
         {
@@ -15,6 +15,11 @@ namespace Engine
         
         private readonly string _language = "Language";
 
+        private void Awake()
+        {
+            GetComponent<ISingularObject>().Initialize();
+        }
+        
         private IEnumerator Start()
         {
             yield return LocalizationSettings.InitializationOperation;

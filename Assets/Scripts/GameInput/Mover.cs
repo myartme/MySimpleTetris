@@ -65,7 +65,7 @@ namespace GameInput
             GameInput.Enable();
             InitializeSaveData();
             LoadSaveData();
-            _timeToNextStep = _logic.timeToNextStep;
+            _timeToNextStep = _logic.TimeToNextStep;
             _autoMoveTimer = new Timer(_timeToNextStep);
             _accelerateTimer = new Timer(_timeToNextStep);
         }
@@ -162,9 +162,9 @@ namespace GameInput
         
         private void UpdateTimeToNextStep()
         {
-            if (_timeToNextStep > _logic.timeToNextStep)
+            if (_timeToNextStep > _logic.TimeToNextStep)
             {
-                _timeToNextStep = _logic.timeToNextStep;
+                _timeToNextStep = _logic.TimeToNextStep;
                 _autoMoveTimer = new Timer(_timeToNextStep);
             }
         }

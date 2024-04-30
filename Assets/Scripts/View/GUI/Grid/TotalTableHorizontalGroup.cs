@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Engine;
 using UnityEngine;
 using View.GUI.Scheme.ColorStyleWrappers;
 using View.GUI.TextField;
@@ -9,8 +8,7 @@ namespace View.GUI.Grid
 {
     public class TotalTableHorizontalGroup : MonoBehaviour
     {
-        [SerializeField] private TableElementField _tableElementField;
-        [SerializeField] private ColorTheme _colorTheme;
+        [SerializeField] private TableElementField tableElementField;
 
         private List<TableElementField> _elemList;
 
@@ -21,10 +19,9 @@ namespace View.GUI.Grid
 
         public void CreateElementList(int value, bool selectElement = false)
         {
-            var element = Instantiate(_tableElementField, gameObject.transform);
+            var element = Instantiate(tableElementField, gameObject.transform);
             element.UpdateCountText(value);
             var colorTextWrapper = element.GetComponent<ColorTextWrapper>();
-            colorTextWrapper.ColorTheme = _colorTheme;
             colorTextWrapper.ColorElementType = selectElement 
                 ? ColorElementType.Active 
                 : ColorElementType.Main;

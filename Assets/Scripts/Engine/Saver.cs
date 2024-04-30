@@ -1,18 +1,31 @@
 ﻿using Save;
 using Save.Data;
-using UnityEngine;
+using Service.Singleton;
 
 namespace Engine
 {
-    public class Saver : MonoBehaviour
+    public class Saver : AbstractSingleton<Saver>
     {
         public static IStorable Store;
         public static SaveData SaveData;
+        
         private void Awake()
         {
-            Store = new JsonSaveSystem();
+            Store = new JsonSaveSystem(); //new BinarySaveSystem();
             SaveData = new SaveData();
-            SaveData = !Store.IsExists ? Store.Create() : Store.Load();
+            if (!Store.IsExists)
+            {
+                Store.Create();
+                return;
+            }
+
+            var loadData = Store.Load();
+            if (loadData is not null)
+            {
+                SaveData = loadData;
+            }
+            
+            GetComponent<ISingularObject>().Initialize();
         }
     }
 }

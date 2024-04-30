@@ -1,18 +1,17 @@
-﻿using Engine;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace View.GUI.Tabs.TabBodies
 {
     public class VisualAndLanguageBodyOption : TabBody
     {
-        [SerializeField] private VisualBodyOption _visualBody;
-        [SerializeField] private LanguageBodyOption _languageBody;
+        [SerializeField] private VisualBodyOption visualBody;
+        [SerializeField] private LanguageBodyOption languageBody;
         
         public override void SetActive(bool isActive)
         {
             base.SetActive(isActive);
-            _visualBody.SetActive(isActive);
-            _languageBody.SetActive(isActive);
+            visualBody.SetActive(isActive);
+            languageBody.SetActive(isActive);
         }
     }
 }

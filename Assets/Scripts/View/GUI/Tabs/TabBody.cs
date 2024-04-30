@@ -5,7 +5,6 @@ namespace View.GUI.Tabs
     public class TabBody : MonoBehaviour
     {
         public CanvasGroup CanvasGroup;
-        private bool _isInitialized;
         private void Awake()
         {
             CanvasGroup = GetComponent<CanvasGroup>();

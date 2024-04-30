@@ -1,12 +1,9 @@
 using Engine;
-using UnityEngine;
 
 namespace View.GUI.Buttons
 {
     public class MasterSoundSwitchSprite : SwitchSprite
     {
-        [SerializeField] private MixerController _mixerController;
-
         public void MasterIconInit(bool isMasterEnabled)
         {
             if (isMasterEnabled)
@@ -20,15 +17,20 @@ namespace View.GUI.Buttons
                 image.sprite = switchNormal;
             }
         }
-        
+
+        private void Start()
+        {
+            MasterIconInit(MixerController.Instance.IsMasterEnabled);
+        }
+
         private void OnEnable()
         {
-            _mixerController.OnIsMasterEnabled += MasterIconInit;
+            MixerController.OnIsMasterEnabled += MasterIconInit;
         }
 
         private void OnDisable()
         {
-            _mixerController.OnIsMasterEnabled -= MasterIconInit;
+            MixerController.OnIsMasterEnabled -= MasterIconInit;
         }
     }
 }

@@ -6,25 +6,24 @@ namespace View.GUI.Buttons
 {
     public class BlocksSelector : MonoBehaviour
     {
-        [SerializeField] private ResourcesButton _left;
-        [SerializeField] private ResourcesButton _right;
-        [SerializeField] private Image _blockImage;
-        [SerializeField] private ColorTheme _colorTheme;
+        [SerializeField] private ResourcesButton left;
+        [SerializeField] private ResourcesButton right;
+        [SerializeField] private Image blockImage;
         
         public void UpdateBlockSprite()
         {
-            _blockImage.sprite = _colorTheme.CurrentBlock;
+            blockImage.sprite = ColorTheme.Instance.CurrentBlock;
         }
         
         public void NextBlock()
         {
-            _colorTheme.IncrementBlockId();
+            ColorTheme.Instance.IncrementBlockId();
             UpdateBlockSprite();
         }
 
         public void PreviousBlock()
         {
-            _colorTheme.DecrementBlockId();
+            ColorTheme.Instance.DecrementBlockId();
             UpdateBlockSprite();
         }
     }

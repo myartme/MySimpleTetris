@@ -6,9 +6,9 @@ namespace View.GUI.Scheme
 {
     public abstract class ColorStyleGraphic<T> : MonoBehaviour where T : Component, IColorable
     {
-        public ColorTheme ColorTheme;
         [SerializeField] private ColorElementType colorElementType;
         private T _graphic;
+        private ColorScheme.Theme _colorTheme;
 
         public ColorElementType ColorElementType
         {
@@ -19,26 +19,19 @@ namespace View.GUI.Scheme
                 ApplyColor();
             }
         }
-        
-        protected void OnEnable()
-        {
-            ColorTheme.OnCurrentTheme += ApplyColor;
-            ApplyColor();
-        }
-        
-        protected void OnDisable()
-        {
-            ColorTheme.OnCurrentTheme -= ApplyColor;
-        }
 
-        protected virtual void OnValidate()
+        private void Awake()
         {
-            ApplyColor();
+            SetCurrentTheme();
         }
-
-        private void ApplyColor()
+        
+        protected void OnValidate()
         {
-            
+            SetCurrentTheme();
+        }
+        
+        private void SetCurrentTheme()
+        {
             if (_graphic == null)
             {
                 _graphic = GetComponent<T>();
@@ -46,9 +39,27 @@ namespace View.GUI.Scheme
 
             if (_graphic != null)
             {
-                var theme = ColorTheme != null ? ColorTheme.CurrentTheme : ColorScheme.GetTheme(-1);
-                _graphic.Color = theme.GetColor(ColorElementType);
+                _colorTheme = ColorTheme.Instance != null 
+                    ? ColorTheme.Instance.CurrentTheme 
+                    : ColorScheme.GetTheme(-1);
+                
+                ApplyColor();
             }
+        }
+
+        private void ApplyColor()
+        {
+            _graphic.Color = _colorTheme.GetColor(ColorElementType);
+        }
+        
+        protected void OnEnable()
+        {
+            ColorTheme.OnCurrentTheme += SetCurrentTheme;
+        }
+        
+        protected void OnDisable()
+        {
+            ColorTheme.OnCurrentTheme -= SetCurrentTheme;
         }
     }
 }
