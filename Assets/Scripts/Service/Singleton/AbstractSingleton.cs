@@ -25,7 +25,7 @@ namespace Service.Singleton
             }
             else
             {
-                Destroy(gameObject);
+                Destroy(this);
                 return;
             }
 

@@ -1,62 +1,58 @@
 ﻿using System;
-using Save.Data.Format;
+using Save.Data.SaveDataElements;
 using Service.Singleton;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace Engine
 {
-    [DisallowMultipleComponent]
     public class MixerController : AbstractSingleton<MixerController>
     {
         [SerializeField] private AudioMixerGroup audioMixer;
         public static event Action<bool> OnIsMasterEnabled;
-        public float MusicValue => Save.GetValue(_music);
-        public float EffectsValue => Save.GetValue(_effect);
-        public float UIValue => Save.GetValue(_ui);
+        public float MusicValue
+        {
+            get => Save.MusicVolume;
+            private set => ChangeMusicsVolume(value);
+        }
+        public float EffectsValue
+        {
+            get => Save.EffectsVolume;
+            private set => ChangeEffectsVolume(value);
+        }
+        public float InterfaceValue
+        {
+            get => Save.InterfaceVolume;
+            private set => ChangeInterfaceVolume(value);
+        }
 
         public bool IsMasterEnabled
         {
-            get => Save.GetValue(_master) == 0;
+            get => Save.MasterVolume > -80;
             private set
             {
                 ChangeMasterMixer(value ? 0 : -80);
                 OnIsMasterEnabled?.Invoke(value);
             }
         }
-        public OptionsSave Save
-        {
-            get => Saver.SaveData.options;
-            private set => Saver.SaveData.options = value;
-        }
         
-        private readonly string _master = "MasterVolume",
-            _music = "MusicVolume",
-            _effect = "EffectsVolume",
-            _ui = "InterfaceVolume";
+        private AudioOptions Save => Saver.SaveData.Audio;
+        
+        private const string MasterMixerName = "MasterVolume",
+            MusicMixerName = "MusicVolume",
+            EffectMixerName = "EffectsVolume",
+            UIMixerName = "InterfaceVolume";
 
         private void Awake()
         {
             GetComponent<ISingularObject>().Initialize();
         }
-
+        
         private void Start()
         {
-            InitializeSaveData();
             LoadSaveData();
         }
 
-        public void StoreSaveData()
-        {
-            Saver.Store.Save(Saver.SaveData);
-        }
-        
-        public void ResetSaveData()
-        {
-            Save = Saver.Store.Load()?.options;
-            LoadSaveData();
-        }
-        
         public void ToggleMasterMixer(bool value)
         {
             IsMasterEnabled = value;
@@ -69,26 +65,26 @@ namespace Engine
         
         public void ChangeMasterMixer(float volume)
         {
-            audioMixer.audioMixer.SetFloat(_master, volume);
-            Save.SetValueByName(_master, volume);
+            audioMixer.audioMixer.SetFloat(MasterMixerName, volume);
+            Save.MasterVolume = volume;
         }
 
         public void ChangeMusicsVolume(float volume)
         {
-            ChangeVolume(_music, volume);
-            Save.SetValueByName(_music, volume);
+            ChangeVolume(MusicMixerName, volume);
+            Save.MusicVolume = volume;
         }
 
         public void ChangeEffectsVolume(float volume)
         {
-            ChangeVolume(_effect, volume);
-            Save.SetValueByName(_effect, volume);
+            ChangeVolume(EffectMixerName, volume);
+            Save.EffectsVolume = volume;
         }
 
-        public void ChangeButtonsVolume(float volume)
+        public void ChangeInterfaceVolume(float volume)
         {
-            ChangeVolume(_ui, volume);
-            Save.SetValueByName(_ui, volume);
+            ChangeVolume(UIMixerName, volume);
+            Save.InterfaceVolume = volume;
         }
 
         private void ChangeVolume(string mixerName, float value)
@@ -96,21 +92,22 @@ namespace Engine
             audioMixer.audioMixer.SetFloat(mixerName, Mathf.Log10(value) * 20);
         }
 
-        private void InitializeSaveData()
-        {
-            Save.AddToList(_master, 0f);
-            Save.AddToList(_music, 0.5f);
-            Save.AddToList(_effect, 0.5f);
-            Save.AddToList(_ui, 0.5f);
-            StoreSaveData();
-        }
-
         private void LoadSaveData()
         {
-            IsMasterEnabled = Save.GetValue(_master) > -80;
-            ChangeMusicsVolume(Save.GetValue(_music));
-            ChangeEffectsVolume(Save.GetValue(_effect));
-            ChangeButtonsVolume(Save.GetValue(_ui));
+            IsMasterEnabled = Save.MasterVolume > -80;
+            MusicValue = Save.MusicVolume;
+            EffectsValue = Save.InterfaceVolume;
+            InterfaceValue = Save.EffectsVolume;
+        }
+
+        private void OnEnable()
+        {
+            Saver.OnLoadData += LoadSaveData;
+        }
+
+        private void OnDisable()
+        {
+            Saver.OnLoadData -= LoadSaveData;
         }
     }
 }
