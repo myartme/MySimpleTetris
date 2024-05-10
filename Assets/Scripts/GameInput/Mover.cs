@@ -2,7 +2,7 @@
 using Engine;
 using Engine.Grid;
 using GameFigures.Shape;
-using Save.Data.Format;
+using Save.Data.SaveDataElements;
 using Service;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,12 +13,20 @@ namespace GameInput
     {
         [SerializeField][Range((float)0.01, 1)] private float verticalSpeed = 1f;
         [SerializeField][Range((float)0.01, 1)] private float horizontalSpeed = 1f;
-        [SerializeField] private Logic _logic;
-        [SerializeField] private GameGrid _gameGrid;
-        [SerializeField] private TetrominoOrder _tetrominoOrder;
+        [SerializeField] private Logic logic;
+        [SerializeField] private GameGrid gameGrid;
+        [SerializeField] private TetrominoOrder tetrominoOrder;
 
-        public float VerticalSpeed => Save.GetValue(_verticalMS);
-        public float HorizontalSpeed => Save.GetValue(_horizontalMS);
+        public float HorizontalSpeed
+        {
+            get => Save.HorizontalMoveSpeed;
+            private set => horizontalSpeed = value;
+        }
+        public float VerticalSpeed
+        {
+            get => Save.VerticalMoveSpeed;
+            private set => verticalSpeed = value;
+        }
         
         private InputController GameInput { get; set; }
         private InputProvider _inputProvider;
@@ -37,14 +45,7 @@ namespace GameInput
             _movementCanceledHandler,
             _rotationStartedHandler;
         
-        public OptionsSave Save
-        {
-            get => Saver.SaveData.options;
-            private set => Saver.SaveData.options = value;
-        }
-
-        private readonly string _horizontalMS = "HorizontalMoveSpeed",
-            _verticalMS = "VerticalMoveSpeed";
+        private ControlOptions Save => Saver.SaveData.Control;
 
         private void Awake()
         {
@@ -63,9 +64,8 @@ namespace GameInput
         private void Start()
         {
             GameInput.Enable();
-            InitializeSaveData();
             LoadSaveData();
-            _timeToNextStep = _logic.TimeToNextStep;
+            _timeToNextStep = logic.TimeToNextStep;
             _autoMoveTimer = new Timer(_timeToNextStep);
             _accelerateTimer = new Timer(_timeToNextStep);
         }
@@ -88,7 +88,7 @@ namespace GameInput
             _autoMoveTimer.Update();
             if (_autoMoveTimer.IsEnding())
             {
-                _gameGrid.StepDown();
+                gameGrid.StepDown();
                 _autoMoveTimer.Reset();
             }
         }
@@ -127,10 +127,10 @@ namespace GameInput
             switch (type)
             {
                 case InputProvider.RotationType.Anticlockwise:
-                    _gameGrid.AnticlockwiseAngleRotation();
+                    gameGrid.AnticlockwiseAngleRotation();
                     break;
                 case InputProvider.RotationType.Clockwise:
-                    _gameGrid.ClockwiseAngleRotation();
+                    gameGrid.ClockwiseAngleRotation();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -162,9 +162,9 @@ namespace GameInput
         
         private void UpdateTimeToNextStep()
         {
-            if (_timeToNextStep > _logic.TimeToNextStep)
+            if (_timeToNextStep > logic.TimeToNextStep)
             {
-                _timeToNextStep = _logic.TimeToNextStep;
+                _timeToNextStep = logic.TimeToNextStep;
                 _autoMoveTimer = new Timer(_timeToNextStep);
             }
         }
@@ -173,50 +173,33 @@ namespace GameInput
         {
             return type switch
             {
-                InputProvider.MovementType.Left => _gameGrid.StepLeft,
-                InputProvider.MovementType.Right => _gameGrid.StepRight,
-                InputProvider.MovementType.Down => _gameGrid.StepDown,
+                InputProvider.MovementType.Left => gameGrid.StepLeft,
+                InputProvider.MovementType.Right => gameGrid.StepRight,
+                InputProvider.MovementType.Down => gameGrid.StepDown,
                 _ => throw new ArgumentOutOfRangeException()
             };
-        }
-        
-        public void StoreSaveData()
-        {
-            Saver.Store.Save(Saver.SaveData);
-        }
-        
-        public void ResetSaveData()
-        {
-            Save = Saver.Store.Load()?.options;
-            LoadSaveData();
-        }
-        
-        private void InitializeSaveData()
-        {
-            Save.AddToList(_horizontalMS, horizontalSpeed);
-            Save.AddToList(_verticalMS, verticalSpeed);
-            StoreSaveData();
         }
 
         private void LoadSaveData()
         {
-            horizontalSpeed = Save.GetValue(_horizontalMS);
-            verticalSpeed = Save.GetValue(_verticalMS);
+            HorizontalSpeed = Save.HorizontalMoveSpeed;
+            VerticalSpeed = Save.VerticalMoveSpeed;
         }
         
         public void ToggleHorizontalMoveSpeed(float value)
         {
-            Save.SetValueByName(_horizontalMS, value);
+            Save.HorizontalMoveSpeed = value;
         }
         
         public void ToggleVerticalMoveSpeed(float value)
         {
-            Save.SetValueByName(_verticalMS, value);
+            Save.VerticalMoveSpeed = value;
         }
         
         private void OnEnable()
         {
-            _tetrominoOrder.OnChangeStatus += CheckTetrominoStatus;
+            tetrominoOrder.OnChangeStatus += CheckTetrominoStatus;
+            Saver.OnLoadData += LoadSaveData;
             foreach (var movement in _inputProvider.MovementInputAction)
             {
                 movement.started += _movementStartedHandler;
@@ -232,7 +215,8 @@ namespace GameInput
 
         private void OnDisable()
         {
-            _tetrominoOrder.OnChangeStatus -= CheckTetrominoStatus;
+            tetrominoOrder.OnChangeStatus -= CheckTetrominoStatus;
+            Saver.OnLoadData -= LoadSaveData;
             foreach (var movement in _inputProvider.MovementInputAction)
             {
                 movement.started -= _movementStartedHandler;

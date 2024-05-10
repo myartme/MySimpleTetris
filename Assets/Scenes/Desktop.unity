@@ -849,7 +849,7 @@ PrefabInstance:
     - target: {fileID: 677028897688611252, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 71ef678a20cb88848aaf05b8c42a752b, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 677028897688611252, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontStyle
       value: 16
@@ -873,7 +873,7 @@ PrefabInstance:
     - target: {fileID: 677028897688611252, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -352576342000279284, guid: 71ef678a20cb88848aaf05b8c42a752b, type: 2}
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 677028897688611252, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4288059030
@@ -2577,7 +2577,7 @@ PrefabInstance:
     - target: {fileID: 3292397258498662906, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 71ef678a20cb88848aaf05b8c42a752b, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 3292397258498662906, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontStyle
       value: 16
@@ -2601,7 +2601,7 @@ PrefabInstance:
     - target: {fileID: 3292397258498662906, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -352576342000279284, guid: 71ef678a20cb88848aaf05b8c42a752b, type: 2}
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 3292397258498662906, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4288059030
@@ -4825,7 +4825,7 @@ PrefabInstance:
     - target: {fileID: 7132034937377699153, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 71ef678a20cb88848aaf05b8c42a752b, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 7132034937377699153, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontStyle
       value: 16
@@ -4849,7 +4849,7 @@ PrefabInstance:
     - target: {fileID: 7132034937377699153, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -352576342000279284, guid: 71ef678a20cb88848aaf05b8c42a752b, type: 2}
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 7132034937377699153, guid: 79f3c1d3040012949b1e37038cbe5ca6, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4288059030
@@ -6729,6 +6729,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3041255101282101412, guid: f8ce742b1fcf0f44cad1a62548ecec36, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6924084489711289917, guid: f8ce742b1fcf0f44cad1a62548ecec36, type: 3}
       propertyPath: m_Name
       value: MixerController
@@ -9188,13 +9192,25 @@ PrefabInstance:
       value: Mover
       objectReference: {fileID: 0}
     - target: {fileID: 6266848325797838906, guid: d29dfe329dd71c649b0315dd483816dd, type: 3}
+      propertyPath: logic
+      value: 
+      objectReference: {fileID: 301731902}
+    - target: {fileID: 6266848325797838906, guid: d29dfe329dd71c649b0315dd483816dd, type: 3}
       propertyPath: _logic
       value: 
       objectReference: {fileID: 301731902}
     - target: {fileID: 6266848325797838906, guid: d29dfe329dd71c649b0315dd483816dd, type: 3}
+      propertyPath: gameGrid
+      value: 
+      objectReference: {fileID: 1822954103}
+    - target: {fileID: 6266848325797838906, guid: d29dfe329dd71c649b0315dd483816dd, type: 3}
       propertyPath: _gameGrid
       value: 
       objectReference: {fileID: 1822954103}
+    - target: {fileID: 6266848325797838906, guid: d29dfe329dd71c649b0315dd483816dd, type: 3}
+      propertyPath: tetrominoOrder
+      value: 
+      objectReference: {fileID: 1822954102}
     - target: {fileID: 6266848325797838906, guid: d29dfe329dd71c649b0315dd483816dd, type: 3}
       propertyPath: _tetrominoOrder
       value: 

@@ -5,20 +5,6 @@ namespace Service.Singleton
 {
     public class SingletonHelper : MonoBehaviour
     {
-        public void StoreAllSaveData()
-        {
-            ColorTheme.Instance.StoreSaveData();
-            MixerController.Instance.StoreSaveData();
-            Localization.Instance.StoreSaveData();
-        }
-        
-        public void ResetAllSaveData()
-        {
-            ColorTheme.Instance.ResetSaveData();
-            MixerController.Instance.ResetSaveData();
-            Localization.Instance.ResetSaveData();
-        }
-        
         #region MixerController
         public void ToggleMasterMixer(bool value)
         {
@@ -47,7 +33,7 @@ namespace Service.Singleton
 
         public void ChangeButtonsVolume(float volume)
         {
-            MixerController.Instance.ChangeButtonsVolume(volume);
+            MixerController.Instance.ChangeInterfaceVolume(volume);
         }
         #endregion
 

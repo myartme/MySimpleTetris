@@ -17,7 +17,7 @@ namespace View.GUI.Tabs.TabBodies
             toggleMusic.SetToggle(MixerController.Instance.IsMasterEnabled);
             music.ChangeSliderValue(MixerController.Instance.MusicValue);
             effects.ChangeSliderValue(MixerController.Instance.EffectsValue);
-            buttons.ChangeSliderValue(MixerController.Instance.UIValue);
+            buttons.ChangeSliderValue(MixerController.Instance.InterfaceValue);
         }
     }
 }
